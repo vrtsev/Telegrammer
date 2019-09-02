@@ -1,5 +1,5 @@
 module MyBot
-  class Controller < TelegramManager::BaseController
+  class Controller < Telegram::AppManager::BaseController
 
     # include some shared code from 'concerns' folder
     include ControllerHelpers

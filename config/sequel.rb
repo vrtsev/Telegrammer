@@ -6,7 +6,7 @@ DB_CONNECTION_PARAMS = {
   host:       ENV['POSTGRES_HOST'],
   port:       ENV['POSTGRES_PORT'],
   database:   ENV['POSTGRES_DATABASE'],
-  logger:     Telegram::BotManager::Logger.new(formatter: TelegramManager::Logger::SequelFormatter.new)
+  logger:     Telegram::BotManager::Logger.new(formatter: Telegram::AppManager::Logger::SequelFormatter.new)
 }
 
 # Global extensions

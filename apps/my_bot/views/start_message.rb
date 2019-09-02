@@ -1,6 +1,6 @@
 module MyBot
   module Views
-    class StartMessage < TelegramManager::BaseView
+    class StartMessage < Telegram::AppManager::BaseView
 
       ## Build your compete telegram message here
       ## Append strings to 'content' attribute
