@@ -1,0 +1,124 @@
+version: '3.5'
+services:
+  application:
+    container_name: telegram_app_manager
+    build: .
+    command: bash
+    env_file: .env
+    working_dir: /application
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/application:cached
+      - bundle-cache:/usr/local/bundle:cached
+    depends_on:
+      - database
+      - redis
+    networks:
+      - default
+      - web
+
+  example_bot:
+    container_name: telegram_app_manager_example_bot
+    image: telegram_app_manager:latest
+    command: bash -c "ruby ./bin/example_bot"
+    env_file: .env
+    working_dir: /application
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/application:cached
+      - bundle-cache:/usr/local/bundle:cached
+    depends_on:
+      - database
+      - redis
+    networks:
+      - default
+      - web
+
+  sidekiq:
+    container_name: telegram_app_manager_sidekiq
+    image: telegram_app_manager:latest
+    command: bash -c "bundle exec sidekiq -e development -r ./config/boot.rb -C ./config/sidekiq.yml"
+    env_file: .env
+    working_dir: /application
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/application:cached
+      - bundle-cache:/usr/local/bundle:cached
+    depends_on:
+      - database
+      - redis
+    networks:
+      - default
+      - web
+
+  sidekiqui:
+    container_name: telegram_app_manager_sidekiqui
+    image: telegram_app_manager:latest
+    command: bundle exec rackup apps/sidekiqui/config.ru -p 9393 --server=webrick --host 0.0.0.0
+    env_file: .env
+    working_dir: /application
+    volumes:
+      - .:/application:cached
+      - bundle-cache:/usr/local/bundle:cached
+    ports:
+      - 9393:9393
+    depends_on:
+      - sidekiq
+    networks:
+      - default
+      - web
+
+  database:
+    container_name: telegram_app_manager_database
+    image: postgres:10.3-alpine
+    command: postgres -c 'max_connections=150'
+    ports:
+      - 5433:5432
+    env_file: .env
+    volumes:
+      - .:/application:cached
+      - db-data:/var/lib/postgresql/data:cached
+
+  adminer:
+    container_name: telegram_app_manager_adminer
+    image: adminer:latest
+    restart: always
+    depends_on:
+      - database
+    ports:
+      - 8080:8080
+    env_file: .env
+    volumes:
+      - .:/application:cached
+
+  redis:
+    container_name: telegram_app_manager_redis
+    image: redis:4.0-alpine
+    command: redis-server /usr/local/etc/redis/redis.conf
+    env_file: .env
+    ports:
+      - 6380:6379
+    volumes:
+      - redis-storage:/data:cached
+      - ./docker-configs/redis/redis.conf:/usr/local/etc/redis/redis.conf
+
+  redisui:
+    container_name: telegram_app_manager_redisui
+    image: rediscommander/redis-commander:latest
+    restart: always
+    depends_on:
+      - redis
+    ports:
+      - 8081:8081
+    env_file: .env
+
+volumes:
+  db-data: null
+  bundle-cache: null
+  redis-storage: null
+
+networks:
+  web:
