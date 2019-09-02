@@ -22,11 +22,11 @@ RSpec.configure do |config|
 
     # Enable / disable verbose loggers in specs
     log_level = Logger::ERROR
-    MyBot.logger.level = log_level
+    # MyBot.logger.level = log_level
   end
 
   config.before(:each) do
-    REDIS.set("#{MyBot.bot.username}:state", true)
+    # REDIS.set("#{MyBot.bot.username}:state", true)
     DatabaseCleaner.start
   end
 
