@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require './config/environment.rb'
+require './lib/example_bot.rb'
+require './apps/example_bot/application.rb'
+
+ExampleBot::Application.new(ExampleBot.configuration).run

@@ -18,6 +18,24 @@ services:
       - default
       - web
 
+  example_bot:
+    container_name: telegram_app_manager_example_bot
+    image: telegram_app_manager_application:latest
+    command: bash -c "ruby ./bin/example_bot"
+    env_file: .env
+    working_dir: /application
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/application:cached
+      - bundle-cache:/usr/local/bundle:cached
+    depends_on:
+      - database
+      - redis
+    networks:
+      - default
+      - web
+
   sidekiq:
     container_name: telegram_app_manager_sidekiq
     image: telegram_app_manager_application:latest
