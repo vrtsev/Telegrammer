@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+# require './config/environment.rb'
+# require './lib/my_bot.rb'
+# require './apps/my_bot/application.rb'
+
+# MyBot::Application.new(MyBot.configuration).run
