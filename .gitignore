@@ -2,3 +2,4 @@
 \.env\.production
 \locales_custom\*
 log/
+Gemfile\.lock
