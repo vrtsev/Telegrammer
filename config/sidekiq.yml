@@ -1,0 +1,17 @@
+---
+# Set desired concurrency here. By default 1
+:concurrency: 1
+:logfile: log/sidekiq.log
+
+:queues:
+  - critical
+  - default
+  - low
+
+:schedule:
+  # Specify your worker schedule here
+
+  # ExampleBot::DeleteOldMessagesWorker:
+  #   cron: '0 0 1 * *'   # Runs every month
+  #   class: ExampleBot::DeleteOldMessagesWorker
+  #   description: 'This job deletes old messages for ExampleBot'
