@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require './config/environment.rb'
+require './lib/pdr_bot.rb'
+require './apps/pdr_bot/application.rb'
+
+PdrBot::Application.new(PdrBot.configuration).run
