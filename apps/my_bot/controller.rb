@@ -1,12 +1,14 @@
 module MyBot
   class Controller < TelegramManager::BaseController
+
+    # include some shared code from 'concerns' folder
     include ControllerHelpers
 
     # Connect redis to use session feature like 'session[:user_id] = user_id'
-    # self.session_store = :redis_cache_store, { url: REDIS.id, namespace: ExampleBot.bot.username }
+    self.session_store = :redis_cache_store, { url: REDIS.id, namespace: ExampleBot.bot.username }
 
     # Action callbacks
-    # before_action :callback_name
+    before_action :callback_name
 
     def message(message)
       # All received telegram messages will call this method
