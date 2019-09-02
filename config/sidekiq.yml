@@ -9,9 +9,32 @@
   - low
 
 :schedule:
-  # Specify your worker schedule here
+  PdrBot::BookTableRemindWorker:
+    cron: '0 15 * * FRI'   # Runs every friday at 15:00
+    class: PdrBot::BookTableRemindWorker
+    description: 'This job reminds to book table in restaurant'
 
-  # MyBot::DeleteOldMessagesWorker:
-  #   cron: '0 0 1 * *'   # Runs every month
-  #   class: MyBot::DeleteOldMessagesWorker
-  #   description: 'This job deletes old messages for MyBot'
+  AdminBot::BackupRemindWorker:
+    cron: '0 21 * * FRI'   # Runs every friday at 21:00
+    class: AdminBot::BackupRemindWorker
+    description: 'This job reminds to make DB backup of whole application'
+
+  AdminBot::DeleteOldMessagesWorker:
+    cron: '0 0 1 * *'   # Runs every month
+    class: AdminBot::DeleteOldMessagesWorker
+    description: 'This job deletes old messages for AdminBot'
+
+  JeniaBot::DeleteOldMessagesWorker:
+    cron: '0 0 1 * *'   # Runs every month
+    class: JeniaBot::DeleteOldMessagesWorker
+    description: 'This job deletes old messages for JeniaBot'
+
+  PdrBot::DeleteOldMessagesWorker:
+    cron: '0 0 1 * *'   # Runs every month
+    class: PdrBot::DeleteOldMessagesWorker
+    description: 'This job deletes old messages for PdrBot'
+
+  ExampleBot::DeleteOldMessagesWorker:
+    cron: '0 0 1 * *'   # Runs every month
+    class: ExampleBot::DeleteOldMessagesWorker
+    description: 'This job deletes old messages for ExampleBot'

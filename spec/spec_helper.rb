@@ -24,6 +24,7 @@ RSpec.configure do |config|
     log_level = Logger::ERROR
     PdrBot.logger.level = log_level
     JeniaBot.logger.level = log_level
+    AdminBot.logger.level = log_level
     ExampleBot.logger.level = log_level
   end
 
