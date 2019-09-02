@@ -25,7 +25,7 @@ module Macro
   def self.handle_validation_errors(ctx, wrap_errors_key = nil)
     return true if ctx[:validation_result].success?
 
-    ctx[:error] = "Validation error: #{ctx[:validation_result].errors
+    ctx[:error] = "Validation error: #{ctx[:validation_result].errors}"
     false
   end
 

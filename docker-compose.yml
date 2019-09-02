@@ -1,7 +1,7 @@
 version: '3.5'
 services:
   application:
-    container_name: telegram_app_manager
+    container_name: telegram_app_manager_application
     build: .
     command: bash
     env_file: .env
@@ -38,7 +38,7 @@ services:
 
   sidekiq:
     container_name: telegram_app_manager_sidekiq
-    image: telegram_app_manager:latest
+    image: telegram_app_manager_application:latest
     command: bash -c "bundle exec sidekiq -e development -r ./config/boot.rb -C ./config/sidekiq.yml"
     env_file: .env
     working_dir: /application
@@ -56,7 +56,7 @@ services:
 
   sidekiqui:
     container_name: telegram_app_manager_sidekiqui
-    image: telegram_app_manager:latest
+    image: telegram_app_manager_application:latest
     command: bundle exec rackup apps/sidekiqui/config.ru -p 9393 --server=webrick --host 0.0.0.0
     env_file: .env
     working_dir: /application
