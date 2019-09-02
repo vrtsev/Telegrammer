@@ -11,7 +11,7 @@
 :schedule:
   # Specify your worker schedule here
 
-  # ExampleBot::DeleteOldMessagesWorker:
+  # MyBot::DeleteOldMessagesWorker:
   #   cron: '0 0 1 * *'   # Runs every month
-  #   class: ExampleBot::DeleteOldMessagesWorker
-  #   description: 'This job deletes old messages for ExampleBot'
+  #   class: MyBot::DeleteOldMessagesWorker
+  #   description: 'This job deletes old messages for MyBot'

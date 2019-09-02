@@ -1,7 +1,7 @@
 Sequel.migration do
   change do
 
-    # create_table :example_bot_users do
+    # create_table :my_bot_users do
     #   column :id,                 Integer,    unique: true, null: false, index: true
     #   column :username,           String
     #   column :first_name,         String
@@ -11,7 +11,7 @@ Sequel.migration do
     #   column :updated_at,         DateTime,   null: false
     # end
 
-    # create_table :example_bot_chats do
+    # create_table :my_bot_chats do
     #   column :id,                 Integer,    unique: true, null: false, index: true
     #   column :approved,           TrueClass,  default: true # Change to false if you would like to moderate suggested autoanswers
     #   column :type,               Integer,    null: false
@@ -27,7 +27,7 @@ Sequel.migration do
     #   column :updated_at,         DateTime,   null: false
     # end
 
-    # create_table :example_bot_chats_users do
+    # create_table :my_bot_chats_users do
     #   primary_key :id
 
     #   column :user_id,            Integer,    null: false, index: true
@@ -39,7 +39,7 @@ Sequel.migration do
     #   unique [:user_id, :chat_id]
     # end
 
-    # create_table :example_bot_messages do
+    # create_table :my_bot_messages do
     #   column :id,                 Integer,    unique: true, null: false, index: true
     #   column :chat_id,            Integer,    null: false, index: true
     #   column :text,               String
@@ -48,7 +48,7 @@ Sequel.migration do
     #   column :updated_at,         DateTime,   null: false
     # end
 
-    # create_table :example_bot_auto_answers do
+    # create_table :my_bot_auto_answers do
     #   primary_key :id
     #   column :approved,           TrueClass,  default: true # Change to false if you would like to moderate suggested autoanswers
 

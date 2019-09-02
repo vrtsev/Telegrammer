@@ -1,6 +1,6 @@
 ## Set application environment
 env_arg = ARGV.find { |args| args.include?('APP_ENV') }
-env = env_arg ? env_arg.split('=').last : ENV['APP_ENV'] 
+env = env_arg ? env_arg.split('=').last : ENV['APP_ENV']
 
 APP_ENV ||= case env
 when nil, 'development' then :development

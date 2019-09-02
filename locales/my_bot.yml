@@ -1,4 +1,4 @@
-example_bot:
+my_bot:
   first_translation_key:
     - 'First translation value'
     - "Second translation value with var %{some_var}"
