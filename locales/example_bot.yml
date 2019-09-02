@@ -1,0 +1,6 @@
+example_bot:
+  first_translation_key:
+    - 'First translation value'
+    - "Second translation value with var %{some_var}"
+  second_translation_key:
+    - "Translation value with \n"
