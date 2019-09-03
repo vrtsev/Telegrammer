@@ -6,8 +6,6 @@ module AdminBot
     include ExampleBotActions
     include AdminBotActions
 
-    self.session_store = :redis_cache_store, { url: REDIS.id, namespace: AdminBot.bot.username }
-
     before_action :sync_user
     before_action :authenticate_user
     before_action :sync_message

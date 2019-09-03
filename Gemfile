@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 ## System gems
 gem 'dotenv' # load env files. SHOULD BE THE FIRST, AND AFTER GEMS THAT REQUIRE ENVs
 gem 'require_all' # auto require all files in directory
+gem 'pry-byebug'
 
 # Background processing
 gem 'sidekiq'
@@ -32,17 +33,10 @@ gem 'ruby-enum'
 ## Extensions
 gem 'hashie'
 
-group :development, :test do
-  gem 'pry'
-end
-
 group :test do
   gem 'rspec'
   gem 'fabrication'
   gem 'faker', git: 'https://github.com/stympy/faker.git', branch: 'master'
   gem 'database_cleaner'
   gem 'mock_redis'
-end
-
-group :production do
 end

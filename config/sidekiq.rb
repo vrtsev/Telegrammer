@@ -1,9 +1,11 @@
+redis_url = "redis://:#{ENV['REDIS_PASSWORD']}@#{ENV['REDIS_HOST']}:#{ENV['REDIS_PORT']}/#{ENV['REDIS_DB']}"
+
 Sidekiq.configure_server do |config|
-  config.redis = { url: ENV['REDIS_URL'], namespace: "sidekiq_data" }
+  config.redis = { url: redis_url, namespace: "sidekiq_data" }
 end
 
 Sidekiq.configure_client do |config|
-  config.redis = { url: ENV['REDIS_URL'], namespace: "sidekiq_data" }
+  config.redis = { url: redis_url, namespace: "sidekiq_data" }
 end
 
 Sidekiq::Statistic.configure do |config|

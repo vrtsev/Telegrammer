@@ -2,8 +2,6 @@ module JeniaBot
   class Controller < Telegram::AppManager::BaseController
     include ControllerHelpers
 
-    self.session_store = :redis_cache_store, { url: REDIS.id, namespace: JeniaBot.bot.username }
-
     before_action :sync_chat
     before_action :sync_user
     before_action :authenticate_chat

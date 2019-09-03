@@ -32,7 +32,14 @@ namespace :redis do
 
   desc "Flush all redis data"
   task :flushall do
-    REDIS = Redis.new(url: ENV['REDIS_URL'])
+    REDIS = Redis.new(
+      user:     ENV['REDIS_USER'],
+      password: ENV['REDIS_PASSWORD'],
+      host:     ENV['REDIS_HOST'],
+      port:     ENV['REDIS_PORT'],
+      db:       ENV['REDIS_DB']
+    )
+
     REDIS.ping
     REDIS.flushall
     puts 'Flushed all redis data'

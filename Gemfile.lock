@@ -38,6 +38,7 @@ GEM
       tzinfo (~> 1.1)
       zeitwerk (~> 2.1, >= 2.1.8)
     builder (3.2.3)
+    byebug (11.0.1)
     coderay (1.1.2)
     colorize (0.8.1)
     concurrent-ruby (1.1.5)
@@ -110,6 +111,9 @@ GEM
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
+    pry-byebug (3.7.0)
+      byebug (~> 11.0)
+      pry (~> 0.10)
     raabro (1.1.6)
     rack (2.0.7)
     rack-protection (2.0.7)
@@ -194,7 +198,7 @@ DEPENDENCIES
   hiredis
   mock_redis
   pg
-  pry
+  pry-byebug
   redis
   redis-namespace
   require_all
@@ -210,4 +214,4 @@ DEPENDENCIES
   trailblazer-operation
 
 BUNDLED WITH
-   1.16.6
+   1.17.2

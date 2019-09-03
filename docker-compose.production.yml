@@ -4,7 +4,7 @@ services:
     container_name: admin_bot
     build: .
     command: bash -c "ruby ./bin/admin_bot"
-    env_file: .env
+    env_file: .env.production
     working_dir: /application
     stdin_open: true
     tty: true
@@ -17,12 +17,13 @@ services:
     networks:
       - default
       - web
+    restart: always
 
   pdr_bot:
     container_name: pdr_bot
     build: .
     command: bash -c "ruby ./bin/pdr_bot"
-    env_file: .env
+    env_file: .env.production
     working_dir: /application
     stdin_open: true
     tty: true
@@ -35,12 +36,13 @@ services:
     networks:
       - default
       - web
+    restart: always
 
   jenia_bot:
     container_name: jenia_bot
     build: .
     command: bash -c "ruby ./bin/jenia_bot"
-    env_file: .env
+    env_file: .env.production
     working_dir: /application
     stdin_open: true
     tty: true
@@ -53,12 +55,13 @@ services:
     networks:
       - default
       - web
+    restart: always
 
   example_bot:
     container_name: example_bot
     build: .
     command: bash -c "ruby ./bin/example_bot"
-    env_file: .env
+    env_file: .env.production
     working_dir: /application
     stdin_open: true
     tty: true
@@ -71,12 +74,13 @@ services:
     networks:
       - default
       - web
+    restart: always
 
   sidekiq:
     container_name: sidekiq
     build: .
     command: bash -c "bundle exec sidekiq -e development -r ./config/boot.rb -C ./config/sidekiq.yml"
-    env_file: .env
+    env_file: .env.production
     working_dir: /application
     stdin_open: true
     tty: true
@@ -89,12 +93,13 @@ services:
     networks:
       - default
       - web
+    restart: always
 
   sidekiqui:
     container_name: sidekiqui
     build: .
     command: bundle exec rackup apps/sidekiqui/config.ru -p 9393 --server=webrick --host 0.0.0.0
-    env_file: .env
+    env_file: .env.production
     working_dir: /application
     volumes:
       - .:/application:cached
@@ -106,6 +111,7 @@ services:
     networks:
       - default
       - web
+    restart: always
 
   database:
     container_name: database
@@ -113,10 +119,27 @@ services:
     command: postgres -c 'max_connections=150'
     ports:
       - 5433:5432
-    env_file: .env
+    env_file: .env.production
     volumes:
       - .:/application:cached
       - db-data:/var/lib/postgresql/data:cached
+    restart: always
+
+  pgbackup:
+    container_name: pgbackup
+    image: prodrigestivill/postgres-backup-local
+    env_file: .env.production
+    environment:
+      SCHEDULE: '@daily'
+      POSTGRES_DB: "${POSTGRES_DATABASE}"
+    volumes:
+      - ./backups:/backups
+    depends_on:
+      - database
+    restart: always
+    networks:
+      - default
+      - web
 
   adminer:
     container_name: adminer
@@ -126,20 +149,22 @@ services:
       - database
     ports:
       - 8080:8080
-    env_file: .env
+    env_file: .env.production
     volumes:
       - .:/application:cached
+    restart: always
 
   redis:
     container_name: redis
     image: redis:4.0-alpine
     command: redis-server /usr/local/etc/redis/redis.conf --appendonly yes --requirepass ${REDIS_PASSWORD}
-    env_file: .env
+    env_file: .env.production
     ports:
       - 6380:6379
     volumes:
       - redis-storage:/data:cached
       - ./docker-configs/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    restart: always
 
   redisui:
     container_name: redisui
@@ -149,7 +174,8 @@ services:
       - redis
     ports:
       - 8081:8081
-    env_file: .env
+    env_file: .env.production
+    restart: always
 
 volumes:
   db-data: null
@@ -157,4 +183,5 @@ volumes:
   redis-storage: null
 
 networks:
+  default:
   web:
