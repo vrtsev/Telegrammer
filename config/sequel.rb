@@ -5,15 +5,15 @@ DB_CONNECTION_PARAMS = {
   password:   ENV['POSTGRES_PASSWORD'],
   host:       ENV['POSTGRES_HOST'],
   port:       ENV['POSTGRES_PORT'],
-  database:   ENV['POSTGRES_DATABASE'],
-  logger:     Telegram::BotManager::Logger.new(formatter: Telegram::AppManager::Logger::SequelFormatter.new)
+  database:   ENV['POSTGRES_DATABASE']
 }
 
 # Global extensions
 Sequel.extension :migration
 
 # Database connection
-DB = Sequel.connect(DB_CONNECTION_PARAMS)
+db_credentials = ENV['DATABASE_URL'] || DB_CONNECTION_PARAMS # Use heroku DATABASE_URL default env var
+DB = Sequel.connect(db_credentials, logger:  Telegram::BotManager::Logger.new(formatter: Telegram::AppManager::Logger::SequelFormatter.new))
 
 # Database extensions
 DB.extension(
