@@ -88,7 +88,8 @@ module PdrBot
     def bot_enabled?
       result = ::PdrBot::Op::Bot::State.call
       operation_error_present?(result)
-      throw :abort unless result[:enabled]
+      @bot_enabled = result[:enabled]
+      throw :abort unless @bot_enabled
     end
 
   end

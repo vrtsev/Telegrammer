@@ -32,6 +32,7 @@ module JeniaBot
     end
 
     def report_to_chat(message)
+      return unless @bot_enabled
       respond_with(:message, text: message)
     end
 
