@@ -2,6 +2,7 @@ version: '3.5'
 services:
   application:
     container_name: application
+    command: 'true'
     build: .
     env_file: .env
     working_dir: /application
