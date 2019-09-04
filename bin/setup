@@ -19,15 +19,6 @@ Dir.chdir APP_ROOT do
   system("cp .env.example .env.production") unless File.exist?(".env.production")
 
 
-  puts "\n== Replacing default locales with custom =="
-  puts "Do you want to replace default locales with custom from 'locales_default' folder? [yes/no]"
-  case gets.chomp
-  when 'yes'
-    system("rake locales:replace_default")
-  else puts 'Skipping'
-  end
-
-
   puts "\n== Preparing databases =="
   system 'bin/rake db:drop'
   system 'bin/rake db:create'

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# This script is a starting point to deploy your application on server.
+# Add necessary setup steps to this file:
+
+echo '!!! DO NOT FORGET TO PULL LATEST COMMITS !!!'
+
+echo '== Stopping all containers'
+eval "docker-compose -f docker-compose.production.yml stop"
+
+echo '== Installing dependencies =='
+eval "docker-compose -f docker-compose.production.yml run --rm application bundle install"
+
+echo '== Preparing databases =='
+eval 'docker-compose -f docker-compose.production.yml run --rm application bash -c "bundle exec rake db:migrate"'
+
+echo '== Starting application =='
+eval 'docker-compose -f docker-compose.production.yml up'
