@@ -32,8 +32,9 @@ RSpec.describe PdrBot::Op::Stat::Increment do
       describe 'counter' do
         context 'when winner' do
           it 'increments loser counter on chat user stat' do
-            expect(result[:stat].winner_count).to eq(1)
-            expect(result[:stat].loser_count).to eq(0)
+            stat = result[:stat].reload
+            expect(stat.winner_count).to eq(1)
+            expect(stat.loser_count).to eq(0)
           end
         end
 
@@ -41,21 +42,23 @@ RSpec.describe PdrBot::Op::Stat::Increment do
           let(:params) { { chat_id: chat_user.chat_id, user_id: chat_user.user_id, counter: PdrBot::Stat::Counters.loser } }
 
           it 'increments winner counter on chat user stat' do
-            expect(result[:stat].loser_count).to eq(1)
-            expect(result[:stat].winner_count).to eq(0)
+            stat = result[:stat].reload
+            expect(stat.loser_count).to eq(1)
+            expect(stat.winner_count).to eq(0)
           end
         end
       end
     end
 
     context 'when stat exists' do
-      let(:stat) { Fabricate(:pdr_bot_stat, user_id: chat_user.user_id, chat_id: chat_user.chat_id) }
+      let!(:stat) { Fabricate(:pdr_bot_stat, user_id: chat_user.user_id, chat_id: chat_user.chat_id) }
 
       describe 'counter' do
         context 'when winner' do
           it 'increments loser counter on chat user stat' do
-            expect(result[:stat].winner_count).to eq(1)
-            expect(result[:stat].loser_count).to eq(0)
+            stat = result[:stat].reload
+            expect(stat.winner_count).to eq(1)
+            expect(stat.loser_count).to eq(0)
           end
         end
 
@@ -63,8 +66,9 @@ RSpec.describe PdrBot::Op::Stat::Increment do
           let(:params) { { chat_id: chat_user.chat_id, user_id: chat_user.user_id, counter: PdrBot::Stat::Counters.loser } }
 
           it 'increments winner counter on chat user stat' do
-            expect(result[:stat].loser_count).to eq(1)
-            expect(result[:stat].winner_count).to eq(0)
+            stat = result[:stat].reload
+            expect(stat.loser_count).to eq(1)
+            expect(stat.winner_count).to eq(0)
           end
         end
       end
