@@ -31,6 +31,7 @@ module PdrBot
       Telegram::BotManager::Message
         .new(Telegram.bots[:admin_bot], exception.full_message.truncate(4000))
         .send_to_app_owner
+      raise exception
     end
 
   end
