@@ -1,8 +1,11 @@
 # 'Social Up' telegram bot manager application
 Advanced application with multiple telegram bots inside
-Purpose of this project - quick developemnt and integration multiple telegram bots in one application
+Purpose of this project - quick development and integration multiple telegram bots in one application
 
-![Framework console preview](https://user-images.githubusercontent.com/20019225/64135131-fe5d9580-cded-11e9-887e-3faec6eee893.png)
+To see example bot in action, please, telegram to @socialup_example_bot
+
+![Framework console preview](https://user-images.githubusercontent.com/20019225/64276330-5c09f300-cf50-11e9-81dc-6a28ecd7cac1.JPG)
+![Framework example bot preview](https://user-images.githubusercontent.com/20019225/64276329-5c09f300-cf50-11e9-9db2-fc871386fc72.jpg)
 
 This application is based on:
 - https://github.com/telegram-bot-rb/telegram-bot gem and using Telegram API
@@ -11,7 +14,7 @@ This application is based on:
 
 App includes out-of-the-box:
 - Database (Postgres), ORM and migrations (Sequel)
-- Key-value database
+- Key-value database (Redis)
 - Background processing (Sidekiq) with web UI (SidekiqUI)
 - Schedules for background workers (Sidekiq-scheduler)
 - Background Workers statistic (Sidekiq-statistic)
@@ -20,12 +23,12 @@ App includes out-of-the-box:
 - Docker-compose file to quickly run the whole app in isolation
 - Console action logging (colorized for better readability)
 - Locales that contains your telegram message parts and can be easily changed to other locale file
-- Preapred test environment (using RSpec by default)
+- Prepared test environment (using RSpec by default)
 - Trailblazer-operation gem by default to write service objects with business logic
 
 ## Requirements
 Please keep in mind that you have to install `redis` and `postgres` on your local machine
-On just use docker. Docker-compose file included
+Or just use docker. Docker-compose file included
 
 ## Preparation and obtaining an API key
 First of all you need to create your own telegram bot and obtain an API key. Follow this steps, it's very simple and will take less than 5 mins:
@@ -60,17 +63,17 @@ $ docker-compose up
 ```
 
 ## Available rake commands:
-`rake` - will run all spec tests
-`rake SPEC='spec/admin_bot/controller_spec.rb'` - run specified spec test
-`rake locales:replace_default` - will take your custom locales from `locales_custom` folder and replace default (can be used for production to keep your translations under secret)
-`rake redis:flushall` - clear all Redis keys and values
-`rake db:create` - create DB in Postgres
-`rake db:prepare_for_test` - Create and migrate DB for test env
-`rake db:drop` - drop database that specified in `ENV['POSTGRES_DATABASE']` variable
-`rake db:version` - current migration version
-`rake db:migrate` - migrate DB
-`rake db:rollback` - rollback to previous migration version
-`rake db:clear` - clear all data in DB
+-`rake` - will run all spec tests
+-`rake SPEC='spec/admin_bot/controller_spec.rb'` - run specified spec test
+-`rake locales:replace_default` - will take your custom locales from `locales_custom` folder and replace default (can be used for production to keep your translations under secret)
+-`rake redis:flushall` - clear all Redis keys and values
+-`rake db:create` - create DB in Postgres
+-`rake db:prepare_for_test` - Create and migrate DB for test env
+-`rake db:drop` - drop database that specified in `ENV['POSTGRES_DATABASE']` variable
+-`rake db:version` - current migration version
+-`rake db:migrate` - migrate DB
+-`rake db:rollback` - rollback to previous migration version
+-`rake db:clear` - clear all data in DB
 
 
 ## Contributing
