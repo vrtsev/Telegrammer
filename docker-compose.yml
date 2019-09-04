@@ -1,5 +1,22 @@
 version: '3.5'
 services:
+  application:
+    container_name: application
+    build: .
+    env_file: .env
+    working_dir: /application
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/application:cached
+      - bundle-cache:/usr/local/bundle:cached
+    depends_on:
+      - database
+      - redis
+    networks:
+      - default
+      - web
+
   admin_bot:
     container_name: admin_bot
     build: .
