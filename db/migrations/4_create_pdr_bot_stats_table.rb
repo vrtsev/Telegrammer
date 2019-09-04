@@ -4,7 +4,7 @@ Sequel.migration do
     create_table :pdr_bot_stats do
       primary_key :id
 
-      column :chat_id,      Integer,    null: false
+      column :chat_id,      :Bignum,    null: false
       column :user_id,      Integer,    null: false
 
       column :loser_count,  Integer,    default: 0

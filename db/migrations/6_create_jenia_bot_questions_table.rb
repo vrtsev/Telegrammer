@@ -3,7 +3,7 @@ Sequel.migration do
     create_table :jenia_bot_questions do
       primary_key :id
 
-      column :chat_id,      Integer,    null: false, index: true
+      column :chat_id,      :Bignum,    null: false, index: true
       column :text,         String,     null: false
 
       column :created_at,   DateTime,   null: false

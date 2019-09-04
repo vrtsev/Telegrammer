@@ -16,7 +16,7 @@ Sequel.migration do
       column :id,                 Integer,    unique: true, null: false, index: true
 
       # Table 'chats' skipped
-      # column :chat_id,            Integer,    null: false, index: true
+      # column :chat_id,            :Bignum,    null: false, index: true
       column :text,               String
 
       column :created_at,         DateTime,   null: false

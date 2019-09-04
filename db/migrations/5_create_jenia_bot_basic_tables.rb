@@ -12,7 +12,7 @@ Sequel.migration do
     end
 
     create_table :jenia_bot_chats do
-      column :id,                 Integer,    unique: true, null: false, index: true
+      column :id,                 :Bignum,    unique: true, null: false, index: true
       column :approved,           TrueClass,  default: true # Change to false if you would like to moderate suggested autoanswers
       column :type,               Integer,    null: false
 
@@ -31,7 +31,7 @@ Sequel.migration do
       primary_key :id
 
       column :user_id,            Integer,    null: false, index: true
-      column :chat_id,            Integer,    null: false, index: true
+      column :chat_id,            :Bignum,    null: false, index: true
 
       column :created_at,         DateTime,   null: false
       column :updated_at,         DateTime,   null: false
@@ -41,7 +41,7 @@ Sequel.migration do
 
     create_table :jenia_bot_messages do
       column :id,                 Integer,    unique: true, null: false, index: true
-      column :chat_id,            Integer,    null: false, index: true
+      column :chat_id,            :Bignum,    null: false, index: true
       column :text,               String
 
       column :created_at,         DateTime,   null: false
@@ -53,7 +53,7 @@ Sequel.migration do
       column :approved,           TrueClass,  default: true # Change to false if you would like to moderate suggested autoanswers
 
       column :author_id,          Integer,    null: false, index: true # For cases when smbd can suggest you autoanswer
-      column :chat_id,            Integer,    null: false, index: true # For cases when each chat should have own autoanswers
+      column :chat_id,            :Bignum,    null: false, index: true # For cases when each chat should have own autoanswers
       column :trigger,            String,     null: false
       column :answer,             String,     null: false
 
