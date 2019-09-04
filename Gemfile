@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 gem 'dotenv' # load env files. SHOULD BE THE FIRST, AND AFTER GEMS THAT REQUIRE ENVs
 gem 'require_all' # auto require all files in directory
 gem 'pry-byebug'
+gem 'rake'
 
 # Background processing
 gem 'sidekiq'
