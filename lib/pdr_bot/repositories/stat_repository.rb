@@ -3,6 +3,8 @@ module PdrBot
 
     def find_by_chat_and_user(chat_id, user_id)
       model
+        .select_all(:pdr_bot_stats)
+        .select_append(:username, :first_name, :last_name, :username)
         .left_join(:pdr_bot_users, id: :user_id)
         .where(chat_id: chat_id, user_id: user_id)
         .first
@@ -10,6 +12,8 @@ module PdrBot
 
     def find_all_by_chat_id(chat_id)
       model
+        .select_all(:pdr_bot_stats)
+        .select_append(:username, :first_name, :last_name, :username)
         .left_join(:pdr_bot_users, id: :user_id)
         .where(chat_id: chat_id)
         .to_a
@@ -17,6 +21,8 @@ module PdrBot
 
     def find_leader_by_chat_id(chat_id:, counter:)
       model
+        .select_all(:pdr_bot_stats)
+        .select_append(:username, :first_name, :last_name, :username)
         .left_join(:pdr_bot_users, id: :user_id)
         .where(chat_id: chat_id)
         .order(counter)
