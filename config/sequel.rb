@@ -12,7 +12,7 @@ DB_CONNECTION_PARAMS = {
 Sequel.extension :migration
 
 # Database connection
-db_credentials = ENV['DATABASE_URL'] || DB_CONNECTION_PARAMS # Use heroku DATABASE_URL default env var
+db_credentials = DB_CONNECTION_PARAMS
 DB = Sequel.connect(db_credentials, logger:  Telegram::BotManager::Logger.new(formatter: Telegram::AppManager::Logger::SequelFormatter.new))
 
 # Database extensions
