@@ -10,6 +10,13 @@ module PdrBot
       super
     end
 
+    def run
+      super
+    rescue HTTPClient::ReceiveTimeoutError => exception
+      puts "Poller timeout error. Reconnecting"
+      run
+    end
+
     private
 
     def controller
