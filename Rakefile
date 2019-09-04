@@ -14,19 +14,6 @@ end
 
 task :default => :spec
 
-namespace :locales do
-  desc "Replace default locales with custom"
-  task :replace_default do
-    dirname = 'locales_custom'
-    if Dir.exist?(dirname)
-      system("cp #{dirname}/* locales") 
-      puts "Sucessfully replaced locales"
-    else
-      puts "Could not find '#{dirname}' folder. Will use default locales"
-    end
-  end
-end
-
 namespace :redis do
   require 'redis'
 

@@ -8,7 +8,8 @@ example_bot:
       Available commands:\n
       /start - show this message
       \n
-      Write message: 'Hello bot' and you will see autoanswer
+      Write message: 'Hello bot' and you will see autoanswer\n
+      Напишите сообщение 'Привет', чтобы увидеть автоответ
       \n"
   new_chat_registered:
     - "Registered a new chat in ExampleBot:\n%{chat_info}"
