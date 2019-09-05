@@ -11,6 +11,7 @@ module Telegram
           model
             .where(approved: true, chat_id: chat_id)
             .where(Sequel.ilike(:trigger, "%#{message}%"))
+            .or(Sequel.ilike(message, Sequel.join(['% ', ' %'], Sequel[:trigger])))
             .to_a
             .sample
         end
