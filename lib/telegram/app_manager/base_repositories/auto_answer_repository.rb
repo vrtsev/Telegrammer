@@ -10,10 +10,17 @@ module Telegram
 
           model
             .where(approved: true, chat_id: chat_id)
-            .where(Sequel.ilike(:trigger, "%#{message}%"))
-            .or(Sequel.ilike(message, Sequel.join(['% ', ' %'], Sequel[:trigger])))
+            .where(ilike_pattern(['% ', ' %'], message, :trigger))
+            .or(ilike_pattern(['', ' %'], message, :trigger))
+            .or(ilike_pattern(['% ', ''], message, :trigger))
             .to_a
             .sample
+        end
+
+        private
+
+        def ilike_pattern(pattern, message, column)
+          Sequel.ilike(message, Sequel.join(pattern, Sequel[column]))
         end
 
       end
