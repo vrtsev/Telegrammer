@@ -149,7 +149,7 @@ services:
     env_file: .env.production
     environment:
       SCHEDULE: '@daily'
-      POSTGRES_DB: "${POSTGRES_DATABASE}"
+      POSTGRES_DB: "$${POSTGRES_DATABASE}"
     volumes:
       - ./backups:/backups
     depends_on:
@@ -175,7 +175,7 @@ services:
   redis:
     container_name: socialup_redis
     image: redis:4.0-alpine
-    command: redis-server /usr/local/etc/redis/redis.conf --appendonly yes --requirepass ${REDIS_PASSWORD}
+    command: redis-server /usr/local/etc/redis/redis.conf
     env_file: .env.production
     ports:
       - 6380:6379
