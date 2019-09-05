@@ -28,7 +28,8 @@ module PdrBot
         def find_loser_leader_stat(ctx, **)
           ctx[:loser_stat] = PdrBot::StatRepository.new.find_leader_by_chat_id(
             chat_id: ctx[:chat].id,
-            counter: PdrBot::Stat::Counters.loser
+            counter: PdrBot::Stat::Counters.loser,
+            exclude_user_id: ctx[:winner_stat].user_id
           )
         end
 

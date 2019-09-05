@@ -33,7 +33,7 @@ module PdrBot
       def loser_stat
         ::PdrBot.localizer.pick(
           'stats.leaders.loser_leader',
-          user: user_full_name(params[:winner_stat]),
+          user: user_full_name(params[:loser_stat]),
           counter: params[:loser_stat].loser_count
         )
       end

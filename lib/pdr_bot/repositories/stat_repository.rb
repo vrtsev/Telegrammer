@@ -19,12 +19,13 @@ module PdrBot
         .to_a
     end
 
-    def find_leader_by_chat_id(chat_id:, counter:)
+    def find_leader_by_chat_id(chat_id:, counter:, exclude_user_id: nil)
       model
         .select_all(:pdr_bot_stats)
         .select_append(:username, :first_name, :last_name, :username)
         .left_join(:pdr_bot_users, id: :user_id)
         .where(chat_id: chat_id)
+        .exclude(user_id: exclude_user_id)
         .order(counter)
         .last
     end
