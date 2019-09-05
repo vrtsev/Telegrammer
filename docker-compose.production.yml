@@ -1,7 +1,7 @@
 version: '3.5'
 services:
   application:
-    container_name: application
+    container_name: socialup_application
     command: 'true'
     build: .
     env_file: .env.production
@@ -19,7 +19,7 @@ services:
       - web
 
   admin_bot:
-    container_name: admin_bot
+    container_name: socialup_admin_bot
     build: .
     command: bash -c "ruby ./bin/admin_bot"
     env_file: .env.production
@@ -38,7 +38,7 @@ services:
     restart: always
 
   pdr_bot:
-    container_name: pdr_bot
+    container_name: socialup_pdr_bot
     build: .
     command: bash -c "ruby ./bin/pdr_bot"
     env_file: .env.production
@@ -57,7 +57,7 @@ services:
     restart: always
 
   jenia_bot:
-    container_name: jenia_bot
+    container_name: socialup_jenia_bot
     build: .
     command: bash -c "ruby ./bin/jenia_bot"
     env_file: .env.production
@@ -76,7 +76,7 @@ services:
     restart: always
 
   example_bot:
-    container_name: example_bot
+    container_name: socialup_example_bot
     build: .
     command: bash -c "ruby ./bin/example_bot"
     env_file: .env.production
@@ -95,7 +95,7 @@ services:
     restart: always
 
   sidekiq:
-    container_name: sidekiq
+    container_name: socialup_sidekiq
     build: .
     command: bash -c "bundle exec sidekiq -e development -r ./config/boot.rb -C ./config/sidekiq.yml"
     env_file: .env.production
@@ -114,7 +114,7 @@ services:
     restart: always
 
   sidekiqui:
-    container_name: sidekiqui
+    container_name: socialup_sidekiqui
     build: .
     command: bundle exec rackup apps/sidekiqui/config.ru -p 9393 --server=webrick --host 0.0.0.0
     env_file: .env.production
@@ -132,7 +132,7 @@ services:
     restart: always
 
   database:
-    container_name: database
+    container_name: socialup_database
     image: postgres:10.3-alpine
     command: postgres -c 'max_connections=150'
     ports:
@@ -144,7 +144,7 @@ services:
     restart: always
 
   pgbackup:
-    container_name: pgbackup
+    container_name: socialup_pgbackup
     image: prodrigestivill/postgres-backup-local
     env_file: .env.production
     environment:
@@ -160,7 +160,7 @@ services:
       - web
 
   adminer:
-    container_name: adminer
+    container_name: socialup_adminer
     image: adminer:latest
     restart: always
     depends_on:
@@ -173,7 +173,7 @@ services:
     restart: always
 
   redis:
-    container_name: redis
+    container_name: socialup_redis
     image: redis:4.0-alpine
     command: redis-server /usr/local/etc/redis/redis.conf --appendonly yes --requirepass ${REDIS_PASSWORD}
     env_file: .env.production
@@ -185,7 +185,7 @@ services:
     restart: always
 
   redisui:
-    container_name: redisui
+    container_name: socialup_redisui
     image: rediscommander/redis-commander:latest
     restart: always
     depends_on:
