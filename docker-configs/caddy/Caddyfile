@@ -1,32 +1,32 @@
-http://sidekiq.{$DOMAIN_NAME}:80 {
+sidekiq.{$DOMAIN_NAME}:443 {
   proxy / socialup_sidekiqui:9393 {
 		transparent
 	}
 
-	header / -Server
   log stdout
 	errors stdout
+  tls {%EMAIL_FOR_CERTIFICATES%}
   basicauth / {%ADMIN_AUTH_USERNAME%} {%ADMIN_AUTH_PASSWORD%}
 }
 
-http://redis.{$DOMAIN_NAME}:80 {
-  proxy / socialup_redisui:8081 {
-		transparent
-	}
-
-  header / -Server
-  log stdout
-	errors stdout
-  basicauth / {%ADMIN_AUTH_USERNAME%} {%ADMIN_AUTH_PASSWORD%}
-}
-
-http://adminer.{$DOMAIN_NAME}:80 {
+adminer.{$DOMAIN_NAME}:443 {
   proxy / socialup_adminer:8080 {
 		transparent
 	}
 
-  header / -Server
   log stdout
 	errors stdout
+  tls {%EMAIL_FOR_CERTIFICATES%}
+  basicauth / {%ADMIN_AUTH_USERNAME%} {%ADMIN_AUTH_PASSWORD%}
+}
+
+redis.{$DOMAIN_NAME}:443 {
+  proxy / socialup_redisui:8081 {
+		transparent
+	}
+
+  log stdout
+	errors stdout
+  tls {%EMAIL_FOR_CERTIFICATES%}
   basicauth / {%ADMIN_AUTH_USERNAME%} {%ADMIN_AUTH_PASSWORD%}
 }
