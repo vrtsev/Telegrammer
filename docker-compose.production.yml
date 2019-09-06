@@ -166,7 +166,7 @@ services:
     env_file: .env.production
     environment:
       SCHEDULE: '@daily'
-      POSTGRES_DB: "$${POSTGRES_DATABASE}"
+      POSTGRES_DB: "${POSTGRES_DATABASE}"
     volumes:
       - ./backups:/backups
     depends_on:
