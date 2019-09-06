@@ -1,4 +1,4 @@
-http://sidekiq.0.0.0.0:80 {
+http://sidekiq.${DOMAIN_NAME}:80 {
   proxy / socialup_sidekiqui:9393 {
 		transparent
 	}
@@ -9,7 +9,7 @@ http://sidekiq.0.0.0.0:80 {
   basicauth / {%ADMIN_AUTH_USERNAME%} {%ADMIN_AUTH_PASSWORD%}
 }
 
-http://redis.0.0.0.0:80 {
+http://redis.${DOMAIN_NAME}:80 {
   proxy / socialup_redisui:8081 {
 		transparent
 	}
@@ -20,7 +20,7 @@ http://redis.0.0.0.0:80 {
   basicauth / {%ADMIN_AUTH_USERNAME%} {%ADMIN_AUTH_PASSWORD%}
 }
 
-http://adminer.0.0.0.0:80 {
+http://adminer.${DOMAIN_NAME}:80 {
   proxy / socialup_adminer:8080 {
 		transparent
 	}
