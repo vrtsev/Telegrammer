@@ -94,6 +94,23 @@ services:
       - web
     restart: always
 
+  caddy:
+    container_name: socialup_caddy
+    image: abiosoft/caddy:0.10.14
+    env_file: .env.production
+    volumes:
+      - ./docker-configs/caddy/Caddyfile:/etc/Caddyfile
+      - caddy-config:/root/.caddy
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - default
+      - web
+    environment:
+      - ACME_AGREE=true
+    restart: always
+
   sidekiq:
     container_name: socialup_sidekiq
     build: .
@@ -197,6 +214,7 @@ services:
 
 volumes:
   db-data: null
+  caddy-config: null
   bundle-cache: null
   redis-storage: null
 

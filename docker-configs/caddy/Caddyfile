@@ -1,0 +1,32 @@
+http://sidekiq.0.0.0.0:80 {
+  proxy / socialup_sidekiqui:9393 {
+		transparent
+	}
+
+	header / -Server
+  log stdout
+	errors stdout
+  basicauth / {%ADMIN_AUTH_USERNAME%} {%ADMIN_AUTH_PASSWORD%}
+}
+
+http://redis.0.0.0.0:80 {
+  proxy / socialup_redisui:8081 {
+		transparent
+	}
+
+  header / -Server
+  log stdout
+	errors stdout
+  basicauth / {%ADMIN_AUTH_USERNAME%} {%ADMIN_AUTH_PASSWORD%}
+}
+
+http://adminer.0.0.0.0:80 {
+  proxy / socialup_adminer:8080 {
+		transparent
+	}
+
+  header / -Server
+  log stdout
+	errors stdout
+  basicauth / {%ADMIN_AUTH_USERNAME%} {%ADMIN_AUTH_PASSWORD%}
+}
