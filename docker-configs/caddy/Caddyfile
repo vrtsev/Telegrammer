@@ -3,7 +3,6 @@ sidekiq.{$DOMAIN_NAME}:443 {
 		transparent
 	}
 
-  log stdout
 	errors stdout
   tls {%EMAIL_FOR_CERTIFICATES%}
   basicauth / {%ADMIN_AUTH_USERNAME%} {%ADMIN_AUTH_PASSWORD%}
@@ -14,7 +13,6 @@ adminer.{$DOMAIN_NAME}:443 {
 		transparent
 	}
 
-  log stdout
 	errors stdout
   tls {%EMAIL_FOR_CERTIFICATES%}
   basicauth / {%ADMIN_AUTH_USERNAME%} {%ADMIN_AUTH_PASSWORD%}
