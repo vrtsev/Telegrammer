@@ -19,7 +19,7 @@ DB_CONNECTION_PARAMS = {
   password:   ENV['POSTGRES_PASSWORD'],
   host:       ENV['POSTGRES_HOST'],
   port:       ENV['POSTGRES_PORT'],
-  database:   ENV['POSTGRES_DATABASE'] + '_test',
+  database:   ENV['POSTGRES_DB'] + '_test',
 }
 DB = Sequel.connect(DB_CONNECTION_PARAMS)
 Sequel::Model.plugin :timestamps, update_on_create: true, allow_manual_update: true

@@ -5,7 +5,7 @@ DB_CONNECTION_PARAMS = {
   password:   ENV['POSTGRES_PASSWORD'],
   host:       ENV['POSTGRES_HOST'],
   port:       ENV['POSTGRES_PORT'],
-  database:   ENV['POSTGRES_DATABASE']
+  database:   ENV['POSTGRES_DB']
 }
 
 # Global extensions

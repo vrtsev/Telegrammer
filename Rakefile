@@ -42,7 +42,7 @@ namespace :db do
     password: ENV['POSTGRES_PASSWORD'],
     host: ENV['POSTGRES_HOST'],
     port: ENV['POSTGRES_PORT'],
-    database: ENV['POSTGRES_DATABASE']
+    database: ENV['POSTGRES_DB']
   }
 
   def current_schema_version(db_connection)
@@ -54,15 +54,15 @@ namespace :db do
   desc "Create database"
   task :create do
     Sequel.connect(DB_CONNECTION_PARAMS.merge(database: 'postgres'))
-          .execute "CREATE DATABASE #{ENV['POSTGRES_DATABASE']}"
+          .execute "CREATE DATABASE #{ENV['POSTGRES_DB']}"
 
-    puts "Created database '#{ENV['POSTGRES_DATABASE']}'"
+    puts "Created database '#{ENV['POSTGRES_DB']}'"
     puts "Do not forger to run 'rake db:migrate' command"
   end
 
   desc "Create test database"
   task :prepare_for_test do
-    test_database_name = ENV['POSTGRES_DATABASE'] + '_test'
+    test_database_name = ENV['POSTGRES_DB'] + '_test'
     connection = Sequel.connect(DB_CONNECTION_PARAMS.merge(database: 'postgres'))
 
     # DROP DB
@@ -83,9 +83,9 @@ namespace :db do
   desc "Drop database with all data"
   task :drop do
     Sequel.connect(DB_CONNECTION_PARAMS.merge(database: 'postgres'))
-          .execute "DROP DATABASE IF EXISTS #{ENV['POSTGRES_DATABASE']}"
+          .execute "DROP DATABASE IF EXISTS #{ENV['POSTGRES_DB']}"
 
-    puts "Dropped database '#{ENV['POSTGRES_DATABASE']}'"
+    puts "Dropped database '#{ENV['POSTGRES_DB']}'"
   end
 
   desc "Prints current schema version"

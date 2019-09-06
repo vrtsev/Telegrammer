@@ -69,7 +69,7 @@ $ docker-compose up
 -`rake redis:flushall` - clear all Redis keys and values
 -`rake db:create` - create DB in Postgres
 -`rake db:prepare_for_test` - Create and migrate DB for test env
--`rake db:drop` - drop database that specified in `ENV['POSTGRES_DATABASE']` variable
+-`rake db:drop` - drop database that specified in `ENV['POSTGRES_DB']` variable
 -`rake db:version` - current migration version
 -`rake db:migrate` - migrate DB
 -`rake db:rollback` - rollback to previous migration version
