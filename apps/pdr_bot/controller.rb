@@ -76,7 +76,7 @@ module PdrBot
     end
 
     def sync_message
-      result = PdrBot::Op::Message::Sync.call(chat: @current_chat, params: {
+      result = PdrBot::Op::Message::Sync.call(chat: @current_chat, user: @current_user, params: {
         message_id: payload['message_id'],
         text: payload['text'],
         date: payload['date']

@@ -53,7 +53,7 @@ module JeniaBot
     end
 
     def sync_message
-      result = JeniaBot::Op::Message::Sync.call(chat: @current_chat, params: {
+      result = JeniaBot::Op::Message::Sync.call(chat: @current_chat, user: @current_user, params: {
         message_id: payload['message_id'],
         text: payload['text'],
         date: payload['date']

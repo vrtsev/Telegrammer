@@ -21,6 +21,7 @@ module JeniaBot
         def prepare_params(ctx, params:, **)
           params[:id] = params[:message_id]
           params[:chat_id] = ctx[:chat].id
+          params[:user_id] = ctx[:user].id
           params[:created_at] = Time.at(params[:date]) if params[:date]
           params[:updated_at] = params[:created_at]
         end
