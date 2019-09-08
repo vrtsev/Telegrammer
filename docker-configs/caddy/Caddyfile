@@ -28,3 +28,13 @@ redis.{$DOMAIN_NAME}:443 {
   tls {%EMAIL_FOR_CERTIFICATES%}
   basicauth / {%ADMIN_AUTH_USERNAME%} {%ADMIN_AUTH_PASSWORD%}
 }
+
+log.{$DOMAIN_NAME}:443 {
+  proxy / socialup_dozzle:8082 {
+		transparent
+	}
+
+	errors stdout
+  tls {%EMAIL_FOR_CERTIFICATES%}
+  basicauth / {%ADMIN_AUTH_USERNAME%} {%ADMIN_AUTH_PASSWORD%}
+}

@@ -90,6 +90,19 @@ services:
       - default
       - web
 
+  dozzle:
+    container_name: socialup_dozzle
+    image: amir20/dozzle:latest
+    environment:
+      - DOZZLE_TAILSIZE=300
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 8082:8080
+    networks:
+      - default
+      - web
+
   sidekiq:
     container_name: socialup_sidekiq
     build: .
@@ -136,17 +149,17 @@ services:
       - .:/application:cached
       - db-data:/var/lib/postgresql/data:cached
 
-  adminer:
-    container_name: socialup_adminer
-    image: adminer:latest
-    restart: always
-    depends_on:
-      - database
-    ports:
-      - 8080:8080
-    env_file: .env
-    volumes:
-      - .:/application:cached
+  # adminer:
+  #   container_name: socialup_adminer
+  #   image: adminer:latest
+  #   restart: always
+  #   depends_on:
+  #     - database
+  #   ports:
+  #     - 8080:8080
+  #   env_file: .env
+  #   volumes:
+  #     - .:/application:cached
 
   redis:
     container_name: socialup_redis

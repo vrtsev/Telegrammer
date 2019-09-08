@@ -111,6 +111,20 @@ services:
       - ACME_AGREE=true
     restart: always
 
+  dozzle:
+    container_name: socialup_dozzle
+    image: amir20/dozzle:latest
+    environment:
+      - DOZZLE_TAILSIZE=300
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 8082:8080
+    networks:
+      - default
+      - web
+    restart: always
+
   sidekiq:
     container_name: socialup_sidekiq
     build: .
