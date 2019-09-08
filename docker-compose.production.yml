@@ -114,6 +114,7 @@ services:
   dozzle:
     container_name: socialup_dozzle
     image: amir20/dozzle:latest
+    env_file: .env.production
     environment:
       - DOZZLE_TAILSIZE=300
     volumes:

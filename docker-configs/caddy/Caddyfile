@@ -29,7 +29,7 @@ redis.{$DOMAIN_NAME}:443 {
   basicauth / {%ADMIN_AUTH_USERNAME%} {%ADMIN_AUTH_PASSWORD%}
 }
 
-log.{$DOMAIN_NAME}:443 {
+logs.{$DOMAIN_NAME}:443 {
   proxy / socialup_dozzle:8082 {
 		transparent
 	}
