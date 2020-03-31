@@ -16,7 +16,6 @@ services:
       - redis
     networks:
       - default
-      - web
 
   admin_bot:
     container_name: socialup_admin_bot
@@ -34,7 +33,6 @@ services:
       - redis
     networks:
       - default
-      - web
     restart: always
 
   pdr_bot:
@@ -53,7 +51,6 @@ services:
       - redis
     networks:
       - default
-      - web
     restart: always
 
   jenia_bot:
@@ -72,7 +69,6 @@ services:
       - redis
     networks:
       - default
-      - web
     restart: always
 
   example_bot:
@@ -91,30 +87,11 @@ services:
       - redis
     networks:
       - default
-      - web
-    restart: always
-
-  caddy:
-    container_name: socialup_caddy
-    image: abiosoft/caddy:0.10.14
-    env_file: .env.production
-    volumes:
-      - ./docker-configs/caddy/Caddyfile:/etc/Caddyfile
-      - caddy-config:/root/.caddy
-    ports:
-      - 80:80
-      - 443:443
-    networks:
-      - default
-      - web
-    environment:
-      - ACME_AGREE=true
     restart: always
 
   dozzle:
     container_name: socialup_dozzle
     image: amir20/dozzle:latest
-    env_file: .env.production
     environment:
       - DOZZLE_TAILSIZE=300
     volumes:
@@ -123,8 +100,6 @@ services:
       - 8082:8080
     networks:
       - default
-      - web
-    restart: always
 
   sidekiq:
     container_name: socialup_sidekiq
@@ -142,7 +117,6 @@ services:
       - redis
     networks:
       - default
-      - web
     restart: always
 
   sidekiqui:
@@ -158,10 +132,9 @@ services:
       - 9393:9393
     depends_on:
       - sidekiq
+    restart: always
     networks:
       - default
-      - web
-    restart: always
 
   database:
     container_name: socialup_database
@@ -188,7 +161,6 @@ services:
     restart: always
     networks:
       - default
-      - web
 
   adminer:
     container_name: socialup_adminer
@@ -202,6 +174,8 @@ services:
     volumes:
       - .:/application:cached
     restart: always
+    networks:
+      - default
 
   redis:
     container_name: socialup_redis
@@ -225,13 +199,15 @@ services:
       - 8081:8081
     env_file: .env.production
     restart: always
+    networks:
+      - default
 
 volumes:
   db-data: null
-  caddy-config: null
   bundle-cache: null
   redis-storage: null
 
 networks:
   default:
-  web:
+    external: true
+    name: global
