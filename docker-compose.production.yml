@@ -23,8 +23,6 @@ services:
     command: bash -c "ruby ./bin/admin_bot"
     env_file: .env.production
     working_dir: /application
-    stdin_open: true
-    tty: true
     volumes:
       - .:/application:cached
       - bundle-cache:/usr/local/bundle:cached
@@ -41,8 +39,6 @@ services:
     command: bash -c "ruby ./bin/pdr_bot"
     env_file: .env.production
     working_dir: /application
-    stdin_open: true
-    tty: true
     volumes:
       - .:/application:cached
       - bundle-cache:/usr/local/bundle:cached
@@ -59,8 +55,6 @@ services:
     command: bash -c "ruby ./bin/jenia_bot"
     env_file: .env.production
     working_dir: /application
-    stdin_open: true
-    tty: true
     volumes:
       - .:/application:cached
       - bundle-cache:/usr/local/bundle:cached
@@ -77,8 +71,6 @@ services:
     command: bash -c "ruby ./bin/example_bot"
     env_file: .env.production
     working_dir: /application
-    stdin_open: true
-    tty: true
     volumes:
       - .:/application:cached
       - bundle-cache:/usr/local/bundle:cached
