@@ -94,10 +94,11 @@ services:
     image: amir20/dozzle:latest
     environment:
       - DOZZLE_TAILSIZE=300
+      - DOZZLE_ADDR=:3200
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
-      - 8082:8080
+      - 3200:3200
     networks:
       - default
 
