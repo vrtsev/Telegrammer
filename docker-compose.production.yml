@@ -81,19 +81,6 @@ services:
       - default
     restart: always
 
-  dozzle:
-    container_name: socialup_dozzle
-    image: amir20/dozzle:latest
-    environment:
-      - DOZZLE_TAILSIZE=300
-      - DOZZLE_ADDR=:3200
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    ports:
-      - 3200:3200
-    networks:
-      - default
-
   sidekiq:
     container_name: socialup_sidekiq
     build: .
@@ -155,21 +142,6 @@ services:
     networks:
       - default
 
-  adminer:
-    container_name: socialup_adminer
-    image: adminer:latest
-    restart: always
-    depends_on:
-      - database
-    ports:
-      - 8080:8080
-    env_file: .env.production
-    volumes:
-      - .:/application:cached
-    restart: always
-    networks:
-      - default
-
   redis:
     container_name: socialup_redis
     image: redis:4.0-alpine
@@ -181,19 +153,6 @@ services:
       - redis-storage:/data:cached
       - ./docker-configs/redis/redis.conf:/usr/local/etc/redis/redis.conf
     restart: always
-
-  redisui:
-    container_name: socialup_redisui
-    image: rediscommander/redis-commander:latest
-    restart: always
-    depends_on:
-      - redis
-    ports:
-      - 8081:8081
-    env_file: .env.production
-    restart: always
-    networks:
-      - default
 
 volumes:
   db-data: null
