@@ -1,0 +1,36 @@
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="#">Admin</a></li>
+    <li><a href="#">Jenia Bot</a></li>
+    <li class="is-active"><a href="#" aria-current="page">Questions</a></li>
+  </ul>
+</nav>
+
+<question-form></question-form>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>chat</th>
+      <th>question</th>
+      <th></th>
+      <th>created</th>
+      <th></th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @questions.each do |question| %>
+      <tr
+        is="question-row"
+        id="<%= question.id %>"
+        chat_id="<%= question.chat_id %>"
+        question="<%= question.text %>"
+        created_at="<%= question.created_at.strftime("%H:%M %d.%m.%Y") %>"
+      ></tr>
+    <% end %>
+
+  </tbody>
+</table>
+

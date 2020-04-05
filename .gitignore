@@ -1,5 +1,24 @@
 \.env
-\.env\.production
+\.env.production
 \locales_custom\*
 log/
 backups/
+
+# ==== WEB APP =====================
+# Ignore bundler config.
+/apps/web/.bundle
+
+# Ignore all logfiles and tempfiles.
+/apps/web/log/*
+/apps/web/tmp/*
+!/apps/web/log/.keep
+!/apps/web/tmp/.keep
+
+# Ignore uploaded files in development.
+/apps/web/storage/*
+!/apps/web/storage/.keep
+
+/apps/web/public/assets
+
+# Ignore master key for decrypting credentials and more.
+/apps/web/config/master.key

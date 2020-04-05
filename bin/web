@@ -1,0 +1,3 @@
+#!/bin/bash
+
+bundle exec rackup ./apps/web/config.ru --host $WEB_HOST -p $WEB_PORT
