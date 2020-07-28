@@ -17,7 +17,6 @@ services:
       - database
     networks:
       - default
-      - web
 
   application:
     container_name: socialup_application
