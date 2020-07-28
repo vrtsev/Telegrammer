@@ -4,7 +4,7 @@ services:
     container_name: socialup_web
     build: .
     command: bash -c "./bin/web"
-    env_file: .env
+    env_file: .env.production
     working_dir: /application
     stdin_open: true
     tty: true
