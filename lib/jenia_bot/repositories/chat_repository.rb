@@ -1,5 +1,6 @@
 module JeniaBot
   class ChatRepository < Telegram::AppManager::BaseRepository
+    include Telegram::AppManager::BaseRepositories::ChatRepository
 
     private
 

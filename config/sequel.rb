@@ -1,11 +1,12 @@
 # Configuration
 DB_CONNECTION_PARAMS = {
-  adapter:    :postgres,
-  user:       ENV['POSTGRES_USER'],
-  password:   ENV['POSTGRES_PASSWORD'],
-  host:       ENV['POSTGRES_HOST'],
-  port:       ENV['POSTGRES_PORT'],
-  database:   ENV['POSTGRES_DB']
+  adapter:          :postgres,
+  user:             ENV['POSTGRES_USER'],
+  password:         ENV['POSTGRES_PASSWORD'],
+  host:             ENV['POSTGRES_HOST'],
+  port:             ENV['POSTGRES_PORT'],
+  database:         ENV['POSTGRES_DB'],
+  max_connections:  ENV['POSTGRES_MAX_CONNECTIONS']
 }
 
 # Global extensions

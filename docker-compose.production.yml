@@ -1,5 +1,24 @@
 version: '3.5'
 services:
+  web:
+    container_name: socialup_web
+    build: .
+    command: bash -c "./bin/web"
+    env_file: .env
+    working_dir: /application
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/application:cached
+      - bundle-cache:/usr/local/bundle:cached
+    ports:
+      - 3000:3000
+    depends_on:
+      - database
+    networks:
+      - default
+      - web
+
   application:
     container_name: socialup_application
     command: 'true'
