@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 module PdrBot
   module Op
     module Stat
       class Increment < Telegram::AppManager::BaseOperation
-
         class Contract < Dry::Validation::Contract
           params do
             required(:chat_id).filled(:integer)
@@ -30,13 +31,13 @@ module PdrBot
           )
 
           ctx[:stat] = if record.present?
-            record
-          else
-            PdrBot::StatRepository.new.create(
-              chat_id: ctx[:chat_user].chat_id,
-              user_id: ctx[:chat_user].user_id
-            )
-          end
+                         record
+                       else
+                         PdrBot::StatRepository.new.create(
+                           chat_id: ctx[:chat_user].chat_id,
+                           user_id: ctx[:chat_user].user_id
+                         )
+                       end
         end
 
         def increment_counter(ctx, params:, **)
@@ -46,7 +47,6 @@ module PdrBot
             user_id: ctx[:chat_user].user_id
           )
         end
-
       end
     end
   end

@@ -11,7 +11,7 @@ module Macro
       contract = with.new
       ctx[:validation_result] = contract.call(ctx[params_context_key])
 
-      ctx[:params_context_key] = ctx[:validation_result].to_h
+      ctx[params_context_key] = ctx[:validation_result].to_h
       return handle_validation_errors(ctx)
     end
 

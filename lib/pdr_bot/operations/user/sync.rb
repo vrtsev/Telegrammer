@@ -1,13 +1,12 @@
+# frozen_string_literal: true
+
 module PdrBot
   module Op
     module User
       class Sync < Telegram::AppManager::BaseOperation
-
         class Contract < Dry::Validation::Contract
           params do
             required(:id).filled(:integer)
-            # required(:is_bot).filled(:bool)
-
             optional(:first_name).filled(:string)
             optional(:last_name).filled(:string)
             optional(:username).filled(:string)
@@ -16,24 +15,34 @@ module PdrBot
 
         step Macro::Validate(:params, with: Contract)
         step :find_or_create_user
-        step :assign_user_to_chat
-        step :log
+        step :update_user_info
+        step :sync_chat_user
 
         def find_or_create_user(ctx, params:, **)
           ctx[:user] = PdrBot::UserRepository.new.find_or_create(params[:id], params)
+          ctx[:user] = create_new_user(ctx[:params]) unless ctx[:user]
+          ctx[:user]
         end
 
-        def assign_user_to_chat(ctx, params:, **)
-          chat_user_params = { chat_id: ctx[:chat].id, user_id: params[:id] }
-          chat_user = PdrBot::ChatUserRepository.new.find_by_chat_and_user(chat_user_params)
+        def update_user_info(ctx, params:, **)
+          PdrBot::UserRepository.new.update(params[:id], params)
 
-          ctx[:chat_user] = chat_user.present? ? chat_user : PdrBot::ChatUserRepository.new.create(chat_user_params)
+          ctx[:user] = PdrBot::UserRepository.new.find(params[:id])
         end
 
-        def log(ctx, params:, **)
-          PdrBot.logger.debug "* Synced user ##{ctx[:user].id} (#{ctx[:user].full_name})"
+        def sync_chat_user(ctx, params:, **)
+          result = ::PdrBot::Op::ChatUser::Sync.call(
+            params: { chat_id: ctx[:chat_id], user_id: ctx[:user].id }
+          )
+
+          ctx[:chat_user] = result[:chat_user]
         end
 
+        private
+
+        def create_new_user(user_params)
+          PdrBot::UserRepository.new.create(user_params)
+        end
       end
     end
   end

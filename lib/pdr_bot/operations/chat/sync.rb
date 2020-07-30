@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 module PdrBot
   module Op
     module Chat
       class Sync < Telegram::AppManager::BaseOperation
-
         class Contract < Dry::Validation::Contract
           params do
             required(:id).filled(:integer)
@@ -20,9 +21,8 @@ module PdrBot
         step Macro::Validate(:params, with: Contract)
         pass :prepare_params
         step :find_or_create_chat
-        step :log
 
-        def prepare_params(ctx, params:, **)
+        def prepare_params(_ctx, params:, **)
           params[:type] = PdrBot::Chat::Types.value(params[:type])
         end
 
@@ -30,25 +30,24 @@ module PdrBot
           ctx[:chat] = PdrBot::ChatRepository.new.find(params[:id])
 
           unless ctx[:chat].present?
-            ctx[:chat] = PdrBot::ChatRepository.new.create(params.merge!(approved: true))
-            report_to_app_owner(ctx[:chat])
+            ctx[:chat] = create_new_chat(ctx[:params])
+            report_new_chat(ctx[:chat])
           end
 
           ctx[:chat]
         end
 
-        def log(ctx, params:, **)
-          PdrBot.logger.debug "* Synced chat ##{ctx[:chat].id} (#{ctx[:chat].name})"
-        end
-
         private
 
-        def report_to_app_owner(chat)
+        def create_new_chat(params)
+          PdrBot::ChatRepository.new.create(params.merge!(approved: true))
+        end
+
+        def report_new_chat(chat)
           Telegram::BotManager::Message
             .new(Telegram.bots[:admin_bot], PdrBot.localizer.pick('new_chat_registered', chat_info: chat.to_hash))
             .send_to_app_owner
         end
-
       end
     end
   end

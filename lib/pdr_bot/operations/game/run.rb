@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PdrBot
   module Op
     module Game
@@ -16,7 +18,7 @@ module PdrBot
         step :increment_loser_stats
 
         def find_last_game_round(ctx, **)
-          ctx[:last_round] = PdrBot::GameRoundRepository.new.find_latest_by_chat_id(ctx[:chat].id)
+          ctx[:last_round] = PdrBot::GameRoundRepository.new.find_latest_by_chat_id(ctx[:chat_id])
         end
 
         def game_allowed?(ctx, **)
@@ -27,35 +29,35 @@ module PdrBot
         end
 
         def check_minimum_user_count(ctx, **)
-          users_count = PdrBot::ChatUserRepository.new.users_count_by_chat_id(ctx[:chat].id) 
+          users_count = PdrBot::ChatUserRepository.new.users_count_by_chat_id(ctx[:chat_id])
           return true if users_count >= MINIMUM_USER_COUNT
 
           operation_error(ctx, PdrBot.localizer.pick('game.not_enough_users', min_count: MINIMUM_USER_COUNT))
         end
 
         def select_loser(ctx, **)
-          chat_user = PdrBot::ChatUserRepository.new.random_by_chat(ctx[:chat].id)
+          chat_user = PdrBot::ChatUserRepository.new.random_by_chat(ctx[:chat_id])
           ctx[:loser] = PdrBot::UserRepository.new.find(chat_user.user_id)
         end
 
         def select_winner(ctx, **)
-          chat_user = PdrBot::ChatUserRepository.new.random_by_chat(ctx[:chat].id, except_user_id: ctx[:loser].id)
+          chat_user = PdrBot::ChatUserRepository.new.random_by_chat(ctx[:chat_id], except_user_id: ctx[:loser].id)
           ctx[:winner] = PdrBot::UserRepository.new.find(chat_user.user_id)
         end
 
         def save_game_round(ctx, **)
           ctx[:game_round] = PdrBot::GameRoundRepository.new.create(
-            chat_id: ctx[:chat].id,
-            initiator_id: ctx[:user].id,
+            chat_id: ctx[:chat_id],
+            initiator_id: ctx[:user_id],
             winner_id: ctx[:winner].id,
             loser_id: ctx[:loser].id
           )
         end
 
         def increment_winner_stats(ctx, **)
-          result = PdrBot::Op::Stat::Increment.call(chat: ctx[:chat], params: {
+          result = PdrBot::Op::Stat::Increment.call(params: {
             user_id: ctx[:winner].id,
-            chat_id: ctx[:chat].id,
+            chat_id: ctx[:chat_id],
             counter: PdrBot::Stat::Counters.winner
           })
 
@@ -63,15 +65,14 @@ module PdrBot
         end
 
         def increment_loser_stats(ctx, **)
-          result = PdrBot::Op::Stat::Increment.call(chat: ctx[:chat], params: {
+          result = PdrBot::Op::Stat::Increment.call(params: {
             user_id: ctx[:loser].id,
-            chat_id: ctx[:chat].id,
+            chat_id: ctx[:chat_id],
             counter: PdrBot::Stat::Counters.loser
           })
 
           ctx[:loser_stat] = result[:stat] if result.success?
         end
-
       end
     end
   end
