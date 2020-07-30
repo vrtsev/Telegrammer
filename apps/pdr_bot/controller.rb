@@ -17,26 +17,24 @@ module PdrBot
         chat: @current_chat, message: @message
       )
       return if operation_error_present?(result)
+      return unless result[:answer].present?
 
-      if result[:answer].present?
-        sleep(rand(2..4))
-        reply_with(:message, text: result[:answer])
-      end
+      PdrBot::Responders::AutoAnswer.new(
+        current_chat_id: @current_chat.id,
+        current_message_id: @message.id,
+        auto_answer: result[:answer]
+      ).call
     end
 
     def start!
-      message = PdrBot::Views::StartMessage.new
-      respond_with(:message, text: message.text)
+      PdrBot::Responders::StartMessage.new(current_chat_id: @current_chat.id).call
     end
 
     def pdr!
       result = ::PdrBot::Op::Game::Run.call(user_id: @current_user.id, chat_id: @current_chat.id)
       return if operation_error_present?(result)
 
-      message = PdrBot::Views::Game.new(winner: result[:winner], loser: result[:loser])
-      respond_with(:message, text: message.game_start_message); sleep(rand(0..3))
-      respond_with(:message, text: message.searching_users)
-
+      PdrBot::Responders::Game.new(current_chat_id: @current_chat.id).call
       results!
     end
 
@@ -44,20 +42,23 @@ module PdrBot
       result = ::PdrBot::Op::GameRound::LatestResults.call(chat_id: @current_chat.id)
       return if operation_error_present?(result)
 
-      message = PdrBot::Views::Results.new(winner: result[:winner], loser: result[:loser])
-      respond_with(:message, text: message.text)
+      PdrBot::Responders::Results.new(
+        current_chat_id: @current_chat.id,
+        winner_full_name: result[:winner].full_name,
+        loser_full_name: result[:loser].full_name
+      ).call
     end
 
     def stats!
       result = ::PdrBot::Op::Stat::ByChat.call(chat_id: @current_chat.id)
       return if operation_error_present?(result)
 
-      message = PdrBot::Views::Stat.new(
+      PdrBot::Responders::Stat.new(
+        current_chat_id: @current_chat.id,
         winner_stat: result[:winner_stat],
         loser_stat: result[:loser_stat],
         chat_stats: result[:chat_stats]
-      )
-      respond_with(:message, text: message.text)
+      ).call
     end
 
     private

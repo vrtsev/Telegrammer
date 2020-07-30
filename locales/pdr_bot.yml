@@ -26,14 +26,14 @@ pdr_bot:
     users_not_found:
       - "Can not find a user from last game round.. Strange :("
     results:
-      title: 
-        - "Here is stats:\n"
-        - "We decided that:\n"
-        - "Have found this users\n"
+      title:
+        - "Here is stats:"
+        - "We decided that:"
+        - "Have found this users"
       loser:
-        - "\U0001F4A9 loser is %{user}...\n"
-        - "\U0001F4A9 %{user} is loser today...\n"
-        - "\U0001F4A9 %{user} , sorry, but you loser ...\n"
+        - "\U0001F4A9 loser is %{user}..."
+        - "\U0001F4A9 %{user} is loser today..."
+        - "\U0001F4A9 %{user} , sorry, but you loser ..."
       winner:
         - "\U0001F60E And winner is.... %{user}"
         - "\U0001F60E The best is %{user} today!"
@@ -58,15 +58,15 @@ pdr_bot:
       not_found:
         - "Can not find a leader from stats by this chat. Strange..."
       title:
-        - "Leaders:\n\n"
-        - "Champions:\n\n"
-        - "The best of the best:\n\n"
+        - "Leaders:"
+        - "Champions:"
+        - "The best of the best:"
       winner_leader:
-        - "\U0001F60E Max winner is %{user} (%{counter} times)\n"
-        - "\U0001F60E Winner %{user} (%{counter} times)\n"
-        - "\U0001F60E Here is a winner %{user}. You was the best (%{counter} times)\n"
+        - "\U0001F60E Max winner is %{user} (%{counter} times)"
+        - "\U0001F60E Winner %{user} (%{counter} times)"
+        - "\U0001F60E Here is a winner %{user}. You was the best (%{counter} times)"
       loser_leader:
-        - "\U0001F4A9 Max loser %{user} (%{counter} times)\n"
-        - "\U0001F4A9 Bad user %{user} (%{counter} times)\n"
+        - "\U0001F4A9 Max loser %{user} (%{counter} times)"
+        - "\U0001F4A9 Bad user %{user} (%{counter} times)"
     for_user:
-      - "%{user}   %{loser_count} - \U0001F4A9 and %{winner_count} - \U0001F60E\n"
+      - "%{user}   %{loser_count} - \U0001F4A9 and %{winner_count} - \U0001F60E"
