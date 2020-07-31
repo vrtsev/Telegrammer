@@ -12,7 +12,7 @@ module Admin
         ).send_to_chat(params[:chat_id])
 
         session[:flash] = { notice: "Message has been sent:\n #{params[:message]}" }
-        redirect to('/new')
+        redirect to("/new?chat_id=#{params[:chat_id]}")
       end
     end
   end

@@ -27,7 +27,7 @@
       <div class="select">
         <select name="chat_id">
           <% @chats.each do |chat| %>
-            <option value="<%= chat.id %>"><%= chat.title ? chat.title : "#{chat.first_name} #{chat.last_name}" %></option>
+            <option value="<%= chat.id %>" <% if chat.id == params[:chat_id].to_i %> selected <% end %>><%= chat.title ? chat.title : "#{chat.first_name} #{chat.last_name}" %></option>
           <% end %>
         </select>
       </div>
