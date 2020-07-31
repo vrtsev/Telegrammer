@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 module PdrBot
   module Op
     module Reminder
       class BookTable < Telegram::AppManager::BaseOperation
-
         pass :pick_message
         pass :check_bot_state
         pass :send_message
@@ -22,7 +23,6 @@ module PdrBot
             ::PdrBot.bot, ctx[:message]
           ).send_to_chat(ENV['PDR_BOT_PUBLIC_CHAT_ID'])
         end
-
       end
     end
   end

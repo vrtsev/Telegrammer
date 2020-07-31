@@ -16,7 +16,6 @@ module PdrBot
         step Macro::Validate(:params, with: Contract)
         step :find_or_create_user
         step :update_user_info
-        step :sync_chat_user
 
         def find_or_create_user(ctx, params:, **)
           ctx[:user] = PdrBot::UserRepository.new.find_or_create(params[:id], params)
@@ -28,14 +27,6 @@ module PdrBot
           PdrBot::UserRepository.new.update(params[:id], params)
 
           ctx[:user] = PdrBot::UserRepository.new.find(params[:id])
-        end
-
-        def sync_chat_user(ctx, params:, **)
-          result = ::PdrBot::Op::ChatUser::Sync.call(
-            params: { chat_id: ctx[:chat_id], user_id: ctx[:user].id }
-          )
-
-          ctx[:chat_user] = result[:chat_user]
         end
 
         private

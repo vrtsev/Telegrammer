@@ -6,6 +6,7 @@ module PdrBot
 
     before_action :sync_chat
     before_action :sync_user
+    before_action :sync_chat_user
     before_action :authenticate_chat
     before_action :sync_message
     before_action :bot_enabled?
@@ -65,26 +66,26 @@ module PdrBot
 
     def sync_chat
       result = ::PdrBot::Op::Chat::Sync.call(params: Hashie.symbolize_keys(chat))
-      PdrBot.logger.debug "* Synced chat ##{result[:chat].id} (#{result[:chat].name})"
-
       operation_error_present?(result)
       @current_chat = result[:chat]
     end
 
     def sync_user
       result = ::PdrBot::Op::User::Sync.call(chat_id: @current_chat.id, params: Hashie.symbolize_keys(from))
-      PdrBot.logger.debug "* Synced user ##{result[:user].id} (#{result[:user].full_name})"
-
       operation_error_present?(result)
       @current_user = result[:user]
     end
 
+    def sync_chat_user
+      result = ::PdrBot::Op::ChatUser::Sync.call(params: { chat_id: @current_chat.id, user_id: @current_user.id })
+
+      operation_error_present?(result)
+      @current_chat_user = result[:chat_user]
+    end
+
     def authenticate_chat
       result = ::PdrBot::Op::Chat::Authenticate.call(chat_id: @current_chat.id)
-
-      if result[:approved]
-        ::PdrBot.logger.info "* Chat id #{@current_chat.id} is authenticated".bold.green
-      else
+      unless result[:approved]
         ::PdrBot.logger.info "* Chat #{@current_chat.id} failed authentication".bold.red
       end
 
@@ -102,8 +103,6 @@ module PdrBot
         }
       )
 
-      PdrBot.logger.debug "* Synced message ##{result[:message].id} (#{result[:message].text})"
-
       operation_error_present?(result)
       @message = result[:message]
     end
@@ -111,9 +110,7 @@ module PdrBot
     def bot_enabled?
       result = ::PdrBot::Op::Bot::State.call
 
-      if result[:enabled]
-        PdrBot.logger.info "* Bot '#{PdrBot.app_name}' enabled".bold.green
-      else
+      unless result[:enabled]
         PdrBot.logger.info "* Bot '#{PdrBot.app_name}' disabled.. Skip processing".bold.red
       end
 
