@@ -5,6 +5,7 @@ module PdrBot
     module Game
       class Run < Telegram::AppManager::BaseOperation
         MINIMUM_USER_COUNT = 2
+        NEW_GAME_INTERVAL = 24.hour
 
         pass :find_last_game_round
         step :game_allowed?
@@ -23,7 +24,7 @@ module PdrBot
 
         def game_allowed?(ctx, **)
           return true if ctx[:last_round].nil?
-          return true if Date.today.to_time.day > ctx[:last_round].created_at.to_date.day
+          return true if Date.today.to_time > (ctx[:last_round].created_at.to_time + NEW_GAME_INTERVAL)
 
           operation_error(ctx, PdrBot.localizer.pick('game.not_allowed'))
         end
