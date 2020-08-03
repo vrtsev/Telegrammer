@@ -18,6 +18,8 @@ module PdrBot
           end
         end
 
+        DEFAULT_CHAD_APPROVED_STATE = true
+
         step Macro::Validate(:params, with: Contract)
         pass :prepare_params
         step :find_or_create_chat
@@ -40,7 +42,7 @@ module PdrBot
         private
 
         def create_new_chat(params)
-          PdrBot::ChatRepository.new.create(params.merge!(approved: true))
+          PdrBot::ChatRepository.new.create(params.merge!(approved: DEFAULT_CHAD_APPROVED_STATE))
         end
 
         def report_new_chat(chat)

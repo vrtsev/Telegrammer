@@ -19,20 +19,12 @@ module PdrBot
 
         def find_or_create_user(ctx, params:, **)
           ctx[:user] = PdrBot::UserRepository.new.find_or_create(params[:id], params)
-          ctx[:user] = create_new_user(ctx[:params]) unless ctx[:user]
-          ctx[:user]
         end
 
         def update_user_info(ctx, params:, **)
           PdrBot::UserRepository.new.update(params[:id], params)
 
           ctx[:user] = PdrBot::UserRepository.new.find(params[:id])
-        end
-
-        private
-
-        def create_new_user(user_params)
-          PdrBot::UserRepository.new.create(user_params)
         end
       end
     end

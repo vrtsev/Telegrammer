@@ -15,7 +15,7 @@ module PdrBot
       return unless message['text'].present?
 
       result = PdrBot::Op::AutoAnswer::Random.call(
-        chat: @current_chat, message: @message
+        chat_id: @current_chat.id, message_text: @message.text
       )
       return if operation_error_present?(result)
       return unless result[:answer].present?
