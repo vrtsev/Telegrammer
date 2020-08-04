@@ -2,7 +2,7 @@
 
 module PdrBot
   module Responders
-    class Stat < Telegram::AppManager::BaseResponder
+    class Stats < Telegram::AppManager::BaseResponder
       def call
         send_message(stats_message, bot: Telegram.bots[:pdr_bot], chat_id: params[:current_chat_id])
       end

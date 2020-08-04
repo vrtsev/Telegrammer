@@ -8,7 +8,7 @@ module PdrBot
       end
 
       def start_message
-        ::PdrBot.localizer.pick('start_message', bot_author: ENV['TELEGRAM_APP_OWNER_USERNAME'])
+        ::PdrBot.localizer.pick('start_message', bot_author: params[:bot_author])
       end
     end
   end
