@@ -4,7 +4,16 @@ module PdrBot
   module Op
     module Game
       class Run < Telegram::AppManager::BaseOperation
+        class Contract < Dry::Validation::Contract
+          params do
+            required(:chat_id).filled(:integer)
+            required(:user_id).filled(:integer)
+          end
+        end
+
         MINIMUM_USER_COUNT = 2
+
+        step :validate
 
         pass :find_last_game_round
         step :game_allowed?
@@ -17,61 +26,108 @@ module PdrBot
         step :increment_winner_stats
         step :increment_loser_stats
 
-        def find_last_game_round(ctx, **)
-          ctx[:last_round] = PdrBot::GameRoundRepository.new.find_latest_by_chat_id(ctx[:chat_id])
+        fail :rollback_game_round
+        fail :rollback_winner_stat
+        fail :rollback_loser_stat
+        fail :fail_operation
+
+        def validate(ctx, params:, **)
+          ctx[:validation_result] = Contract.new.call(params)
+          ctx[:params] = ctx[:validation_result].to_h
+
+          handle_validation_errors(ctx)
         end
 
-        def game_allowed?(ctx, **)
+        def find_last_game_round(ctx, params:, **)
+          ctx[:last_round] = PdrBot::GameRoundRepository.new.find_latest_by_chat_id(params[:chat_id])
+        end
+
+        def game_allowed?(ctx, params:, **)
           return true if ctx[:last_round].nil?
           return true if Date.today.day != ctx[:last_round].created_at.day
 
           operation_error(ctx, PdrBot.localizer.pick('game.not_allowed'))
         end
 
-        def check_minimum_user_count(ctx, **)
-          users_count = PdrBot::ChatUserRepository.new.users_count_by_chat_id(ctx[:chat_id])
+        def check_minimum_user_count(ctx, params:, **)
+          users_count = PdrBot::ChatUserRepository.new.users_count_by_chat_id(params[:chat_id])
           return true if users_count >= MINIMUM_USER_COUNT
 
           operation_error(ctx, PdrBot.localizer.pick('game.not_enough_users', min_count: MINIMUM_USER_COUNT))
         end
 
-        def select_loser(ctx, **)
-          chat_user = PdrBot::ChatUserRepository.new.random_by_chat(ctx[:chat_id])
+        def select_loser(ctx, params:, **)
+          chat_user = PdrBot::ChatUserRepository.new.random_by_chat(params[:chat_id])
           ctx[:loser] = PdrBot::UserRepository.new.find(chat_user.user_id)
         end
 
-        def select_winner(ctx, **)
-          chat_user = PdrBot::ChatUserRepository.new.random_by_chat(ctx[:chat_id], except_user_id: ctx[:loser].id)
+        def select_winner(ctx, params:, **)
+          chat_user = PdrBot::ChatUserRepository.new.random_by_chat(params[:chat_id], except_user_id: ctx[:loser].id)
           ctx[:winner] = PdrBot::UserRepository.new.find(chat_user.user_id)
         end
 
-        def save_game_round(ctx, **)
-          ctx[:game_round] = PdrBot::GameRoundRepository.new.create(
-            chat_id: ctx[:chat_id],
-            initiator_id: ctx[:user_id],
+        def save_game_round(ctx, params:, **)
+          result = PdrBot::Op::GameRound::Create.call(params: {
+            chat_id: params[:chat_id],
+            initiator_id: params[:user_id],
             winner_id: ctx[:winner].id,
             loser_id: ctx[:loser].id
-          )
+          })
+
+          ctx[:game_round] = result[:game_round] if result.success?
         end
 
-        def increment_winner_stats(ctx, **)
+        def increment_winner_stats(ctx, params:, **)
           result = PdrBot::Op::Stat::Increment.call(params: {
             user_id: ctx[:winner].id,
-            chat_id: ctx[:chat_id],
-            counter: PdrBot::Stat::Counters.winner
+            chat_id: params[:chat_id],
+            counter_type: PdrBot::Stat::Counters.winner
           })
 
           ctx[:winner_stat] = result[:stat] if result.success?
         end
 
-        def increment_loser_stats(ctx, **)
+        def increment_loser_stats(ctx, params:, **)
           result = PdrBot::Op::Stat::Increment.call(params: {
             user_id: ctx[:loser].id,
-            chat_id: ctx[:chat_id],
-            counter: PdrBot::Stat::Counters.loser
+            chat_id: params[:chat_id],
+            counter_type: PdrBot::Stat::Counters.loser
           })
 
           ctx[:loser_stat] = result[:stat] if result.success?
+        end
+
+        def rollback_game_round(ctx, params:, **)
+          return true unless ctx[:game_round].present?
+
+          result = PdrBot::Op::GameRound::Delete.call(params: { game_round_id: ctx[:game_round].id })
+          result.success?
+        end
+
+        def rollback_winner_stat(ctx, params:, **)
+          return true unless ctx[:winner_stat].present?
+
+          result = PdrBot::Op::Stat::Decrement.call(params: {
+            user_id: ctx[:winner].id,
+            chat_id: params[:chat_id],
+            counter_type: PdrBot::Stat::Counters.winner
+          })
+          result.success?
+        end
+
+        def rollback_loser_stat(ctx, params:, **)
+          return true unless ctx[:loser_stat].present?
+
+          result = PdrBot::Op::Stat::Decrement.call(params: {
+            user_id: ctx[:loser].id,
+            chat_id: params[:chat_id],
+            counter: PdrBot::Stat::Counters.loser
+          })
+          result.success?
+        end
+
+        def fail_operation(ctx, params:, **)
+          false
         end
       end
     end

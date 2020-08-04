@@ -13,7 +13,7 @@ module PdrBot
         end
 
         def set_value(ctx, **)
-          REDIS.set(redis_bot_state_key, JSON.parse(ENV['PDR_BOT_DEFAULT_STATE'])) # hack to convert 'true' to boolean type
+          REDIS.set(redis_bot_state_key, JSON.parse(ENV['PDR_BOT_DEFAULT_STATE'])) # HACK: to convert 'true' to boolean
           ctx[:value] = REDIS.get(redis_bot_state_key)
         end
 

@@ -14,9 +14,9 @@ module PdrBot
     def message(message)
       return unless message['text'].present?
 
-      result = PdrBot::Op::AutoAnswer::Random.call(
-        chat_id: @current_chat.id, message_text: @message.text
-      )
+      params = { chat_id: @current_chat.id, message_text: @message.text }
+      result = PdrBot::Op::AutoAnswer::Random.call(params: params)
+
       return if operation_error_present?(result)
       return unless result[:answer].present?
 
@@ -28,11 +28,18 @@ module PdrBot
     end
 
     def start!
-      PdrBot::Responders::StartMessage.new(current_chat_id: @current_chat.id).call
+      params = { user_id: ENV['TELEGRAM_APP_OWNER_ID'] }
+      owner_user = ::PdrBot::Op::User::Find.call(params: params)[:user]
+
+      PdrBot::Responders::StartMessage.new(
+        current_chat_id: @current_chat.id,
+        bot_author: owner_user.username
+      ).call
     end
 
     def pdr!
-      result = ::PdrBot::Op::Game::Run.call(user_id: @current_user.id, chat_id: @current_chat.id)
+      params = { chat_id: @current_chat.id, user_id: @current_user.id }
+      result = ::PdrBot::Op::Game::Run.call(params: params)
       return if operation_error_present?(result)
 
       PdrBot::Responders::Game.new(current_chat_id: @current_chat.id).call
@@ -40,7 +47,8 @@ module PdrBot
     end
 
     def results!
-      result = ::PdrBot::Op::GameRound::LatestResults.call(chat_id: @current_chat.id)
+      params = { chat_id: @current_chat.id }
+      result = ::PdrBot::Op::GameRound::LatestResults.call(params: params)
       return if operation_error_present?(result)
 
       PdrBot::Responders::Results.new(
@@ -51,10 +59,11 @@ module PdrBot
     end
 
     def stats!
-      result = ::PdrBot::Op::Stat::ByChat.call(chat_id: @current_chat.id)
+      params = { chat_id: @current_chat.id }
+      result = ::PdrBot::Op::Stat::ByChat.call(params: params)
       return if operation_error_present?(result)
 
-      PdrBot::Responders::Stat.new(
+      PdrBot::Responders::Stats.new(
         current_chat_id: @current_chat.id,
         winner_stat: result[:winner_stat],
         loser_stat: result[:loser_stat],
@@ -71,37 +80,39 @@ module PdrBot
     end
 
     def sync_user
-      result = ::PdrBot::Op::User::Sync.call(chat_id: @current_chat.id, params: Hashie.symbolize_keys(from))
+      params = { chat_id: @current_chat.id }.merge(Hashie.symbolize_keys(from))
+      result = ::PdrBot::Op::User::Sync.call(params: params)
       operation_error_present?(result)
       @current_user = result[:user]
     end
 
     def sync_chat_user
-      result = ::PdrBot::Op::ChatUser::Sync.call(params: { chat_id: @current_chat.id, user_id: @current_user.id })
+      params = { chat_id: @current_chat.id, user_id: @current_user.id }
+      result = ::PdrBot::Op::ChatUser::Sync.call(params: params)
 
       operation_error_present?(result)
       @current_chat_user = result[:chat_user]
     end
 
     def authenticate_chat
-      result = ::PdrBot::Op::Chat::Authenticate.call(chat_id: @current_chat.id)
+      params = { chat_id: @current_chat.id }
+      result = ::PdrBot::Op::Chat::Authenticate.call(params: params)
+
       unless result[:approved]
         ::PdrBot.logger.info "* Chat #{@current_chat.id} failed authentication".bold.red
+        throw :abort
       end
-
-      throw :abort unless result[:approved]
     end
 
     def sync_message
-      result = PdrBot::Op::Message::Sync.call(
-        params: {
-          chat_id: @current_chat.id,
-          user_id: @current_user.id,
-          message_id: payload['message_id'],
-          text: payload['text'],
-          date: payload['date']
-        }
-      )
+      params = {
+        chat_id: @current_chat.id,
+        user_id: @current_user.id,
+        message_id: payload['message_id'],
+        text: payload['text'],
+        date: payload['date']
+      }
+      result = PdrBot::Op::Message::Sync.call(params: params)
 
       operation_error_present?(result)
       @message = result[:message]
@@ -110,13 +121,12 @@ module PdrBot
     def bot_enabled?
       result = ::PdrBot::Op::Bot::State.call
 
-      unless result[:enabled]
-        PdrBot.logger.info "* Bot '#{PdrBot.app_name}' disabled.. Skip processing".bold.red
-      end
-
       operation_error_present?(result)
       @bot_enabled = result[:enabled]
-      throw :abort unless @bot_enabled
+      unless @bot_enabled
+        PdrBot.logger.info "* Bot '#{PdrBot.app_name}' disabled.. Skip processing".bold.red
+        throw :abort
+      end
     end
   end
 end

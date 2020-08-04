@@ -6,9 +6,9 @@ module PdrBot
       class Sync < Telegram::AppManager::BaseOperation
         class Contract < Dry::Validation::Contract
           params do
+            # Chat params
             required(:id).filled(:integer)
-            required(:type).filled(:string)
-
+            optional(:type).filled(included_in?: PdrBot::Chat::Types.values)
             optional(:title).filled(:string)
             optional(:username).filled(:string)
             optional(:first_name).filled(:string)
@@ -20,19 +20,26 @@ module PdrBot
 
         DEFAULT_CHAD_APPROVED_STATE = true
 
-        step Macro::Validate(:params, with: Contract)
         pass :prepare_params
+        step :validate
         step :find_or_create_chat
 
         def prepare_params(_ctx, params:, **)
           params[:type] = PdrBot::Chat::Types.value(params[:type])
         end
 
+        def validate(ctx, params:, **)
+          ctx[:validation_result] = Contract.new.call(params)
+          ctx[:params] = ctx[:validation_result].to_h
+
+          handle_validation_errors(ctx)
+        end
+
         def find_or_create_chat(ctx, params:, **)
           ctx[:chat] = PdrBot::ChatRepository.new.find(params[:id])
 
           unless ctx[:chat].present?
-            ctx[:chat] = create_new_chat(ctx[:params])
+            ctx[:chat] = create_new_chat(chat_params(params))
             report_new_chat(ctx[:chat])
           end
 
@@ -41,8 +48,22 @@ module PdrBot
 
         private
 
+        def chat_params(params)
+          {
+            id: params[:id],
+            approved: DEFAULT_CHAD_APPROVED_STATE,
+            type: params[:type],
+            title: params[:title],
+            username: params[:username],
+            first_name: params[:first_name],
+            last_name: params[:last_name],
+            description: params[:description],
+            invite_link: params[:invite_link]
+          }
+        end
+
         def create_new_chat(params)
-          PdrBot::ChatRepository.new.create(params.merge!(approved: DEFAULT_CHAD_APPROVED_STATE))
+          PdrBot::ChatRepository.new.create(params)
         end
 
         def report_new_chat(chat)

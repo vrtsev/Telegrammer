@@ -3,7 +3,7 @@
 module PdrBot
   module Op
     module Stat
-      class Increment < Telegram::AppManager::BaseOperation
+      class Decrement < Telegram::AppManager::BaseOperation
         class Contract < Dry::Validation::Contract
           params do
             required(:user_id).filled(:integer)
@@ -14,8 +14,7 @@ module PdrBot
 
         step :validate
         step :find_chat_user
-        step :find_or_create_user_stat
-        step :increment_counter
+        step :decrement_counter
 
         def validate(ctx, params:, **)
           ctx[:validation_result] = Contract.new.call(params)
@@ -31,17 +30,8 @@ module PdrBot
           )
         end
 
-        def find_or_create_user_stat(ctx, params:, **)
-          record = PdrBot::StatRepository.new.find_by_chat_and_user(
-            ctx[:chat_user].chat_id,
-            ctx[:chat_user].user_id
-          )
-
-          ctx[:stat] = record.present? ? record : create_stat(stat_params(ctx[:chat_user]))
-        end
-
-        def increment_counter(ctx, params:, **)
-          PdrBot::StatRepository.new.increment(params[:counter_type], stat_params(ctx[:chat_user]))
+        def decrement_counter(ctx, params:, **)
+          PdrBot::StatRepository.new.decrement(params[:counter_type], stat_params(ctx[:chat_user]))
         end
 
         private
@@ -51,10 +41,6 @@ module PdrBot
             chat_id: chat_user.chat_id,
             user_id: chat_user.user_id
           }
-        end
-
-        def create_stat(params)
-          PdrBot::StatRepository.new.create(params)
         end
       end
     end

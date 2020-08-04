@@ -37,6 +37,13 @@ module PdrBot
         .update(counter => Sequel.expr(1) + counter)
     end
 
+    def decrement(counter, chat_id:, user_id:)
+      model.dataset
+        .returning(counter)
+        .where(chat_id: chat_id, user_id: user_id)
+        .update(counter => Sequel.expr(1) - counter)
+    end
+
     private
 
     def model

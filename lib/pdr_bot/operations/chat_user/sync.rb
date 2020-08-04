@@ -11,23 +11,34 @@ module PdrBot
           end
         end
 
-        step Macro::Validate(:params, with: Contract)
+        step :validate
         step :find_or_create_chat_user
 
-        def find_or_create_chat_user(ctx, params:, **)
-          ctx[:chat_user] = PdrBot::ChatUserRepository.new.find_by_chat_and_user(
-            chat_id: params[:chat_id],
-            user_id: params[:user_id]
-          )
+        def validate(ctx, params:, **)
+          ctx[:validation_result] = Contract.new.call(params)
+          ctx[:params] = ctx[:validation_result].to_h
 
-          ctx[:chat_user] = create_chat_user(ctx[:params]) unless ctx[:chat_user].present?
+          handle_validation_errors(ctx)
+        end
+
+        def find_or_create_chat_user(ctx, params:, **)
+          ctx[:chat_user] = PdrBot::ChatUserRepository.new.find_by_chat_and_user(chat_user_params(params))
+          ctx[:chat_user] = create_chat_user(chat_user_params(params)) unless ctx[:chat_user].present?
+
           ctx[:chat_user]
         end
 
         private
 
-        def create_chat_user(chat_user_params)
-          PdrBot::ChatUserRepository.new.create(chat_user_params)
+        def chat_user_params(params)
+          {
+            user_id: params[:user_id],
+            chat_id: params[:chat_id]
+          }
+        end
+
+        def create_chat_user(params)
+          PdrBot::ChatUserRepository.new.create(params)
         end
       end
     end

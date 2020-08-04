@@ -19,9 +19,10 @@ module PdrBot
         def send_message(ctx, **)
           return unless ctx[:bot_enabled]
 
-          Telegram::BotManager::Message.new(
-            ::PdrBot.bot, ctx[:message]
-          ).send_to_chat(ENV['PDR_BOT_PUBLIC_CHAT_ID'])
+          # TODO Create DB table with reminder text and chat id
+          # Telegram::BotManager::Message.new(
+          #   ::PdrBot.bot, ctx[:message]
+          # ).send_to_chat(ENV['pdr public chat id'])
         end
       end
     end

@@ -2,17 +2,16 @@
 
 module PdrBot
   module Op
-    module Chat
-      class Authenticate < Telegram::AppManager::BaseOperation
+    module GameRound
+      class Delete < Telegram::AppManager::BaseOperation
         class Contract < Dry::Validation::Contract
           params do
-            required(:chat_id).filled(:integer)
+            required(:game_round_id).filled(:integer)
           end
         end
 
         step :validate
-        step :find_chat
-        step :authenticate_chat
+        step :delete_game_round
 
         def validate(ctx, params:, **)
           ctx[:validation_result] = Contract.new.call(params)
@@ -21,12 +20,8 @@ module PdrBot
           handle_validation_errors(ctx)
         end
 
-        def find_chat(ctx, params:, **)
-          ctx[:chat] = ::PdrBot::ChatRepository.new.find(params[:chat_id])
-        end
-
-        def authenticate_chat(ctx, params:, **)
-          ctx[:approved] = ctx[:chat].approved
+        def delete_game_round(ctx, params:, **)
+          ctx[:game_round] = PdrBot::GameRoundRepository.new.delete(params[:game_round_id])
         end
       end
     end
