@@ -1,22 +1,33 @@
+# frozen_string_literal: true
+
 module ExampleBot
   module Op
     module Chat
       class Authenticate < Telegram::AppManager::BaseOperation
-
-        step :authenticate_chat
-
-        def authenticate_chat(ctx, **)
-          ctx[:approved] = ctx[:chat].approved
-
-          if ctx[:approved]
-            ::ExampleBot.logger.info "* Chat id #{ctx[:chat].id} is authenticated".bold.green
-          else
-            ::ExampleBot.logger.info "* Chat #{ctx[:chat].id} failed authentication".bold.red
+        class Contract < Dry::Validation::Contract
+          params do
+            required(:chat_id).filled(:integer)
           end
-
-          ctx[:approved]
         end
 
+        step :validate
+        step :find_chat
+        step :authenticate_chat
+
+        def validate(ctx, params:, **)
+          ctx[:validation_result] = Contract.new.call(params)
+          ctx[:params] = ctx[:validation_result].to_h
+
+          handle_validation_errors(ctx)
+        end
+
+        def find_chat(ctx, params:, **)
+          ctx[:chat] = ::ExampleBot::ChatRepository.new.find(params[:chat_id])
+        end
+
+        def authenticate_chat(ctx, params:, **)
+          ctx[:approved] = ctx[:chat].approved
+        end
       end
     end
   end
