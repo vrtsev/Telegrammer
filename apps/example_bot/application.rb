@@ -1,5 +1,5 @@
 require_all 'apps/example_bot/concerns'
-require_all 'apps/example_bot/views'
+require_all 'apps/example_bot/responders'
 require_relative 'controller.rb'
 
 module ExampleBot
