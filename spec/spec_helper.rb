@@ -1,6 +1,4 @@
-APP_ENV = :test
 require './config/boot'
-
 require 'sidekiq/testing'
 require 'telegram/bot/rspec/integration/poller'
 

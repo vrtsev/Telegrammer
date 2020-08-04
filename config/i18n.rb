@@ -1,1 +1,1 @@
-I18n.load_path << Dir[File.expand_path(ENV['CUSTOM_LOCALES_DIR_NAME']) + "/*.yml"]
+I18n.load_path << Dir[File.expand_path(ENV['LOCALES_DIR_NAME']) + "/*.yml"]
