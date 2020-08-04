@@ -11,8 +11,8 @@ module Telegram
 
       private
 
-      def send_message(text, bot:, chat_id:, reply_markup:)
-        Telegram::BotManager::Message.new(bot, text).send_to_chat(chat_id, reply_markup)
+      def send_message(text, bot:, chat_id:, **params)
+        Telegram::BotManager::Message.new(bot, text).send_to_chat(chat_id, params)
       end
 
       def reply_message(text, bot:, chat_id:, message_id:)
