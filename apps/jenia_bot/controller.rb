@@ -22,10 +22,6 @@ module JeniaBot
       return if operation_error_present?(result)
       return unless result[:answer].present?
 
-      # if result[:answer].present?
-      #   # sleep(rand(2..4)) # Currently disabled
-      #   reply_with(:message, text: result[:answer])
-      # end
       JeniaBot::Responders::AutoAnswer.new(
         current_chat_id: @current_chat.id,
         current_message_id: @message.id,
@@ -47,8 +43,10 @@ module JeniaBot
       result = JeniaBot::Op::Question::GetLast.call
       return if operation_error_present?(result)
 
-      # message = JeniaBot::Views::Questions.new(questions: result[:questions])
-      # respond_with :message, text: message.text, reply_markup: message.markup
+      JeniaBot::Responders::Questions.new(
+        current_chat_id: @current_chat.id,
+        questions: result[:questions]
+      ).call
     end
 
     private
