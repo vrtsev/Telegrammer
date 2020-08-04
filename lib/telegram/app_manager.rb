@@ -1,7 +1,6 @@
 require_relative "app_manager/extensions/object_extension.rb"
 require_relative "app_manager/logger.rb"
 require_relative "app_manager/operation/helpers.rb"
-require_relative "app_manager/operation/macros.rb"
 require_relative "app_manager/base_operation.rb"
 require_relative "app_manager/base_view.rb" # TODO: Deprecated. Remove this dependency
 require_relative "app_manager/base_responder.rb"
