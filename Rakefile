@@ -118,4 +118,11 @@ namespace :db do
     DB.execute "CREATE SCHEMA public;"
     puts "DB clear. Schema Version: #{current_schema_version(DB)}"
   end
+
+  desc "Seed database with example test data"
+  task :seed do
+    require './config/boot.rb'
+    require './db/seed.rb'
+    puts "DB seed completed"
+  end
 end

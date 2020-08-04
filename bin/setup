@@ -24,6 +24,7 @@ Dir.chdir APP_ROOT do
   system 'bin/rake db:create'
   system 'bin/rake db:migrate'
   system 'bin/rake db:prepare_for_test'
+  system 'bin/rake db:seed'
   system 'bin/rake redis:flushall'
 
 
