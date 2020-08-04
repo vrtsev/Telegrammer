@@ -18,7 +18,7 @@ module JeniaBot
 
         step :validate
         step :find_or_create_user
-        step :assign_user_to_chat
+        step :update_user_info
 
         def validate(ctx, params:, **)
           ctx[:validation_result] = Contract.new.call(params)
@@ -32,9 +32,9 @@ module JeniaBot
         end
 
         def update_user_info(ctx, params:, **)
-          Jenia::UserRepository.new.update(params[:id], user_params(params))
+          JeniaBot::UserRepository.new.update(params[:id], user_params(params))
 
-          ctx[:user] = Jenia::UserRepository.new.find(params[:id])
+          ctx[:user] = JeniaBot::UserRepository.new.find(params[:id])
         end
 
         private

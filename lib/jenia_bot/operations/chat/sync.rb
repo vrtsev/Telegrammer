@@ -8,7 +8,7 @@ module JeniaBot
           params do
             # Chat params
             required(:id).filled(:integer)
-            optional(:type).filled(included_in?: PdrBot::Chat::Types.values)
+            optional(:type).filled(included_in?: JeniaBot::Chat::Types.values)
             optional(:title).filled(:string)
             optional(:username).filled(:string)
             optional(:first_name).filled(:string)
