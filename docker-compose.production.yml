@@ -1,5 +1,19 @@
 version: '3.5'
 services:
+  pgbackup:
+    container_name: socialup_pgbackup
+    image: prodrigestivill/postgres-backup-local
+    env_file: .env.production
+    environment:
+      SCHEDULE: '@daily'
+    volumes:
+      - ./backups:/backups
+    depends_on:
+      - database
+    restart: always
+    networks:
+      - default
+
   web:
     container_name: socialup_web
     build: .
@@ -145,20 +159,6 @@ services:
       - .:/application:cached
       - db-data:/var/lib/postgresql/data:cached
     restart: always
-
-  pgbackup:
-    container_name: socialup_pgbackup
-    image: prodrigestivill/postgres-backup-local
-    env_file: .env.production
-    environment:
-      SCHEDULE: '@daily'
-    volumes:
-      - ./backups:/backups
-    depends_on:
-      - database
-    restart: always
-    networks:
-      - default
 
   redis:
     container_name: socialup_redis
