@@ -99,6 +99,10 @@ GEM
     httpclient (2.8.3)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
+    i18n-spec (0.6.0)
+      iso
+    iso (0.3.0)
+      i18n
     jwt (2.2.1)
     logger (1.4.1)
     loofah (2.2.3)
@@ -214,6 +218,7 @@ DEPENDENCIES
   faker!
   hashie
   hiredis
+  i18n-spec
   jwt
   mock_redis
   pg

@@ -7,6 +7,7 @@ gem 'dotenv' # load env files. SHOULD BE THE FIRST, AND AFTER GEMS THAT REQUIRE 
 gem 'require_all' # auto require all files in directory
 gem 'pry-byebug'
 gem 'rake'
+gem 'i18n-spec'
 
 ## Background processing
 gem 'sidekiq'
