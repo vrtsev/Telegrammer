@@ -74,7 +74,8 @@ module PdrBot
     private
 
     def sync_chat
-      result = ::PdrBot::Op::Chat::Sync.call(params: Hashie.symbolize_keys(chat))
+      params = Hashie.symbolize_keys(chat)
+      result = ::PdrBot::Op::Chat::Sync.call(params: params)
       operation_error_present?(result)
       @current_chat = result[:chat]
     end
