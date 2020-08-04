@@ -1,13 +1,14 @@
+# frozen_string_literal: true
+
 module JeniaBot
   module Op
     module Chat
       class Sync < Telegram::AppManager::BaseOperation
-
         class Contract < Dry::Validation::Contract
           params do
+            # Chat params
             required(:id).filled(:integer)
-            required(:type).filled(:string)
-
+            optional(:type).filled(included_in?: PdrBot::Chat::Types.values)
             optional(:title).filled(:string)
             optional(:username).filled(:string)
             optional(:first_name).filled(:string)
@@ -17,38 +18,59 @@ module JeniaBot
           end
         end
 
-        step Macro::Validate(:params, with: Contract)
+        DEFAULT_CHAD_APPROVED_STATE = false
+
         pass :prepare_params
+        step :validate
         step :find_or_create_chat
-        step :log
 
         def prepare_params(ctx, params:, **)
           params[:type] = JeniaBot::Chat::Types.value(params[:type])
+        end
+
+        def validate(ctx, params:, **)
+          ctx[:validation_result] = Contract.new.call(params)
+          ctx[:params] = ctx[:validation_result].to_h
+
+          handle_validation_errors(ctx)
         end
 
         def find_or_create_chat(ctx, params:, **)
           ctx[:chat] = JeniaBot::ChatRepository.new.find(params[:id])
 
           unless ctx[:chat].present?
-            ctx[:chat] = JeniaBot::ChatRepository.new.create(params.merge(approved: false))
+            ctx[:chat] = create_new_chat(chat_params(params))
             report_to_app_owner(ctx[:chat])
           end
 
           ctx[:chat]
         end
 
-        def log(ctx, params:, **)
-          JeniaBot.logger.debug "* Synced chat ##{ctx[:chat].id} (#{ctx[:chat].name})"
+        private
+
+        def chat_params(params)
+          {
+            id: params[:id],
+            approved: DEFAULT_CHAD_APPROVED_STATE,
+            type: params[:type],
+            title: params[:title],
+            username: params[:username],
+            first_name: params[:first_name],
+            last_name: params[:last_name],
+            description: params[:description],
+            invite_link: params[:invite_link]
+          }
         end
 
-        private
+        def create_new_chat(params)
+          JeniaBot::ChatRepository.new.create(params)
+        end
 
         def report_to_app_owner(chat)
           Telegram::BotManager::Message
             .new(Telegram.bots[:admin_bot], JeniaBot.localizer.pick('new_chat_registered', chat_info: chat.to_hash))
             .send_to_app_owner
         end
-
       end
     end
   end

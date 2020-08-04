@@ -1,19 +1,37 @@
+# frozen_string_literal: true
+
 module JeniaBot
   module Op
     module AutoAnswer
       class Random < Telegram::AppManager::BaseOperation
+        class Contract < Dry::Validation::Contract
+          params do
+            required(:chat_id).filled(:integer)
+            required(:message_text).filled(:string)
+          end
+        end
 
-        pass :find_trigger_message
+        step :validate
+        pass :find_auto_answer
         pass :get_answer
 
-        def find_trigger_message(ctx, **)
-          ctx[:auto_answer] = JeniaBot::AutoAnswerRepository.new.find_approved_random_answer(ctx[:chat].id, ctx[:message].text)
+        def validate(ctx, params:, **)
+          ctx[:validation_result] = Contract.new.call(params)
+          ctx[:params] = ctx[:validation_result].to_h
+
+          handle_validation_errors(ctx)
         end
 
-        def get_answer(ctx, **)
+        def find_auto_answer(ctx, params:, **)
+          ctx[:auto_answer] = JeniaBot::AutoAnswerRepository.new.find_approved_random_answer(
+            params[:chat_id],
+            params[:message_text]
+          )
+        end
+
+        def get_answer(ctx, params:, **)
           ctx[:answer] = ctx[:auto_answer].answer if ctx[:auto_answer].present?
         end
-
       end
     end
   end
