@@ -4,12 +4,12 @@ require_relative 'controller.rb'
 
 module ExampleBot
   class Application < Telegram::BotManager::Application
-    FIRST_AUTO_ANSWER_ID = 9999
+    FIRST_AUTO_ANSWER_ID = 1
 
     def configure
       super
 
-      # Autocreate of find first autoanswer
+      # Autocreate or find first autoanswer
       ExampleBot::AutoAnswerRepository.new.find_or_create(FIRST_AUTO_ANSWER_ID, {
         approved: true,
         author_id: 999999, # some rand id. it does not matter by business logic
