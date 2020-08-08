@@ -1,11 +1,12 @@
+# frozen_string_literal: true
+
 module AdminBot
   module Op
     module Message
       class Sync < Telegram::AppManager::BaseOperation
-
         class Contract < Dry::Validation::Contract
           params do
-            required(:id).filled(:integer)
+            required(:message_id).filled(:integer)
             optional(:text).maybe(:string)
             required(:created_at).filled(:time)
             required(:updated_at).filled(:time)
@@ -13,24 +14,35 @@ module AdminBot
         end
 
         pass :prepare_params
-        step Macro::Validate(:params, with: Contract)
+        step :validate
         step :find_or_create_message
-        step :log
 
         def prepare_params(ctx, params:, **)
-          params[:id] = params[:message_id]
           params[:created_at] = Time.at(params[:date]) if params[:date]
           params[:updated_at] = params[:created_at]
         end
 
+        def validate(ctx, params:, **)
+          ctx[:validation_result] = Contract.new.call(params)
+          ctx[:params] = ctx[:validation_result].to_h
+
+          handle_validation_errors(ctx)
+        end
+
         def find_or_create_message(ctx, params:, **)
-          ctx[:message] = AdminBot::MessageRepository.new.find_or_create(params[:id], params)
+          ctx[:message] = AdminBot::MessageRepository.new.find_or_create(params[:message_id], message_params(params))
         end
 
-        def log(ctx, params:, **)
-          AdminBot.logger.debug "* Synced message ##{ctx[:message].id} (#{ctx[:message].text})"
-        end
+        private
 
+        def message_params(params)
+          {
+            id: params[:message_id],
+            text: params[:text],
+            created_at: params[:created_at],
+            updated_at: params[:updated_at]
+          }
+        end
       end
     end
   end
