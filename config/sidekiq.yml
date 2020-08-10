@@ -14,11 +14,6 @@
     class: PdrBot::BookTableRemindWorker
     description: 'This job reminds to book table in restaurant'
 
-  AdminBot::BackupRemindWorker:
-    cron: '0 21 * * FRI'   # Runs every friday at 21:00
-    class: AdminBot::BackupRemindWorker
-    description: 'This job reminds to make DB backup of whole application'
-
   AdminBot::DeleteOldMessagesWorker:
     cron: '0 0 1 * *'   # Runs every month
     class: AdminBot::DeleteOldMessagesWorker

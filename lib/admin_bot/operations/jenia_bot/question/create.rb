@@ -11,7 +11,7 @@ module AdminBot
             end
           end
 
-          step Macro::Validate(:params, with: Contract)
+          # step Macro::Validate(:params, with: Contract)
           step :create
 
           def create(ctx, params:, **)
