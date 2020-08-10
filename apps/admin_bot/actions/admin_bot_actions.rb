@@ -1,21 +1,19 @@
+# frozen_string_literal: true
+
 module AdminBot
   module AdminBotActions
-
-    def admin_bot(query)
+    # Router for bot callback queries
+    def admin_bot_callback_query(query)
       case query.params[:action]
       when 'start!' then start!
       end
     end
 
     def start!
-      message = AdminBot::Views::AdminBot::StartMessage.new(role: @current_admin.role)
-
-      if payload['inline_message_id'] || payload['message']
-        edit_message :text, text: message.text, reply_markup: message.markup
-      else
-        respond_with :message, text: message.text, reply_markup: message.markup
-      end
+      AdminBot::Responders::AdminBot::StartMessage.new(
+        role: ::AdminBot::User::Roles.key(@current_user.role),
+        current_chat_id: ENV['TELEGRAM_APP_OWNER_ID']
+      ).call
     end
-
   end
 end

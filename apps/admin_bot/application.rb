@@ -1,6 +1,6 @@
 require_all 'apps/admin_bot/concerns'
 require_all 'apps/admin_bot/actions'
-require_all 'apps/admin_bot/views'
+require_all 'apps/admin_bot/responders'
 require_relative 'controller.rb'
 
 module AdminBot
@@ -11,7 +11,6 @@ module AdminBot
 
       AdminBot::UserRepository.new.find_or_create(ENV['TELEGRAM_APP_OWNER_ID'], {
         id: ENV['TELEGRAM_APP_OWNER_ID'],
-        username: ENV['TELEGRAM_APP_OWNER_USERNAME'],
         role: AdminBot::User::Roles.administrator
       })
     end

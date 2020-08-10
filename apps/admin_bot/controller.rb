@@ -37,14 +37,20 @@ module AdminBot
     def authenticate_user
       params = { user_id: @current_user.id }
       result = AdminBot::Op::User::Authenticate.call(params: params)
+      return if result[:approved]
 
-      unless result[:approved]
-        ::AdminBot.logger.info "* User #{@current_user.full_name} failed authentication".bold.red
-        # respond_with(:message, text: AdminBot.localizer.pick('access_denied'))
-        # Responder
-        # notify admin (and sent message text)
-        throw :abort
-      end
+      ::AdminBot.logger.info "* User #{@current_user.full_name} failed authentication".bold.red
+
+      ::AdminBot::Responders::AdminBot::AccessDenied.new(
+        current_chat_id: payload.dig('chat', 'id')
+      ).call
+
+      Telegram::BotManager::Message.new(
+        Telegram.bots[:admin_bot],
+        "Unauthorized user '#{@current_user.id}' send message: '#{payload['text']}'"
+      ).send_to_app_owner
+
+      throw :abort
     end
 
     def sync_message
