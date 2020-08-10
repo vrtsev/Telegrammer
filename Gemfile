@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ## System gems
 gem 'dotenv' # load env files. SHOULD BE THE FIRST, AND AFTER GEMS THAT REQUIRE ENVs
@@ -18,11 +19,18 @@ gem 'redis-namespace' # To split sidekiq data in redist
 gem 'sinatra', '~> 2.0', require: false # UI for sidekiq and web app
 
 ## Web app
-gem 'sinatra-contrib'
 gem 'zeitwerk'
+gem 'rails', '6.0.0'
+gem 'puma', '~> 4.1'
+gem 'turbolinks', '~> 5'
+gem 'bootsnap', '>= 1.4.2', require: false
 
 group :development do
-  gem 'shotgun'
+  # Web app
+  gem 'web-console', '>= 3.3.0'
+  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'spring'
+  gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
 ## Databases

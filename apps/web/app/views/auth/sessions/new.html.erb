@@ -1,0 +1,21 @@
+<div class="stage-one box">
+  <article class="media">
+    <div class="media-content">
+      <form method="post" action="<%= auth_session_path %>">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+
+        <label class="label">Enter your nickname OR full name as you set in Telegram</label>
+        <div class="field has-addons">
+          <p class="control is-expanded">
+            <input name='login' class="input" type="text" placeholder="Enter here">
+          </p>
+          <p class="control">
+            <button type="submit" class="button is-primary">
+              Next
+            </button>
+          </p>
+        </div>
+      </form>
+    </div>
+  </article>
+</div>
