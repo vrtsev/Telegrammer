@@ -20,9 +20,9 @@ gem 'sinatra', '~> 2.0', require: false # UI for sidekiq and web app
 
 ## Web app
 gem 'zeitwerk'
-gem 'rails', '6.0.0'
+gem 'rails', '6.0.0', require: false
 gem 'puma', '~> 4.1'
-gem 'turbolinks', '~> 5'
+gem 'turbolinks', '~> 5', require: false
 gem 'bootsnap', '>= 1.4.2', require: false
 
 group :development do
@@ -44,7 +44,7 @@ gem 'rotp'
 gem 'jwt'
 
 ## API
-gem 'telegram-bot'
+gem 'telegram-bot', '0.14.4'
 
 ## Business logic
 gem 'telegram-bot_manager'
