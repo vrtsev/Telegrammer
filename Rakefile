@@ -125,4 +125,13 @@ namespace :db do
     require './db/seed.rb'
     puts "DB seed completed"
   end
+
+  namespace :production do
+    desc "Seed database with initial production data"
+    task :seed do
+      require './config/boot.rb'
+      require './db/seed.production.rb'
+      puts "PRODUCTION DB seed completed"
+    end
+  end
 end
