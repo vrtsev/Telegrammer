@@ -27,9 +27,9 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    REDIS.set("#{JeniaBot.bot.username}:state", true)
-    REDIS.set("#{PdrBot.bot.username}:state", true)
-    REDIS.set("#{ExampleBot.bot.username}:state", true)
+    REDIS.set("#{::Telegram.bots[:jenia_bot].username}:state", true)
+    REDIS.set("#{::Telegram.bots[:pdr_bot].username}:state", true)
+    REDIS.set("#{::Telegram.bots[:example_bot].username}:state", true)
     DatabaseCleaner.start
   end
 

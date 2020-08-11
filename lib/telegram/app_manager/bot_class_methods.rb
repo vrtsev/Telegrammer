@@ -33,10 +33,6 @@ module Telegram
         def logger
           @logger ||= configuration.logger
         end
-
-        def bot
-          @bot ||= configuration.bot
-        end
       end
     end
   end

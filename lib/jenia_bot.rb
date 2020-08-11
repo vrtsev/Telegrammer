@@ -8,6 +8,5 @@ module JeniaBot
     config.locale = 'jenia_bot'
     config.localizer = Telegram::AppManager::Localizer.new(locale)
     config.logger = Telegram::AppManager::BotLogger.new(app_name)
-    config.bot = Telegram.bots[:jenia_bot]
   end
 end

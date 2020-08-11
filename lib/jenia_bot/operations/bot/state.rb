@@ -24,7 +24,7 @@ module JeniaBot
         private
 
         def redis_bot_state_key
-          "#{::JeniaBot.bot.username}:state"
+          "#{::Telegram.bots[:jenia_bot].username}:state"
         end
       end
     end

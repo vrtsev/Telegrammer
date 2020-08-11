@@ -20,7 +20,7 @@ module AdminBot
           private
 
           def redis_bot_state_key
-            "#{::ExampleBot.bot.username}:state"
+            "#{::Telegram.bots[:example_bot].username}:state"
           end
         end
       end
