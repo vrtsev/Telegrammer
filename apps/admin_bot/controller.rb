@@ -11,6 +11,7 @@ module AdminBot
     before_action :sync_user
     before_action :authenticate_user
     before_action :sync_message
+    around_action :with_locale
 
     # Global 'router' for callback queries
     # Should be defined only once in controller
@@ -65,6 +66,11 @@ module AdminBot
 
       operation_error_present?(result)
       @message = result[:message]
+    end
+
+    def with_locale(&block)
+      # locale switching is not implemented
+      I18n.with_locale(AdminBot.default_locale, &block)
     end
   end
 end

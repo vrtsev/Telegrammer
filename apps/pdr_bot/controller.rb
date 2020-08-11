@@ -10,6 +10,7 @@ module PdrBot
     before_action :authenticate_chat
     before_action :sync_message
     before_action :bot_enabled?
+    around_action :with_locale
 
     def message(message)
       return unless message['text'].present?
@@ -128,6 +129,11 @@ module PdrBot
         PdrBot.logger.info "* Bot '#{PdrBot.app_name}' disabled.. Skip processing".bold.red
         throw :abort
       end
+    end
+
+    def with_locale(&block)
+      # locale switching is not implemented
+      I18n.with_locale(PdrBot.default_locale, &block)
     end
   end
 end
