@@ -20,7 +20,7 @@ module Telegram
       def report_app_owner(message)
         # Specify your main bot here
 
-        # Telegram::BotManager::Message
+        # Telegram::AppManager::Message
         #   .new(Telegram.bots[:admin_bot], message)
         #   .send_to_app_owner
       end

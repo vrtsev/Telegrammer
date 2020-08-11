@@ -25,7 +25,7 @@ module AdminBot
     end
 
     def report_app_owner(message)
-      Telegram::BotManager::Message
+      Telegram::AppManager::Message
         .new(Telegram.bots[:admin_bot], message)
         .send_to_app_owner
     end

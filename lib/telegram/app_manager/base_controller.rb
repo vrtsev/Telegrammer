@@ -2,7 +2,7 @@
 
 module Telegram
   module AppManager
-    class BaseController < Telegram::BotManager::Controller
+    class BaseController < Telegram::AppManager::Controller
 
       redis_url = "redis://#{ENV['REDIS_HOST']}:#{ENV['REDIS_PORT']}/#{ENV['REDIS_DB']}"
       self.session_store = :redis_cache_store, { url: redis_url }

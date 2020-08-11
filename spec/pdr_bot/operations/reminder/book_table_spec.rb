@@ -1,6 +1,6 @@
 RSpec.describe PdrBot::Op::Reminder::BookTable do
   before do
-    expect_any_instance_of(::Telegram::BotManager::Message).to receive(:send_to_chat)
+    expect_any_instance_of(::Telegram::AppManager::Message).to receive(:send_to_chat)
   end
   
   let(:result) { described_class.call }

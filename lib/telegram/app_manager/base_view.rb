@@ -2,7 +2,7 @@
 
 module Telegram
   module AppManager
-    class BaseView < Telegram::BotManager::View
+    class BaseView < Telegram::AppManager::View
     end
   end
 end

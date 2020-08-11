@@ -14,7 +14,7 @@ Sequel.extension :migration
 
 # Database connection
 db_credentials = DB_CONNECTION_PARAMS
-DB = Sequel.connect(db_credentials, logger:  Telegram::BotManager::Logger.new(formatter: Telegram::AppManager::Logger::SequelFormatter.new))
+DB = Sequel.connect(db_credentials, logger:  Telegram::AppManager::Logger.new(formatter: Telegram::AppManager::Logger::SequelFormatter.new))
 
 # Database extensions
 DB.extension(

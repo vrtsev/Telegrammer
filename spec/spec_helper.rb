@@ -14,8 +14,8 @@ RSpec.configure do |config|
   end
 
   config.before(:all) do
-    Telegram::BotManager.configure do |bot_manager_config|
-      bot_manager_config.controller_logging = false
+    Telegram::AppManager.configure do |app_manager_config|
+      app_manager_config.controller_logging = false
     end
 
     # Enable / disable verbose loggers in specs

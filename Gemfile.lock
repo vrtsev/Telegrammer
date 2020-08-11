@@ -149,7 +149,6 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
-    logger (1.4.1)
     loofah (2.6.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -269,11 +268,6 @@ GEM
       actionpack (>= 4.0, < 6.1)
       activesupport (>= 4.0, < 6.1)
       httpclient (~> 2.7)
-    telegram-bot_manager (0.1.2)
-      colorize (~> 0.8.1)
-      i18n (~> 0.7)
-      logger
-      telegram-bot (~> 0.14.1)
     thor (1.0.1)
     thread_safe (0.3.6)
     tilt (2.0.9)
@@ -312,6 +306,7 @@ DEPENDENCIES
   faker!
   hashie
   hiredis
+  i18n
   i18n-spec
   jwt
   listen (>= 3.0.5, < 3.2)
@@ -335,7 +330,6 @@ DEPENDENCIES
   spring
   spring-watcher-listen (~> 2.0.0)
   telegram-bot (= 0.14.4)
-  telegram-bot_manager
   trailblazer-operation
   turbolinks (~> 5)
   web-console (>= 3.3.0)

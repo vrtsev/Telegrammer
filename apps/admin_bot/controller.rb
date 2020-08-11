@@ -15,7 +15,7 @@ module AdminBot
     # Global 'router' for callback queries
     # Should be defined only once in controller
     def callback_query(query)
-      query = Telegram::BotManager::CallbackQuery.parse(query)
+      query = Telegram::AppManager::CallbackQuery.parse(query)
 
       case query.params[:bot]
       when 'admin_bot'   then admin_bot_callback_query(query)
@@ -45,7 +45,7 @@ module AdminBot
         current_chat_id: payload.dig('chat', 'id')
       ).call
 
-      Telegram::BotManager::Message.new(
+      Telegram::AppManager::Message.new(
         Telegram.bots[:admin_bot],
         "Unauthorized user '#{@current_user.id}' send message: '#{payload['text']}'"
       ).send_to_app_owner

@@ -23,7 +23,7 @@ module AdminBot
           end
 
           def send(ctx, params:, **)
-            ::Telegram::BotManager::Message.new(::PdrBot.bot, params[:text]).send_to_chat(params[:chat_id])
+            ::Telegram::AppManager::Message.new(::PdrBot.bot, params[:text]).send_to_chat(params[:chat_id])
           end
         end
       end

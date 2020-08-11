@@ -4,7 +4,7 @@ require_all 'apps/admin_bot/responders'
 require_relative 'controller.rb'
 
 module AdminBot
-  class Application < Telegram::BotManager::Application
+  class Application < Telegram::AppManager::Application
 
     def configure
       super
@@ -40,7 +40,7 @@ module AdminBot
 
     def handle_exception(exception)
       puts "[#{@configuration.app_name}] Application raised exception...".bold.red
-      Telegram::BotManager::Message
+      Telegram::AppManager::Message
         .new(Telegram.bots[:admin_bot], exception.full_message.truncate(4000))
         .send_to_app_owner
       raise exception

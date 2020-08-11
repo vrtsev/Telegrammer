@@ -3,7 +3,7 @@ require_all 'apps/example_bot/responders'
 require_relative 'controller.rb'
 
 module ExampleBot
-  class Application < Telegram::BotManager::Application
+  class Application < Telegram::AppManager::Application
     FIRST_AUTO_ANSWER_ID = 1
 
     def configure
@@ -44,7 +44,7 @@ module ExampleBot
 
     def handle_exception(exception)
       puts "[#{@configuration.app_name}] Application raised exception...".bold.red
-      Telegram::BotManager::Message
+      Telegram::AppManager::Message
         .new(Telegram.bots[:admin_bot], exception.full_message.truncate(4000))
         .send_to_app_owner
       raise exception

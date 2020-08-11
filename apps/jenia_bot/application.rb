@@ -3,7 +3,7 @@ require_all 'apps/jenia_bot/responders'
 require_relative 'controller.rb'
 
 module JeniaBot
-  class Application < Telegram::BotManager::Application
+  class Application < Telegram::AppManager::Application
 
     def configure
       # Configure your app here
@@ -35,7 +35,7 @@ module JeniaBot
 
     def handle_exception(exception)
       puts "[#{@configuration.app_name}] Application raised exception...".bold.red
-      Telegram::BotManager::Message
+      Telegram::AppManager::Message
         .new(Telegram.bots[:admin_bot], exception.full_message.truncate(4000))
         .send_to_app_owner
       raise exception
