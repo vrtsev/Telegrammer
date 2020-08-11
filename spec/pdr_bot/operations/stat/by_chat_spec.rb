@@ -4,7 +4,7 @@ RSpec.describe PdrBot::Op::Stat::ByChat do
 
   context 'when not found' do
     it { expect(result.failure?).to be_truthy }
-    it { expect(PdrBot.localizer.samples('stats.not_found')).to include(result[:error]) }
+    it { expect(I18n.t('.pdr_bot.stats.not_found')).to include(result[:error]) }
   end
 
   context 'when present' do

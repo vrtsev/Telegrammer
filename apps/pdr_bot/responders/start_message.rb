@@ -8,7 +8,7 @@ module PdrBot
       end
 
       def start_message
-        ::PdrBot.localizer.pick('start_message', bot_author: params[:bot_author])
+        I18n.t('.pdr_bot.start_message', bot_author: params[:bot_author]).sample
       end
     end
   end

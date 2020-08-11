@@ -22,7 +22,7 @@ module PdrBot
       puts exception.full_message
 
       report_app_owner(message)
-      report_to_chat(PdrBot.localizer.pick('errors'))
+      report_to_chat(I18n.t('.pdr_bot.errors').sample)
     end
 
     def report_app_owner(message)

@@ -8,7 +8,7 @@ RSpec.describe PdrBot::Op::GameRound::LatestResults do
 
       it { expect(result.failure?).to be_truthy }
       it { expect(result[:error].present?).to be_truthy }
-      it { expect(PdrBot.localizer.samples('latest_results.results_not_found')).to include(result[:error]) }
+      it { expect(I18n.t('.pdr_bot.latest_results.results_not_found')).to include(result[:error]) }
     end
 
     context 'when present' do

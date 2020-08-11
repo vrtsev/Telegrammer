@@ -46,14 +46,14 @@ module PdrBot
           return true if ctx[:last_round].nil?
           return true if Date.today.day != ctx[:last_round].created_at.day
 
-          operation_error(ctx, PdrBot.localizer.pick('game.not_allowed'))
+          operation_error(ctx, I18n.t('.pdr_bot.game.not_allowed').sample)
         end
 
         def check_minimum_user_count(ctx, params:, **)
           users_count = PdrBot::ChatUserRepository.new.users_count_by_chat_id(params[:chat_id])
           return true if users_count >= MINIMUM_USER_COUNT
 
-          operation_error(ctx, PdrBot.localizer.pick('game.not_enough_users', min_count: MINIMUM_USER_COUNT))
+          operation_error(ctx, I18n.t('.pdr_bot.game.not_enough_users', min_count: MINIMUM_USER_COUNT).sample)
         end
 
         def select_loser(ctx, params:, **)

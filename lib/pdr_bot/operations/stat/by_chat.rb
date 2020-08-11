@@ -26,7 +26,7 @@ module PdrBot
 
         def find_chat_users_stats(ctx, params:, **)
           ctx[:chat_stats] = PdrBot::StatRepository.new.find_all_by_chat_id(params[:chat_id])
-          ctx[:chat_stats].present? ? true : operation_error(ctx, PdrBot.localizer.pick('stats.not_found'))
+          ctx[:chat_stats].present? ? true : operation_error(ctx, I18n.t('.pdr_bot.stats.not_found').sample)
         end
 
         def find_winner_leader_stat(ctx, params:, **)

@@ -19,15 +19,15 @@ module PdrBot
       private
 
       def title
-        ::PdrBot.localizer.pick('latest_results.results.title')
+        I18n.t('.pdr_bot.latest_results.results.title').sample
       end
 
       def winner_leader
-        ::PdrBot.localizer.pick('latest_results.results.loser', user: params[:loser_full_name])
+        I18n.t('.pdr_bot.latest_results.results.loser', user: params[:loser_full_name]).sample
       end
 
       def loser_leader
-        ::PdrBot.localizer.pick('latest_results.results.winner', user: params[:winner_full_name])
+        I18n.t('.pdr_bot.latest_results.results.winner', user: params[:winner_full_name]).sample
       end
     end
   end

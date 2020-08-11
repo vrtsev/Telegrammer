@@ -10,11 +10,11 @@ module PdrBot
       end
 
       def game_start_message
-        ::PdrBot.localizer.pick('game.start_title')
+        I18n.t('.pdr_bot.game.start_title').sample
       end
 
       def searching_users_message
-        ::PdrBot.localizer.pick('game.searching_users')
+        I18n.t('.pdr_bot.game.searching_users').sample
       end
     end
   end

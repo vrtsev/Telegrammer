@@ -23,33 +23,33 @@ module PdrBot
       private
 
       def title
-        ::PdrBot.localizer.pick('stats.leaders.title')
+        I18n.t('.pdr_bot.stats.leaders.title').sample
       end
 
       def winner_stat
-        ::PdrBot.localizer.pick(
-          'stats.leaders.winner_leader',
+        I18n.t(
+          '.pdr_bot.stats.leaders.winner_leader',
           user: user_full_name(params[:winner_stat]),
           counter: params[:winner_stat].winner_count
-        )
+        ).sample
       end
 
       def loser_stat
-        ::PdrBot.localizer.pick(
-          'stats.leaders.loser_leader',
+        I18n.t(
+          'pdr_bot.stats.leaders.loser_leader',
           user: user_full_name(params[:loser_stat]),
           counter: params[:loser_stat].loser_count
-        )
+        ).sample
       end
 
       def chat_stats
         params[:chat_stats].inject(String.new) do |content, stat|
-          content << ::PdrBot.localizer.pick(
-            'stats.for_user',
+          content << I18n.t(
+            'pdr_bot.stats.for_user',
             user: user_full_name(stat),
             winner_count: stat.winner_count,
             loser_count: stat.loser_count
-          )
+          ).sample
           content << "\n"
           content
         end

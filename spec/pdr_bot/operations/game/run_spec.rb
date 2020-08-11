@@ -11,7 +11,7 @@ RSpec.describe PdrBot::Op::Game::Run do
       end
 
       it { expect(result.failure?).to be_truthy }
-      it { expect(PdrBot.localizer.samples('game.not_allowed')).to include(result[:error]) }
+      it { expect(I18n.t('.pdr_bot.game.not_allowed')).to include(result[:error]) }
     end
 
     context do
@@ -25,7 +25,7 @@ RSpec.describe PdrBot::Op::Game::Run do
         end
 
         it { expect(result.failure?).to be_truthy }
-        it { expect(PdrBot.localizer.samples('game.not_allowed')).not_to include(result[:error]) }
+        it { expect(I18n.t('.pdr_bot.game.not_allowed')).not_to include(result[:error]) }
       end
 
       describe 'users' do
@@ -37,7 +37,7 @@ RSpec.describe PdrBot::Op::Game::Run do
           let!(:current_chat_users) { Fabricate.times(1, :pdr_bot_chat_user, chat_id: current_chat.id) }
 
           it { expect(result.failure?).to be_truthy }
-          it { expect(PdrBot.localizer.samples('game.not_enough_users', min_count: described_class::MINIMUM_USER_COUNT )).to include(result[:error]) }
+          it { expect(I18n.t('.pdr_bot.game.not_enough_users', min_count: described_class::MINIMUM_USER_COUNT )).to include(result[:error]) }
         end
 
         context "when greater that #{described_class::MINIMUM_USER_COUNT}" do
