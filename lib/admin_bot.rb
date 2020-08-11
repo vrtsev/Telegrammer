@@ -10,7 +10,6 @@ module AdminBot
   configure do |config|
     config.app_name = 'AdminBot'
     config.default_locale = ENV['ADMIN_BOT_DEFAULT_LOCALE']
-    config.localizer = Telegram::AppManager::Localizer.new(locale)
     config.logger = Telegram::AppManager::BotLogger.new(app_name)
     config.bot = Telegram.bots[:admin_bot]
   end

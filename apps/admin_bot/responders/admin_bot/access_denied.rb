@@ -15,7 +15,7 @@ module AdminBot
         private
 
         def text
-          ::AdminBot.localizer.pick('access_denied')
+          I18n.t('.admin_bot.access_denied').sample
         end
       end
     end

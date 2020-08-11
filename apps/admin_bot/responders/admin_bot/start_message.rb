@@ -15,7 +15,7 @@ module AdminBot
         private
 
         def text
-          ::AdminBot.localizer.pick('start_message', role: params[:role])
+          I18n.t('.admin_bot.start_message', role: params[:role]).sample
         end
       end
     end
