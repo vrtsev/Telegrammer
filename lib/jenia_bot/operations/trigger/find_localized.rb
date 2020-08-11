@@ -28,7 +28,7 @@ module JeniaBot
         end
 
         def find_trigger(ctx, params:, **)
-          samples = JeniaBot.localizer.samples('triggers')
+          samples = I18n.t('.jenia_bot.triggers')
           return unless samples.include?(params[:message_text])
 
           ctx[:trigger] = params[:message_text]

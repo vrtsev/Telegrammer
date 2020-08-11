@@ -19,7 +19,7 @@ RSpec.describe JeniaBot::Controller, telegram_bot: :poller do
 
   describe '#message' do
     context "when is trigger for 'jenia!' method" do
-      let(:text) { JeniaBot.localizer.pick('triggers') }
+      let(:text) { I18n.t('.jenia_bot.triggers').sample }
       subject { -> { dispatch_message(text) } }
 
       it { expect(subject).to send_telegram_message(bot) }

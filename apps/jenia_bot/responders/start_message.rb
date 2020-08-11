@@ -8,7 +8,7 @@ module JeniaBot
       end
 
       def start_message
-        ::JeniaBot.localizer.pick('start_message', bot_author: params[:bot_author])
+        I18n.t('.jenia_bot.start_message', bot_author: params[:bot_author]).sample
       end
     end
   end

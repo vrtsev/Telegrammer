@@ -68,7 +68,7 @@ module JeniaBot
 
         def report_to_app_owner(chat)
           Telegram::AppManager::Message
-            .new(Telegram.bots[:admin_bot], JeniaBot.localizer.pick('new_chat_registered', chat_info: chat.to_hash))
+            .new(Telegram.bots[:admin_bot], I18n.t('.jenia_bot.new_chat_registered', chat_info: chat.to_hash).sample)
             .send_to_app_owner
         end
       end

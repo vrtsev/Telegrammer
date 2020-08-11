@@ -17,7 +17,7 @@ module JeniaBot
       private
 
       def text
-        ::JeniaBot.localizer.pick('trigger_answer')
+        I18n.t('.jenia_bot.trigger_answer').sample
       end
 
       def sliced_questions
