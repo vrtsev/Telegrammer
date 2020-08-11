@@ -1,4 +1,9 @@
-# 'Social Up' telegram bot manager application
+# Telegram bot manager application
+
+Purposes of project:
+- To create custom complex ruby application architecture from scratch without any frameworks (for education purposes)
+- To create application with useful bots inside
+
 Advanced application with multiple telegram bots inside
 Purpose of this project - quick development and integration multiple telegram bots in one application
 
