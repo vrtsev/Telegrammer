@@ -22,8 +22,8 @@ module Telegram
           @app_name ||= configuration.app_name
         end
 
-        def locale
-          @locale ||= configuration.locale
+        def default_locale
+          @default_locale ||= configuration.default_locale
         end
 
         def localizer

@@ -5,8 +5,8 @@ module PdrBot
 
   configure do |config|
     config.app_name = 'PdrBot'
-    config.locale = 'pdr_bot'
-    config.localizer = Telegram::AppManager::Localizer.new(locale)
+    config.default_locale = ENV['PDR_BOT_DEFAULT_LOCALE']
+    # config.localizer = Telegram::AppManager::Localizer.new(locale)
     config.logger = Telegram::AppManager::BotLogger.new(app_name)
     config.bot = Telegram.bots[:pdr_bot]
   end

@@ -6,14 +6,14 @@ module Telegram
 
       attr_accessor \
         :app_name,
-        :locale,
+        :default_locale,
         :localizer,
         :bot,
         :logger
 
       def initialize
         @app_name = nil
-        @locale = nil
+        @default_locale = nil
         @localizer = nil
         @logger = BotLogger.new(@app_name)
         @bot = nil

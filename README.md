@@ -80,11 +80,8 @@ $ docker-compose up
 - `rake db:seed` - seed DB with example test data for development env
 
 
-## Using private locales with custom texts (if not included in repository)
-You can use your own private locales with custom text. This feature can be used if you do not want to share your locales for public access. You need to:
-1. Create new dir in project folder
-2. Set environment variable `LOCALES_DIR_NAME=%your dir name%`
-3. Place locales files to new created folder
+## Adding new locales
+Add new locales to '/locales' folder. Keep in mind, that everything except '/locales/en' folder will be hidden from git (see .gitignore file)
 
 ## Deployment
 Use `bin/deploy` script file to perform actions needed for project deployment

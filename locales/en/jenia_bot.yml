@@ -1,0 +1,28 @@
+en:
+  jenia_bot:
+    errors:
+      - "Application crashed"
+      - "Thanks to developers...I'm crashed"
+    start_message:
+      - "JeniaBot v2.0 (author @%{bot_author})\n
+        Repository: https://github.com/vrtsev/SocialUp\n\n
+
+        1. Write a trigger message to chat\n
+        2. You will see a keyboard with all possible questions\n
+        3. Choose a question\n
+        4. ????\n
+        5. PROFIT!!\n
+        \n
+        Importnant!! Keyboard will be saved.\n
+        But better always to write trigger message to chat.\n
+        And after that UPDATE keyboard will be shown (maybe there wil be a new questions)\n"
+    new_chat_registered:
+      - "[NOT APPROVED] Registered a new chat in JeniaBot:\n%{chat_info}"
+    triggers:
+      - Eugene
+      - eugene
+    trigger_answer:
+      - "Wazzup?"
+      - "Was snowed under. Whats up?"
+      - "I'm here"
+      - "Who called me?"

@@ -1,6 +1,7 @@
 \.env
 \.env.production
-\locales_custom\*
+/locales/*
+!/locales/en
 log/
 backups/
 

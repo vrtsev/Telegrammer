@@ -42,7 +42,7 @@ module Telegram
 
           App name: #{@configuration.app_name.to_s.bold.cyan}
           Telegram bot username: #{@configuration.bot.username}
-          Locale: #{@configuration.locale}
+          Default locale: #{@configuration.default_locale}
           =========================================================\n
         INFO
       end
