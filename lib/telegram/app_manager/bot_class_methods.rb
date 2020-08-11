@@ -8,7 +8,7 @@ module Telegram
       end
 
       module ClassMethods
-        attr_writer :localizer, :logger
+        attr_writer :logger
 
         def configuration
           @configuration ||= BotConfiguration.new
@@ -24,10 +24,6 @@ module Telegram
 
         def default_locale
           @default_locale ||= configuration.default_locale
-        end
-
-        def localizer
-          @localizer ||= configuration.localizer
         end
 
         def logger

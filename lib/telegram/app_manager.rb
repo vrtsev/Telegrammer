@@ -5,7 +5,6 @@ require 'colorize'
 require_relative "app_manager/configuration.rb"
 require_relative "app_manager/bot_configuration.rb"
 require_relative "app_manager/logger.rb"
-require_relative "app_manager/localizer.rb"
 require_relative "app_manager/view.rb"
 require_relative "app_manager/message.rb"
 require_relative "app_manager/application.rb"
