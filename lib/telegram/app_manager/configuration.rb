@@ -6,12 +6,12 @@ module Telegram
 
       attr_accessor \
         :controller_logging,
-        :show_config_message,
+        :show_app_start_message,
         :telegram_app_owner_id
 
       def initialize
         @controller_logging = true
-        @show_config_message = true
+        @show_app_start_message = true
         @telegram_app_owner_id = nil
       end
 
