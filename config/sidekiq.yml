@@ -9,11 +9,6 @@
   - low
 
 :schedule:
-  PdrBot::BookTableRemindWorker:
-    cron: '0 15 * * FRI'   # Runs every friday at 15:00
-    class: PdrBot::BookTableRemindWorker
-    description: 'This job reminds to book table in restaurant'
-
   AdminBot::DeleteOldMessagesWorker:
     cron: '0 0 1 * *'   # Runs every month
     class: AdminBot::DeleteOldMessagesWorker
