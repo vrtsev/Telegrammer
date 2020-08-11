@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   private
 
   def authorize
-    unless @current_user
+    unless session[:user_id]
       redirect_to new_auth_session_path
     end
   end

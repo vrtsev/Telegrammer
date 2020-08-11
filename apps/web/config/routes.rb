@@ -1,16 +1,10 @@
 Rails.application.routes.draw do
-  root 'home#index'
-
-  namespace :auth do
-    resource :session, only: %i[new create]
-  end
+  root 'admin/dashboard#index'
 
   namespace :admin do
     resources :dashboard, only: :index
 
     namespace :jenia_bot do
-      resources :auto_answers
-      resources :questions
       resources :messages
     end
 

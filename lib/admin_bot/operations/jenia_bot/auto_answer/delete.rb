@@ -22,7 +22,7 @@ module AdminBot
             handle_validation_errors(ctx)
           end
 
-          def find
+          def find(ctx, params:, **)
             ctx[:auto_answer] = ::JeniaBot::AutoAnswerRepository.new.find(params[:auto_answer_id])
           end
 

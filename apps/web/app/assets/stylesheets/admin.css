@@ -10,11 +10,11 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
- *= require_directory ./application
+ *= require_directory ./admin
  *= require_self
  */
 
- .layout {
+.layout {
   display: flex;
   height: 100vh
 }
@@ -26,4 +26,24 @@
 
 .layout .page {
   width: 100%;
+}
+
+.sidebar {
+  width: 400px;
+  margin: 0 !important;
+  background-color: #eaeaea;
+}
+
+.table td, .table th {
+  padding: 5px 10px;
+}
+
+.current-user-card {
+  width: 400px;
+}
+
+.form-wrapper {
+  width: 600px;
+  padding: 20px;
+  background-color: #eaeaea;
 }
