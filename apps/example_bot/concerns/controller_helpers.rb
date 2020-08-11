@@ -22,7 +22,7 @@ module ExampleBot
       puts exception.full_message
 
       report_app_owner(message)
-      report_to_chat(ExampleBot.localizer.pick('errors'))
+      report_to_chat(I18n.t('.example_bot.errors').sample)
     end
 
     def report_app_owner(message)

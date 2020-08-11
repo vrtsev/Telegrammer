@@ -68,7 +68,7 @@ module ExampleBot
 
         def report_to_app_owner(chat)
           Telegram::AppManager::Message
-            .new(Telegram.bots[:admin_bot], ExampleBot.localizer.pick('new_chat_registered', chat_info: chat.to_hash))
+            .new(Telegram.bots[:admin_bot], I18n.t('.example_bot.new_chat_registered', chat_info: chat.to_hash).sample)
             .send_to_app_owner
         end
       end

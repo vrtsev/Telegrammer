@@ -8,7 +8,7 @@ module ExampleBot
       end
 
       def start_message
-        ::ExampleBot.localizer.pick('start_message', bot_author: params[:bot_author])
+        I18n.t('.example_bot.start_message', bot_author: params[:bot_author]).sample
       end
     end
   end

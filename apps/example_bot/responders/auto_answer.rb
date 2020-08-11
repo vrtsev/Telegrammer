@@ -32,7 +32,7 @@ module ExampleBot
       private
 
       def received_message_notification_text
-        ExampleBot.localizer.pick('actions.message', message: params[:current_message_text])
+        I18n.t('.example_bot.actions.message', message: params[:current_message_text]).sample
       end
     end
   end
