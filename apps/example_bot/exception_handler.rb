@@ -18,14 +18,13 @@ module ExampleBot
       ).call
     end
 
-    def report_to_chat(responder=nil)
-      # unless bot_enabled
-      # avoid respond to each message
-      # only to commands
+    def report_to_chat
+      return unless ::ExampleBot::Op::Bot::State.call[:enabled]
+      return unless action_options[:type] == :command
 
-      # ::ExampleBot::Responders::ApplicationCrash
-      I18n.t('.example_bot.errors').sample
-      # ///
+      ::ExampleBot::Responders::ApplicationCrash.new(
+        current_chat_id: payload['chat']['id']
+      ).call
     end
   end
 end

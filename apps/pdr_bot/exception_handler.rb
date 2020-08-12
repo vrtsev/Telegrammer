@@ -10,22 +10,21 @@ module PdrBot
 
     private
 
-    def report_app_owner(responder = ::PdrBot::Responders::ExceptionReport)
-      responder.new(
+    def report_app_owner
+      ::PdrBot::Responders::ExceptionReport.new(
         class: exception.class,
         message: exception.message,
         backtrace: exception.backtrace
       ).call
     end
 
-    def report_to_chat(responder=nil)
-      # unless bot_enabled
-      # avoid respond to each message
-      # only to commands
+    def report_to_chat
+      return unless ::PdrBot::Op::Bot::State.call[:enabled]
+      return unless action_options[:type] == :command
 
-      # ::PdrBot::Responders::ApplicationCrash
-      I18n.t('.pdr_bot.errors').sample
-      # ///
+      ::PdrBot::Responders::ApplicationCrash.new(
+        current_chat_id: payload['chat']['id']
+      ).call
     end
   end
 end

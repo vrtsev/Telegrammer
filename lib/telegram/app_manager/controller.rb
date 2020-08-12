@@ -11,7 +11,13 @@ module Telegram
 
       def self.exception_handler(handler_class)
         rescue_from StandardError do |exception|
-          handler_class.new(exception).call
+          options = {
+            payload: payload,
+            action_options: action_options,
+            bot: bot
+          }
+
+          handler_class.new(exception, options).call
         end
       end
 

@@ -15,7 +15,7 @@ module AdminBot
 
       def text
         <<~MSG
-          EXCEPTION from #{AdminBot.app_name}
+          EXCEPTION from #{::AdminBot.app_name}
 
           #{params[:class]}: #{params[:message]}
           #{params[:backtrace].first}

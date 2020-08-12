@@ -15,7 +15,7 @@ module PdrBot
 
       def text
         <<~MSG
-          EXCEPTION from #{PdrBot.app_name}
+          EXCEPTION from #{::PdrBot.app_name}
 
           #{params[:class]}: #{params[:message]}
           #{params[:backtrace].first}

@@ -15,7 +15,7 @@ module ExampleBot
 
       def text
         <<~MSG
-          EXCEPTION from #{ExampleBot.app_name}
+          EXCEPTION from #{::ExampleBot.app_name}
 
           #{params[:class]}: #{params[:message]}
           #{params[:backtrace].first}

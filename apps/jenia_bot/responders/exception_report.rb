@@ -15,7 +15,7 @@ module JeniaBot
 
       def text
         <<~MSG
-          EXCEPTION from #{JeniaBot.app_name}
+          EXCEPTION from #{::JeniaBot.app_name}
 
           #{params[:class]}: #{params[:message]}
           #{params[:backtrace].first}

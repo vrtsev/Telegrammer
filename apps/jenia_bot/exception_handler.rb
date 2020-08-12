@@ -18,14 +18,13 @@ module JeniaBot
       ).call
     end
 
-    def report_to_chat(responder=nil)
-      # unless bot_enabled
-      # avoid respond to each message
-      # only to commands
+    def report_to_chat
+      return unless ::JeniaBot::Op::Bot::State.call[:enabled]
+      return unless action_options[:type] == :command
 
-      # ::JeniaBot::Responders::ApplicationCrash
-      I18n.t('.jenia_bot.errors').sample
-      # ///
+      ::JeniaBot::Responders::ApplicationCrash.new(
+        current_chat_id: payload['chat']['id']
+      ).call
     end
   end
 end
