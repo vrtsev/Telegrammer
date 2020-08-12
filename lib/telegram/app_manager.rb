@@ -9,6 +9,7 @@ require_relative "app_manager/view.rb"
 require_relative "app_manager/message.rb"
 require_relative "app_manager/application.rb"
 require_relative "app_manager/callback_query.rb"
+require_relative "app_manager/exception_handler.rb"
 require_relative "app_manager/controller.rb"
 require_relative "app_manager/bot_class_methods.rb"
 

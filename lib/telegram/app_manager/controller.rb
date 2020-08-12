@@ -9,6 +9,13 @@ module Telegram
       redis_url = "redis://#{ENV['REDIS_HOST']}:#{ENV['REDIS_PORT']}/#{ENV['REDIS_DB']}"
       self.session_store = :redis_cache_store, { url: redis_url }
 
+      def self.exception_handler(handler_class)
+        rescue_from StandardError do |exception|
+          handler_class.new(exception).call
+        end
+      end
+
+      exception_handler ::Telegram::AppManager::ExceptionHandler
       around_action :log_action
 
       private
