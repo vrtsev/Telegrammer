@@ -1,6 +1,7 @@
 require_all 'apps/admin_bot/concerns'
 require_all 'apps/admin_bot/actions'
 require_all 'apps/admin_bot/responders'
+require_relative 'exception_handler.rb'
 require_relative 'controller.rb'
 
 module AdminBot

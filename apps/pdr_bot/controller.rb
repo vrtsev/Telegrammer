@@ -4,6 +4,8 @@ module PdrBot
   class Controller < Telegram::AppManager::Controller
     include ControllerHelpers
 
+    exception_handler PdrBot::ExceptionHandler
+
     before_action :sync_chat
     before_action :sync_user
     before_action :sync_chat_user

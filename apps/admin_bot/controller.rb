@@ -8,6 +8,8 @@ module AdminBot
     include ExampleBotActions
     include AdminBotActions
 
+    exception_handler AdminBot::ExceptionHandler
+
     before_action :sync_user
     before_action :authenticate_user
     before_action :sync_message
