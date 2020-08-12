@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module JeniaBot
-  class Controller < Telegram::AppManager::BaseController
+  class Controller < Telegram::AppManager::Controller
     include ControllerHelpers
 
     before_action :sync_chat

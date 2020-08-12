@@ -20,7 +20,6 @@ require_relative "app_manager/base_view.rb" # TODO: Deprecated. Remove this depe
 require_relative "app_manager/base_responder.rb"
 require_relative "app_manager/base_repository.rb"
 require_relative "app_manager/base_worker.rb"
-require_relative "app_manager/base_controller.rb"
 
 require_all('./lib/telegram/app_manager/base_models')
 require_all('./lib/telegram/app_manager/base_repositories')

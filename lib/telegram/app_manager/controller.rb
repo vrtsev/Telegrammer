@@ -6,16 +6,15 @@ module Telegram
       include Telegram::Bot::UpdatesController::MessageContext
       include Telegram::Bot::UpdatesController::Session
 
-      # DO NOT FORGET TO SET SESSION STORE IN YOUR CONTROLLER
-      # TO USE METHODS LIKE 'session[:user_id] = user_id'
-      # self.session_store = :redis_cache_store, { url: redis_url }
+      redis_url = "redis://#{ENV['REDIS_HOST']}:#{ENV['REDIS_PORT']}/#{ENV['REDIS_DB']}"
+      self.session_store = :redis_cache_store, { url: redis_url }
 
       around_action :log_action
 
       def initialize(bot, controller, **options)
         super(bot, controller, **options)
       rescue => exception
-        rescue_with_handler(exception)
+        handle_exception(exception)
       end
 
       private

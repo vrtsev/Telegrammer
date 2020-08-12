@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module AdminBot
-  class Controller < Telegram::AppManager::BaseController
+  class Controller < Telegram::AppManager::Controller
     include ControllerHelpers
     include PdrBotActions
     include JeniaBotActions
