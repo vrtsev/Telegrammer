@@ -1,7 +1,7 @@
 require_all './lib/example_bot'
 
 module ExampleBot
-  include Telegram::AppManager::BotClassMethods
+  include Telegram::AppManager::Bot::ClassMethods
 
   configure do |config|
     config.app_name = 'ExampleBot'

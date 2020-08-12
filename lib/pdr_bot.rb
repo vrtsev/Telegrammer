@@ -1,7 +1,7 @@
 require_all './lib/pdr_bot'
 
 module PdrBot
-  include Telegram::AppManager::BotClassMethods
+  include Telegram::AppManager::Bot::ClassMethods
 
   configure do |config|
     config.app_name = 'PdrBot'

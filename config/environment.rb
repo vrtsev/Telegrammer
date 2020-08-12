@@ -8,6 +8,7 @@ puts "Loading application core in #{ENV['APP_ENV']} environment"
 require 'bundler/setup'
 require 'date'
 Bundler.require(:default, ENV['APP_ENV'])
+require_relative 'object_extension.rb'
 require './lib/telegram/app_manager.rb'
 
 ## Load env dependencies

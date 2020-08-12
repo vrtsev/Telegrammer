@@ -1,7 +1,7 @@
 require_all './lib/jenia_bot'
 
 module JeniaBot
-  include Telegram::AppManager::BotClassMethods
+  include Telegram::AppManager::Bot::ClassMethods
 
   configure do |config|
     config.app_name = 'JeniaBot'

@@ -5,7 +5,7 @@ require_relative './example_bot'
 require_all './lib/admin_bot'
 
 module AdminBot
-  include Telegram::AppManager::BotClassMethods
+  include Telegram::AppManager::Bot::ClassMethods
 
   configure do |config|
     config.app_name = 'AdminBot'

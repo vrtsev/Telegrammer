@@ -12,6 +12,7 @@ module AdminBot
       end
     end
 
+    # Used in BaseController for action logging
     def logger
       AdminBot.logger
     end

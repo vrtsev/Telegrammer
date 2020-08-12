@@ -12,6 +12,7 @@ module ExampleBot
       end
     end
 
+    # Used in BaseController for action logging
     def logger
       ExampleBot.logger
     end

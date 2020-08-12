@@ -12,6 +12,7 @@ module JeniaBot
       end
     end
 
+    # Used in BaseController for action logging
     def logger
       JeniaBot.logger
     end

@@ -3,7 +3,20 @@
 module Telegram
   module AppManager
     class BaseOperation < Trailblazer::Operation
-      include Operation::Helpers
+      private
+
+      def merge_operation_result(result, ctx, keys=[])
+        keys.each { |key| ctx[key] = result[key] }
+        ctx
+      end
+
+      def operation_error(ctx, error_msg)
+        ctx[:error] = error_msg
+
+        # Hacky return false to route operation to :failure track
+        # if step is ending on add_error
+        false
+      end
 
       def handle_validation_errors(ctx)
         return true if ctx[:validation_result].success?
