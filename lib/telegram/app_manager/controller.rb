@@ -11,12 +11,6 @@ module Telegram
 
       around_action :log_action
 
-      def initialize(bot, controller, **options)
-        super(bot, controller, **options)
-      rescue => exception
-        handle_exception(exception)
-      end
-
       private
 
       def log_action(&block)
@@ -32,13 +26,6 @@ module Telegram
         else
           yield
         end
-      end
-
-      def rescue_with_handler(exception)
-        logger.error "\nException caught...".bold.red
-        logger.error exception.full_message
-
-        raise exception
       end
 
       def logger

@@ -6,13 +6,7 @@ module Telegram
       def initialize(configuration)
         @configuration = configuration
 
-        before_run
         app_start_message if AppManager.configuration.show_app_start_message
-      end
-
-      def before_run
-      rescue StandardError => exception
-        handle_exception(exception)
       end
 
       def run
@@ -25,8 +19,6 @@ module Telegram
       rescue HTTPClient::ReceiveTimeoutError
         puts "[#{@configuration.app_name}] Poller timeout error. Reconnecting"
         run
-      rescue StandardError => e
-        handle_exception(e)
       end
 
       private
@@ -45,11 +37,6 @@ module Telegram
           Default locale: #{@configuration.default_locale}
           =========================================================\n
         INFO
-      end
-
-      def handle_exception(exception)
-        puts "[#{@configuration.app_name}] Application raised exception...".bold.red
-        raise exception
       end
     end
   end

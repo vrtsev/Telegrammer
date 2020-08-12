@@ -10,13 +10,5 @@ module AdminBot
     def controller
       AdminBot::Controller
     end
-
-    def handle_exception(exception)
-      Telegram::AppManager::Message
-        .new(Telegram.bots[:admin_bot], exception.full_message.truncate(4000))
-        .send_to_app_owner
-
-      super
-    end
   end
 end
