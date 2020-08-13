@@ -11,7 +11,7 @@ module Telegram
 
       private
 
-      def handle_operation_errors(error, params=nil)
+      def handle_operation_errors(error, params = nil)
         error_msg = "#{self.class} has operation error: #{error} :: Params: #{params}"
         raise(error_msg)
       end

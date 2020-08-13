@@ -16,8 +16,8 @@ module Telegram
           @configuration.bot,
           controller
         )
-      rescue HTTPClient::ReceiveTimeoutError
-        puts "[#{@configuration.app_name}] Poller timeout error. Reconnecting"
+      rescue HTTPClient
+        puts "[#{@configuration.app_name}] Poller timeout error. Reconnecting".bold.red
         run
       end
 

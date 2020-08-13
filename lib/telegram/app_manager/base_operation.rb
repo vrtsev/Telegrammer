@@ -21,7 +21,12 @@ module Telegram
       def handle_validation_errors(ctx)
         return true if ctx[:validation_result].success?
 
-        ctx[:error] = "Validation error: #{ctx[:validation_result].errors}"
+        errors_message = ctx[:validation_result].errors.to_h.each_with_object('') do |(key, messages), error_msg|
+          error_msg << "#{key}: #{messages.join(', ')}; "
+          error_msg
+        end
+
+        ctx[:error] = "Validation error: #{errors_message}"
         false
       end
     end

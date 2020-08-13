@@ -30,7 +30,7 @@ module Telegram
           chat_id: chat_id,
           bot: bot
         )
-        raise result.errors unless result.success?
+        raise ValidationError, result.errors.to_h unless result.success?
 
         true
       end
