@@ -25,7 +25,10 @@ module AdminBot
         end
 
         def find_or_create_user(ctx, params:, **)
-          ctx[:user] = AdminBot::UserRepository.new.find_or_create(params[:id], user_params(params))
+          ctx[:user] = AdminBot::UserRepository.new.find_or_create(
+            params[:id],
+            user_params(params).merge(otp_secret: ROTP::Base32.random_base32)
+          )
         end
 
         def update_user_info(ctx, params:, **)
@@ -42,8 +45,7 @@ module AdminBot
             role: AdminBot::User::Roles.not_approved,
             username: params[:username],
             first_name: params[:first_name],
-            last_name: params[:last_name],
-            otp_secret: nil # TODO: Implement OTP generation
+            last_name: params[:last_name]
           }
         end
       end
