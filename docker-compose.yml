@@ -19,9 +19,9 @@ services:
       - default
       - web
 
-  application:
-    container_name: socialup_application
-    command: 'true'
+  app: # container for executing commands, such as 'rake' etc.
+    container_name: socialup_app
+    command: 'true' # hack to exit container if no command passes
     build: .
     env_file: .env
     working_dir: /application

@@ -32,9 +32,9 @@ services:
     networks:
       - default
 
-  application:
-    container_name: socialup_application
-    command: 'true'
+  app: # container for executing commands, such as 'rake' etc.
+    container_name: socialup_app
+    command: 'true' # hack to exit container if no command passes
     build: .
     env_file: .env.production
     working_dir: /application
