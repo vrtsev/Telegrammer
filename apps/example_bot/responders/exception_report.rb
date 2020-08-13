@@ -4,11 +4,11 @@ module ExampleBot
   module Responders
     class ExceptionReport < Telegram::AppManager::BaseResponder
       def call
-        send_message(
+        message(
           text,
           bot: Telegram.bots[:admin_bot],
           chat_id: ENV['TELEGRAM_APP_OWNER_ID']
-        )
+        ).send
       end
 
       private

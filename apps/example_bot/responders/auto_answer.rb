@@ -12,21 +12,19 @@ module ExampleBot
       end
 
       def auto_answer_message
-        reply_message(
+        message(
           params[:auto_answer],
           bot: Telegram.bots[:example_bot],
-          chat_id: params[:current_chat_id],
-          message_id: params[:current_message_id]
-        )
+          chat_id: params[:current_chat_id]
+        ).reply(message_id: params[:current_message_id])
       end
 
       def received_message
-        reply_message(
+        message(
           received_message_notification_text,
           bot: Telegram.bots[:example_bot],
-          chat_id: params[:current_chat_id],
-          message_id: params[:current_message_id]
-        )
+          chat_id: params[:current_chat_id]
+        ).reply(message_id: params[:current_message_id])
       end
 
       private

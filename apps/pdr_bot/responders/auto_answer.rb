@@ -6,12 +6,11 @@ module PdrBot
       def call
         sleep(rand(2..4))
 
-        reply_message(
+        message(
           params[:auto_answer],
           bot: Telegram.bots[:pdr_bot],
           chat_id: params[:current_chat_id],
-          message_id: params[:current_message_id]
-        )
+        ).reply(message_id: params[:current_message_id])
       end
     end
   end

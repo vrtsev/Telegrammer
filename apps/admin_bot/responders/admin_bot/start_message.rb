@@ -5,11 +5,11 @@ module AdminBot
     module AdminBot
       class StartMessage < Telegram::AppManager::BaseResponder
         def call
-          send_message(
+          message(
             text,
             bot: Telegram.bots[:admin_bot],
             chat_id: params[:current_chat_id]
-          )
+          ).send
         end
 
         private

@@ -48,10 +48,11 @@ module AdminBot
         current_chat_id: payload.dig('chat', 'id')
       ).call
 
-      Telegram::AppManager::Message.new(
-        Telegram.bots[:admin_bot],
-        "Unauthorized user '#{@current_user.id}' send message: '#{payload['text']}'"
-      ).send_to_app_owner
+      ::AdminBot::Responders::AdminBot::UnauthorizedUserReport.new(
+        app_ownwer_chat_id: ENV['TELEGRAM_APP_OWNER_ID'],
+        current_user_id: @current_user.id,
+        payload_text: payload['text']
+      ).call
 
       throw :abort
     end

@@ -3,19 +3,19 @@
 module AdminBot
   module Responders
     module AdminBot
-      class AccessDenied < Telegram::AppManager::BaseResponder
+      class UnauthorizedUserReport < Telegram::AppManager::BaseResponder
         def call
           message(
             text,
             bot: Telegram.bots[:admin_bot],
-            chat_id: params[:current_chat_id]
+            chat_id: params[:app_ownwer_chat_id]
           ).send
         end
 
         private
 
         def text
-          I18n.t('.admin_bot.access_denied').sample
+          "Unauthorized user '#{params[:current_user_id]}' sent message: '#{params[:payload_text]}'"
         end
       end
     end

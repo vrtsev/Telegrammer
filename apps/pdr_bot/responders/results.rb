@@ -4,7 +4,7 @@ module PdrBot
   module Responders
     class Results < Telegram::AppManager::BaseResponder
       def call
-        send_message(results_message, bot: Telegram.bots[:pdr_bot], chat_id: params[:current_chat_id])
+        message(results_message, bot: Telegram.bots[:pdr_bot], chat_id: params[:current_chat_id]).send
       end
 
       def results_message

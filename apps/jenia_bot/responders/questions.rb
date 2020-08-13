@@ -6,12 +6,12 @@ module JeniaBot
       KEYBOARD_SLICE_COUNT = 1
 
       def call
-        send_message(
+        message(
           text,
           bot: Telegram.bots[:jenia_bot],
           chat_id: params[:current_chat_id],
           reply_markup: markup(sliced_questions)
-        )
+        ).send
       end
 
       private

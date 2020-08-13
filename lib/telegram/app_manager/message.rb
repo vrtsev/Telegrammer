@@ -3,55 +3,70 @@
 module Telegram
   module AppManager
     class Message
-
-      def initialize(bot, text)
-        @bot = bot
-        @text = text
-
-        raise 'Telegram Message is blank' unless text.present?
-      end
-
-      def edit(message_id:, chat_id:, **params)
-        @bot.public_send "edit_message_text", params.merge({
-          text: @text,
-          message_id: message_id,
-          chat_id: chat_id
-        })
-      end
-
-      def edit_inline(inline_message_id:, **params)
-        @bot.public_send "edit_message_text", params.merge({
-          text: @text,
-          inline_message_id: message_id
-        })
-      end
-
-      def reply(to_message_id:, chat_id:, **params)
-        @bot.public_send "send_message", params.merge({
-          text: @text,
-          reply_to_message_id: to_message_id,
-          chat_id: chat_id
-        })
-      end
-
-      def send_to_chat(chat_id, **params)
-        @bot.send_message params.merge({
-          chat_id: chat_id,
-          text: @text
-        })
-      end
-
-      def send_to_app_owner(**params)
-        unless AppManager.configuration.telegram_app_owner_id
-          raise 'Telegram app owner id not defined. Check bot manager config'
+      class Contract < Dry::Validation::Contract
+        params do
+          required(:text).filled(:string)
+          required(:chat_id).filled(:integer)
+          required(:bot).filled
         end
-
-        @bot.send_message params.merge({
-          chat_id: AppManager.configuration.telegram_app_owner_id,
-          text: "[#{@bot.username}] " + @text
-        })
       end
 
+      class ValidationError < StandardError; end
+
+      attr_reader :text, :chat_id, :bot, :reply_markup
+
+      def initialize(text, chat_id:, bot:, reply_markup: nil)
+        @text = text
+        @chat_id = chat_id
+        @bot = bot
+        @reply_markup = reply_markup
+
+        validate
+      end
+
+      def validate
+        result = Contract.new.call(
+          text: text,
+          chat_id: chat_id,
+          bot: bot
+        )
+        raise result.errors unless result.success?
+
+        true
+      end
+
+      def send
+        bot.send_message(
+          text: text,
+          chat_id: chat_id
+        )
+      end
+
+      def reply(message_id:)
+        bot.public_send(
+          'send_message',
+          text: text,
+          chat_id: chat_id,
+          reply_to_message_id: message_id
+        )
+      end
+
+      def edit(message_id:)
+        bot.public_send(
+          'edit_message_text',
+          text: text,
+          chat_id: chat_id,
+          message_id: message_id
+        )
+      end
+
+      def edit_inline(message_id:)
+        bot.public_send(
+          'edit_message_text',
+          text: text,
+          inline_message_id: message_id
+        )
+      end
     end
   end
 end

@@ -13,7 +13,8 @@ module AdminBot
       responder.new(
         class: exception.class,
         message: exception.message,
-        backtrace: exception.backtrace
+        backtrace: exception.backtrace,
+        app_name: ::AdminBot.app_name
       ).call
     end
   end
