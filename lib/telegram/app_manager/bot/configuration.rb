@@ -13,7 +13,7 @@ module Telegram
         def initialize
           @app_name = nil
           @default_locale = nil
-          @logger = BotLogger.new(@app_name)
+          @logger = Logger.new
           @bot = nil
         end
       end

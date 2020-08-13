@@ -6,7 +6,7 @@ module JeniaBot
   configure do |config|
     config.app_name = 'JeniaBot'
     config.default_locale = ENV['JENIA_BOT_DEFAULT_LOCALE']
-    config.logger = Telegram::AppManager::BotLogger.new(app_name)
+    config.logger = Telegram::AppManager::Logger.new("log/#{app_name}.log")
     config.bot = Telegram.bots[:jenia_bot]
   end
 end
