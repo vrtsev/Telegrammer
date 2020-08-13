@@ -13,7 +13,7 @@ DB_CONNECTION_PARAMS = {
 Sequel.extension :migration
 
 # Database connection
-logger = Telegram::AppManager::Logger.new(formatter: Telegram::AppManager::Logger::SequelFormatter.new)
+logger = Telegram::AppManager::Logger.new('log/database.log', formatter: Telegram::AppManager::Logger::SequelFormatter.new)
 DB = Sequel.connect(DB_CONNECTION_PARAMS, logger: logger)
 
 # Database extensions
