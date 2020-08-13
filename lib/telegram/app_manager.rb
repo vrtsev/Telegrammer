@@ -1,5 +1,6 @@
 require 'telegram/bot'
 require 'colorize'
+require 'dry-validation'
 
 # Require main dependencies
 require_relative "app_manager/configuration.rb"
@@ -17,8 +18,6 @@ require_relative "app_manager/base_operation.rb"
 require_relative "app_manager/base_responder.rb"
 require_relative "app_manager/base_repository.rb"
 require_relative "app_manager/base_worker.rb"
-
-require_all('./lib/telegram/app_manager/base_repositories')
 
 module Telegram
   module AppManager
