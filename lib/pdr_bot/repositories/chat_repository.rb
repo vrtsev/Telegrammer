@@ -9,6 +9,5 @@ module PdrBot
     def model
       PdrBot::Chat
     end
-
   end
 end

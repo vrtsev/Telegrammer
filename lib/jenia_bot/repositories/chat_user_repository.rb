@@ -27,6 +27,5 @@ module JeniaBot
     def model
       JeniaBot::ChatUser
     end
-
   end
 end

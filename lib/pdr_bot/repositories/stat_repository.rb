@@ -1,6 +1,5 @@
 module PdrBot
   class StatRepository < Telegram::AppManager::BaseRepository
-
     def find_by_chat_and_user(chat_id, user_id)
       model
         .select_all(:pdr_bot_stats)
@@ -49,6 +48,5 @@ module PdrBot
     def model
       PdrBot::Stat
     end
-
   end
 end

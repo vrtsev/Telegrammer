@@ -27,6 +27,5 @@ module ExampleBot
     def model
       ExampleBot::ChatUser
     end
-
   end
 end

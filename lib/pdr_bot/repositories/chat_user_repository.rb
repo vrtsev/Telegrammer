@@ -27,6 +27,5 @@ module PdrBot
     def model
       PdrBot::ChatUser
     end
-
   end
 end

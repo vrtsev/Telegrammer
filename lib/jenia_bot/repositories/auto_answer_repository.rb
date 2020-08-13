@@ -19,6 +19,5 @@ module JeniaBot
     def model
       JeniaBot::AutoAnswer
     end
-
   end
 end

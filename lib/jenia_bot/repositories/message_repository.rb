@@ -1,10 +1,8 @@
 module JeniaBot
   class MessageRepository < Telegram::AppManager::BaseRepository
-    DAYS_AGO_COUNT = 90
-
-    def delete_old(days_ago_count=DAYS_AGO_COUNT)
+    def delete_old(age)
       model
-        .where { created_at < (Date.today - days_ago_count).to_time }
+        .where { created_at < (Date.today - age).to_time }
         .delete
     end
 

@@ -1,6 +1,5 @@
 module JeniaBot
   class QuestionRepository < Telegram::AppManager::BaseRepository
-
     def find_by_text(text)
       model
         .where(text: text)
@@ -25,6 +24,5 @@ module JeniaBot
     def model
       JeniaBot::Question
     end
-
   end
 end

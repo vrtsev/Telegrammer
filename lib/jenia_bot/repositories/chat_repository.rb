@@ -9,6 +9,5 @@ module JeniaBot
     def model
       JeniaBot::Chat
     end
-
   end
 end
