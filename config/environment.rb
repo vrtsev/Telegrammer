@@ -1,3 +1,4 @@
+# validate environment
 case ENV['APP_ENV']
 when 'development', 'test', 'production' then true
 else raise "Wrong environment. Can be 'development', 'test', 'production'"

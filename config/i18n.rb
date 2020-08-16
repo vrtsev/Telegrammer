@@ -1,5 +1,5 @@
 LOCALES_DIR_NAME = 'locales'.freeze
-I18n.load_path = Dir[File.expand_path(LOCALES_DIR_NAME) + '/**/*.yml']
+I18n.load_path << Dir[File.expand_path(LOCALES_DIR_NAME) + '/**/*.yml']
 
 # Keys consistency validation
 default_locale = I18n.default_locale.to_s

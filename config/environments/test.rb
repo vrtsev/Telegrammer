@@ -1,4 +1,4 @@
-ENV_FILE_NAME = '.env'
+ENV_FILE_NAME = '.env.test'
 
 require './config/dotenv.rb'
 require './config/i18n.rb'

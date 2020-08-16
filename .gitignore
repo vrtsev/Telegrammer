@@ -1,5 +1,6 @@
 \.env
 \.env.production
+\.env.test
 /locales/*
 !/locales/en
 log/
