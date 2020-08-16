@@ -1,15 +1,12 @@
 module JeniaBot
   module ControllerHelpers
+    def respond_with_error(op_result)
+      raise "Operation failed: #{op_result.to_hash}" unless op_result[:error].present?
 
-    def operation_error_present?(result)
-      return false if result.success?
-
-      if result[:error].present?
-        report_to_chat(result[:error])
-        true
-      else
-        raise "Operation failed: #{result.to_hash}"
-      end
+      ::JeniaBot::Responders::Error.new(
+        error_msg: op_result[:error],
+        current_chat_id: @current_chat.id
+      ).call
     end
 
     # Used in BaseController for action logging

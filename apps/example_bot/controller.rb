@@ -19,8 +19,7 @@ module ExampleBot
 
       params = { chat_id: @current_chat.id, message_text: @message.text }
       result = ExampleBot::Op::AutoAnswer::Random.call(params: params)
-
-      return if operation_error_present?(result)
+      return respond_with_error(result) unless result.success?
 
       ExampleBot::Responders::AutoAnswer.new(
         current_chat_id: @current_chat.id,
@@ -32,11 +31,12 @@ module ExampleBot
 
     def start!
       params = { user_id: ENV['TELEGRAM_APP_OWNER_ID'] }
-      owner_user = ::ExampleBot::Op::User::Find.call(params: params)[:user]
+      result = ::ExampleBot::Op::User::Find.call(params: params)
+      return respond_with_error(result) unless result.success?
 
       ExampleBot::Responders::StartMessage.new(
         current_chat_id: @current_chat.id,
-        bot_author: owner_user.username
+        bot_author: result[:owner_user].username
       ).call
     end
 
@@ -45,28 +45,28 @@ module ExampleBot
     def sync_chat
       params = Hashie.symbolize_keys(chat)
       result = ::ExampleBot::Op::Chat::Sync.call(params: params)
-      operation_error_present?(result)
+      handle_callback_failure(result[:error], __method__) unless result.success?
       @current_chat = result[:chat]
     end
 
     def sync_user
       params = { chat_id: @current_chat.id }.merge(Hashie.symbolize_keys(from))
       result = ::ExampleBot::Op::User::Sync.call(params: params)
-      operation_error_present?(result)
+      handle_callback_failure(result[:error], __method__) unless result.success?
       @current_user = result[:user]
     end
 
     def sync_chat_user
       params = { chat_id: @current_chat.id, user_id: @current_user.id }
       result = ::ExampleBot::Op::ChatUser::Sync.call(params: params)
-
-      operation_error_present?(result)
+      handle_callback_failure(result[:error], __method__) unless result.success?
       @current_chat_user = result[:chat_user]
     end
 
     def authenticate_chat
       params = { chat_id: @current_chat.id }
       result = ::ExampleBot::Op::Chat::Authenticate.call(params: params)
+      handle_callback_failure(result[:error], __method__) unless result.success?
 
       unless result[:approved]
         ::ExampleBot.logger.info "* Chat #{@current_chat.id} failed authentication".bold.red
@@ -83,15 +83,15 @@ module ExampleBot
         date: payload['date']
       }
       result = ExampleBot::Op::Message::Sync.call(params: params)
+      handle_callback_failure(result[:error], __method__) unless result.success?
 
-      operation_error_present?(result)
       @message = result[:message]
     end
 
     def bot_enabled?
       result = ::ExampleBot::Op::Bot::State.call
+      handle_callback_failure(result[:error], __method__) unless result.success?
 
-      operation_error_present?(result)
       @bot_enabled = result[:enabled]
       unless @bot_enabled
         ExampleBot.logger.info "* Bot '#{ExampleBot.app_name}' disabled.. Skip processing".bold.red

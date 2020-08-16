@@ -41,6 +41,16 @@ module Telegram
         end
       end
 
+      def handle_callback_failure(error, callback_name)
+        error_msg = if error.present?
+                      "Callback '#{callback_name}' error: #{error}"
+                    else
+                      "Unknown callback '#{callback_name}' error"
+                    end
+
+        raise error_msg
+      end
+
       def logger
         unless Telegram::AppManager.configuration.controller_logging
           raise 'Implement logger method in controller'

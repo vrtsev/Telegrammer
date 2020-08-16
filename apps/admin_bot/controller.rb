@@ -33,13 +33,14 @@ module AdminBot
     def sync_user
       params = Hashie.symbolize_keys(from)
       result = ::AdminBot::Op::User::Sync.call(params: params)
-      operation_error_present?(result)
+      handle_callback_failure(result[:error], __method__) unless result.success?
       @current_user = result[:user]
     end
 
     def authenticate_user
       params = { user_id: @current_user.id }
       result = AdminBot::Op::User::Authenticate.call(params: params)
+      handle_callback_failure(result[:error], __method__) unless result.success?
       return if result[:approved]
 
       ::AdminBot.logger.info "* User #{@current_user.full_name} failed authentication".bold.red
@@ -66,8 +67,8 @@ module AdminBot
         date: payload['date']
       }
       result = AdminBot::Op::Message::Sync.call(params: params)
+      handle_callback_failure(result[:error], __method__) unless result.success?
 
-      operation_error_present?(result)
       @message = result[:message]
     end
 
