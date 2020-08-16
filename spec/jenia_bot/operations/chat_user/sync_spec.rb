@@ -1,5 +1,6 @@
-RSpec.describe JeniaBot::Op::ChatUser::Sync do
+# frozen_string_literal: false
 
+RSpec.describe JeniaBot::Op::ChatUser::Sync do
   context 'when params is not valid' do
     let(:params) { { chat_id: 'string', user_id: 'string' } }
     let(:result) { described_class.call(params: params) }

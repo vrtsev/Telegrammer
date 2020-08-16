@@ -13,7 +13,7 @@ module JeniaBot
         end
 
         def set_value(ctx, **)
-          REDIS.set(redis_bot_state_key, JSON.parse(ENV['JENIA_BOT_DEFAULT_STATE'])) # HACK: to convert 'true' to boolean
+          REDIS.set(redis_bot_state_key, JSON.parse(ENV['JENIA_BOT_DEFAULT_STATE'])) # HACK: to convert 'true' to bool
           ctx[:value] = REDIS.get(redis_bot_state_key)
         end
 

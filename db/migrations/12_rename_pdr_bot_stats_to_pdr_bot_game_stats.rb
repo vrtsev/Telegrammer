@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Sequel.migration do
   up do
     rename_table :pdr_bot_stats, :pdr_bot_game_stats

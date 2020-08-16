@@ -32,7 +32,10 @@ module ExampleBot
         end
 
         def find_or_create_message(ctx, params:, **)
-          ctx[:message] = ::ExampleBot::MessageRepository.new.find_or_create(params[:message_id], message_params(params))
+          ctx[:message] = ::ExampleBot::MessageRepository.new.find_or_create(
+            params[:message_id],
+            message_params(params)
+          )
         end
 
         private

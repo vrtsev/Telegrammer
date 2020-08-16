@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module JeniaBot
   class Chat < Sequel::Model(:jenia_bot_chats)
     class Types

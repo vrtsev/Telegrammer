@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ExampleBot
   module Op
     module Message

@@ -67,32 +67,38 @@ module PdrBot
         end
 
         def save_game_round(ctx, params:, **)
-          result = PdrBot::Op::GameRound::Create.call(params: {
-            chat_id: params[:chat_id],
-            initiator_id: params[:user_id],
-            winner_id: ctx[:winner].id,
-            loser_id: ctx[:loser].id
-          })
+          result = PdrBot::Op::GameRound::Create.call(
+            params: {
+              chat_id: params[:chat_id],
+              initiator_id: params[:user_id],
+              winner_id: ctx[:winner].id,
+              loser_id: ctx[:loser].id
+            }
+          )
 
           ctx[:game_round] = result[:game_round] if result.success?
         end
 
         def increment_winner_stats(ctx, params:, **)
-          result = PdrBot::Op::GameStat::Increment.call(params: {
-            user_id: ctx[:winner].id,
-            chat_id: params[:chat_id],
-            counter_type: PdrBot::GameStat::Counters.winner
-          })
+          result = PdrBot::Op::GameStat::Increment.call(
+            params: {
+              user_id: ctx[:winner].id,
+              chat_id: params[:chat_id],
+              counter_type: PdrBot::GameStat::Counters.winner
+            }
+          )
 
           ctx[:winner_stat] = result[:stat] if result.success?
         end
 
         def increment_loser_stats(ctx, params:, **)
-          result = PdrBot::Op::GameStat::Increment.call(params: {
-            user_id: ctx[:loser].id,
-            chat_id: params[:chat_id],
-            counter_type: PdrBot::GameStat::Counters.loser
-          })
+          result = PdrBot::Op::GameStat::Increment.call(
+            params: {
+              user_id: ctx[:loser].id,
+              chat_id: params[:chat_id],
+              counter_type: PdrBot::GameStat::Counters.loser
+            }
+          )
 
           ctx[:loser_stat] = result[:stat] if result.success?
         end
@@ -107,22 +113,26 @@ module PdrBot
         def rollback_winner_stat(ctx, params:, **)
           return true unless ctx[:winner_stat].present?
 
-          result = PdrBot::Op::GameStat::Decrement.call(params: {
-            user_id: ctx[:winner].id,
-            chat_id: params[:chat_id],
-            counter_type: PdrBot::GameStat::Counters.winner
-          })
+          result = PdrBot::Op::GameStat::Decrement.call(
+            params: {
+              user_id: ctx[:winner].id,
+              chat_id: params[:chat_id],
+              counter_type: PdrBot::GameStat::Counters.winner
+            }
+          )
           result.success?
         end
 
         def rollback_loser_stat(ctx, params:, **)
           return true unless ctx[:loser_stat].present?
 
-          result = PdrBot::Op::GameStat::Decrement.call(params: {
-            user_id: ctx[:loser].id,
-            chat_id: params[:chat_id],
-            counter: PdrBot::GameStat::Counters.loser
-          })
+          result = PdrBot::Op::GameStat::Decrement.call(
+            params: {
+              user_id: ctx[:loser].id,
+              chat_id: params[:chat_id],
+              counter: PdrBot::GameStat::Counters.loser
+            }
+          )
           result.success?
         end
 

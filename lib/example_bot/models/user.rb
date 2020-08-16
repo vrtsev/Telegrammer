@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ExampleBot
   class User < Sequel::Model(:example_bot_users)
     def full_name

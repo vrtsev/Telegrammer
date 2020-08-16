@@ -1,5 +1,6 @@
-RSpec.describe PdrBot::Op::Chat::Sync do
+# frozen_string_literal: false
 
+RSpec.describe PdrBot::Op::Chat::Sync do
   context 'when params is not valid' do
     let(:params) { { id: 'string', type: 123 } }
     let(:result) { described_class.call(params: params) }
@@ -41,6 +42,5 @@ RSpec.describe PdrBot::Op::Chat::Sync do
         expect(result[:chat].title).to eq(params[:title])
       end
     end
-
   end
 end

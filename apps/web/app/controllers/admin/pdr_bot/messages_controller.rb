@@ -2,7 +2,7 @@ module Admin
   module PdrBot
     class MessagesController < AdminController
       def new
-        @chats = ::PdrBot::ChatRepository.new.get_all_desc
+        @chats = ::PdrBot::ChatRepository.new.all_desc
       end
 
       def create

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PdrBot
   class Chat < Sequel::Model(:pdr_bot_chats)
     class Types

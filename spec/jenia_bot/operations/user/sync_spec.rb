@@ -1,5 +1,6 @@
-RSpec.describe JeniaBot::Op::User::Sync do
+# frozen_string_literal: false
 
+RSpec.describe JeniaBot::Op::User::Sync do
   context 'when params is not valid' do
     let(:params) { { id: 'string' } }
     let(:result) { described_class.call(params: params) }
@@ -20,7 +21,6 @@ RSpec.describe JeniaBot::Op::User::Sync do
     let(:result) { described_class.call(params: params) }
 
     describe 'user' do
-
       context 'when exists' do
         let(:user)   { Fabricate(:jenia_bot_user) }
         let(:params) do

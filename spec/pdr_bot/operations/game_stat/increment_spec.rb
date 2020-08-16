@@ -1,8 +1,9 @@
-RSpec.describe PdrBot::Op::GameStat::Increment do
+# frozen_string_literal: false
 
+RSpec.describe PdrBot::Op::GameStat::Increment do
   context 'when params are invalid' do
     let(:params) { { chat_id: 'string', user_id: 'lala', counter_type: 111 } }
-    let(:result) { described_class.call(params: params) } 
+    let(:result) { described_class.call(params: params) }
 
     it { expect(result.failure?).to be_truthy }
 

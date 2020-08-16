@@ -2,7 +2,7 @@ module Admin
   module JeniaBot
     class MessagesController < AdminController
       def new
-        @chats = ::JeniaBot::ChatRepository.new.get_all_desc
+        @chats = ::JeniaBot::ChatRepository.new.all_desc
       end
 
       def create

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Telegram.bots_config = {
   admin_bot: {
     token: ENV['ADMIN_BOT_API_TOKEN'],

@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 Sequel.migration do
   change do
-
     create_table :pdr_bot_stats do
       primary_key :id
 
@@ -13,6 +14,5 @@ Sequel.migration do
       column :created_at,   DateTime,   null: false
       column :updated_at,   DateTime,   null: false
     end
-
   end
 end

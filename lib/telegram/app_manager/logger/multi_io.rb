@@ -12,7 +12,7 @@ module Telegram
           @targets.each do |target|
             if target.is_a?(File)
               # Remove colorization
-              args.map! { |a| a.gsub(/\e\[(\d+)(;\d+)*m/, '') if a }
+              args.map! { |a| a&.gsub(/\e\[(\d+)(;\d+)*m/, '') }
 
               target.write(*args)
               target.rewind

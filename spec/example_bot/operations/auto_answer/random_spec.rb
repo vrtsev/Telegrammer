@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 RSpec.describe ExampleBot::Op::AutoAnswer::Random do
   let(:chat)         { Fabricate(:example_bot_chat) }
   let(:auto_answers) { Fabricate.times(4, :example_bot_auto_answer, chat_id: chat.id) }

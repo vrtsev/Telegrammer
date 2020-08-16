@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module JeniaBot
   class MessageRepository < Telegram::AppManager::BaseRepository
     def delete_old(age)
@@ -11,6 +13,5 @@ module JeniaBot
     def model
       JeniaBot::Message
     end
-
   end
 end

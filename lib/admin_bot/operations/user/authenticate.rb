@@ -12,7 +12,7 @@ module AdminBot
 
         step :validate
         step :find_user
-        step :is_admin?
+        step :admin?
 
         def validate(ctx, params:, **)
           ctx[:validation_result] = Contract.new.call(params)
@@ -25,7 +25,7 @@ module AdminBot
           ctx[:user] = AdminBot::UserRepository.new.find(params[:user_id])
         end
 
-        def is_admin?(ctx, **)
+        def admin?(ctx, **)
           ctx[:approved] = ctx[:user].role == ::AdminBot::User::Roles.not_approved
         end
       end

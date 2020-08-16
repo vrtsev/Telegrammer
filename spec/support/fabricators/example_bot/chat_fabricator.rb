@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 Fabricator(:example_bot_chat, from: 'ExampleBot::Chat') do
   id                  { Fabricate.sequence(:example_bot_message, 1) }
   approved            { true }

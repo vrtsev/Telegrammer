@@ -42,7 +42,7 @@ module JeniaBot
       ).call
     end
 
-    def jenia!(*question)
+    def jenia!()
       result = JeniaBot::Op::Question::GetLast.call
       return respond_with_error(result) unless result.success?
 

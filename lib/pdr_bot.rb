@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 require_all './lib/pdr_bot'
 
 module PdrBot

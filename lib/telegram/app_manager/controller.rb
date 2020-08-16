@@ -52,9 +52,7 @@ module Telegram
       end
 
       def logger
-        unless Telegram::AppManager.configuration.controller_logging
-          raise 'Implement logger method in controller'
-        end
+        raise 'Implement logger method in controller' unless Telegram::AppManager.configuration.controller_logging
       end
     end
   end

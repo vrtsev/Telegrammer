@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # validate environment
 case ENV['APP_ENV']
 when 'development', 'test', 'production' then true

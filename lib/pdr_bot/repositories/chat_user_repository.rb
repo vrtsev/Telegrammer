@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PdrBot
   class ChatUserRepository < Telegram::AppManager::BaseRepository
     def find_by_chat_and_user(chat_id:, user_id:)
@@ -13,13 +15,11 @@ module PdrBot
     end
 
     def random_by_chat(chat_id, except_user_id: nil)
-      result_set = model
-        .where(chat_id: chat_id)
-        .exclude(user_id: except_user_id)
+      result_set = model.where(chat_id: chat_id).exclude(user_id: except_user_id)
 
-      result_set.offset(Sequel.function(:floor, (Sequel.function(:random) * result_set.count)))
-        .limit(1)
-        .first
+      result_set.offset(
+        Sequel.function(:floor, (Sequel.function(:random) * result_set.count))
+      ).limit(1).first
     end
 
     private

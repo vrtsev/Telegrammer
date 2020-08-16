@@ -1,7 +1,9 @@
+# frozen_string_literal: false
+
 RSpec.describe PdrBot::Op::User::Sync do
   context 'when params is not valid' do
     let(:params) { { id: 'string' } }
-    let(:result) { described_class.call(params: params) } 
+    let(:result) { described_class.call(params: params) }
 
     it { expect(result.failure?).to be_truthy }
 

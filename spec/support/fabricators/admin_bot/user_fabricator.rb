@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 Fabricator(:admin_bot_user, from: 'AdminBot::User') do
   id                  { Fabricate.sequence(:admin_bot_user, 1) }
   role                { ::AdminBot::User::Roles.not_approved }

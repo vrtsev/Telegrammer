@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module JeniaBot
   class User < Sequel::Model(:jenia_bot_users)
     def full_name

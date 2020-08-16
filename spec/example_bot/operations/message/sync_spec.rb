@@ -1,10 +1,12 @@
+# frozen_string_literal: false
+
 RSpec.describe ExampleBot::Op::Message::Sync do
   let(:chat) { Fabricate(:example_bot_chat) }
   let(:user) { Fabricate(:example_bot_user) }
 
   context 'when params is not valid' do
     let(:params) { { message_id: '123', chat_id: '456', created_at: nil, updated_at: nil } }
-    let(:result) { described_class.call(params: params) } 
+    let(:result) { described_class.call(params: params) }
 
     it { expect(result.failure?).to be_truthy }
 
@@ -20,7 +22,7 @@ RSpec.describe ExampleBot::Op::Message::Sync do
   end
 
   context 'when params is valid' do
-    let(:result) { described_class.call(params: params) } 
+    let(:result) { described_class.call(params: params) }
 
     context 'when message exists' do
       let(:message) { Fabricate(:example_bot_message) }
@@ -54,6 +56,5 @@ RSpec.describe ExampleBot::Op::Message::Sync do
         expect(result[:message].created_at).to eq(Time.at(params[:date]))
       end
     end
-
   end
 end

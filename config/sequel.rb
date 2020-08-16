@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Configuration
 DB_CONNECTION_PARAMS = {
   adapter: :postgres,
@@ -7,13 +9,14 @@ DB_CONNECTION_PARAMS = {
   port: ENV['POSTGRES_PORT'],
   database: ENV['POSTGRES_DB'],
   max_connections: ENV['POSTGRES_MAX_CONNECTIONS']
-}
+}.freeze
 
 # Global extensions
 Sequel.extension :migration
 
 # Database connection
-logger = Telegram::AppManager::Logger.new('log/database.log', formatter: Telegram::AppManager::Logger::SequelFormatter.new)
+formatter = Telegram::AppManager::Logger::SequelFormatter.new
+logger = Telegram::AppManager::Logger.new('log/database.log', formatter: formatter)
 DB = Sequel.connect(DB_CONNECTION_PARAMS, logger: logger)
 
 # Database extensions

@@ -8,7 +8,7 @@ module AdminBot
           step :find
 
           def find
-            ctx[:auto_answers] = ::JeniaBot::AutoAnswerRepository.new.get_all_desc
+            ctx[:auto_answers] = ::JeniaBot::AutoAnswerRepository.new.all_desc
           end
         end
       end

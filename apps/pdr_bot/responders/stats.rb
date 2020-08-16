@@ -43,7 +43,7 @@ module PdrBot
       end
 
       def chat_stats
-        params[:chat_stats].inject(String.new) do |content, stat|
+        params[:chat_stats].each_with_object(String.new) do |stat, content|
           content << I18n.t(
             'pdr_bot.stats.for_user',
             user: user_full_name(stat),

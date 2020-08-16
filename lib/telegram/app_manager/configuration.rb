@@ -3,9 +3,7 @@
 module Telegram
   module AppManager
     class Configuration
-      attr_accessor \
-        :controller_logging,
-        :show_app_start_message,
+      attr_accessor :controller_logging, :show_app_start_message
 
       def initialize
         @controller_logging = true

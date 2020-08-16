@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 RSpec.describe JeniaBot::Op::Trigger::FindLocalized do
   context 'when params is not valid' do
     let(:params) { { message_text: '' } }

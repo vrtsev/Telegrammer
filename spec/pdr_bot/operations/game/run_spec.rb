@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 RSpec.describe PdrBot::Op::Game::Run do
   let(:current_chat) { Fabricate(:pdr_bot_chat) }
   let(:current_user) { Fabricate(:pdr_bot_user) }
@@ -7,7 +9,7 @@ RSpec.describe PdrBot::Op::Game::Run do
   let(:result) { described_class.call(params: params) }
 
   describe 'chat last round' do
-    context "when performed earlier than %%%% day" do
+    context 'when performed earlier than %%%% day' do
       before do
         Fabricate(:pdr_bot_game_round, chat_id: current_chat.id)
       end
@@ -17,10 +19,11 @@ RSpec.describe PdrBot::Op::Game::Run do
     end
 
     context do
-      context "when performed %%%" do
+      context 'when performed %%%' do
         let!(:chat_user) { Fabricate(:pdr_bot_chat_user, chat_id: current_chat.id, user_id: current_user.id) }
         let!(:last_round) do
-          Fabricate(:pdr_bot_game_round,
+          Fabricate(
+            :pdr_bot_game_round,
             chat_id: current_chat.id,
             created_at: (Date.today - 2).to_time
           )

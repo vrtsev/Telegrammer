@@ -24,7 +24,9 @@ module PdrBot
 
         def find_last_game_round(ctx, params:, **)
           ctx[:last_round] = ::PdrBot::GameRoundRepository.new.find_latest_by_chat_id(params[:chat_id])
-          ctx[:last_round].present? ? true : operation_error(ctx, I18n.t('.pdr_bot.latest_results.results_not_found').sample)
+          return true if ctx[:last_round].present?
+
+          operation_error(ctx, I18n.t('.pdr_bot.latest_results.results_not_found').sample)
         end
 
         def find_loser(ctx, params:, **)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module JeniaBot
   class UserRepository < Telegram::AppManager::BaseRepository
     private

@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 RSpec.describe PdrBot::Op::GameRound::Delete do
   context 'when params is not valid' do
     let(:params) { { game_round_id: 'string' } }

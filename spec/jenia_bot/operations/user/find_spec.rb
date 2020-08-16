@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 RSpec.describe JeniaBot::Op::User::Find do
   context 'when params is not valid' do
     let(:params) { { user_id: 'string' } }

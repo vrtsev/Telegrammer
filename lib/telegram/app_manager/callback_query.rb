@@ -5,7 +5,7 @@ module Telegram
     class CallbackQuery
       def self.parse(query_string)
         params = JSON.parse(query_string)
-        params = params.inject(Hash.new) do |hash, (key, value)|
+        params = params.each_with_object({}) do |(key, value), hash|
           hash[key.to_sym] = value
           hash
         end

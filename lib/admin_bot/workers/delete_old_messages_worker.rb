@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminBot
   class DeleteOldMessagesWorker < Telegram::AppManager::BaseWorker
     def perform

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ExampleBot
   def self.find_or_create_initial_auto_answer
     auto_answer_params = {
@@ -16,10 +18,12 @@ end
 
 module AdminBot
   def self.find_or_create_initial_admin
-    AdminBot::UserRepository.new.find_or_create(ENV['TELEGRAM_APP_OWNER_ID'], {
-      id: ENV['TELEGRAM_APP_OWNER_ID'],
-      role: AdminBot::User::Roles.administrator
-    })
+    AdminBot::UserRepository.new.find_or_create(
+      ENV['TELEGRAM_APP_OWNER_ID'], {
+        id: ENV['TELEGRAM_APP_OWNER_ID'],
+        role: AdminBot::User::Roles.administrator
+      }
+    )
   end
 end
 

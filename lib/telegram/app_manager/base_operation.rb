@@ -5,7 +5,7 @@ module Telegram
     class BaseOperation < Trailblazer::Operation
       private
 
-      def merge_operation_result(result, ctx, keys=[])
+      def merge_operation_result(result, ctx, keys = [])
         keys.each { |key| ctx[key] = result[key] }
         ctx
       end

@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 Sequel.migration do
   change do
-
     add_column :example_bot_messages, :user_id, :Bignum, index: true
     execute('UPDATE example_bot_messages SET user_id=0')
 
@@ -21,6 +22,5 @@ Sequel.migration do
     alter_table :jenia_bot_messages do
       set_column_allow_null(:user_id, false)
     end
-
   end
 end

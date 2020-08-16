@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 Sequel.migration do
   change do
-
     create_table :pdr_bot_users do
-      column :id,                 Integer,    unique: true, null: false, index: true
+      column :id,                 Integer, unique: true, null: false, index: true
       column :username,           String
       column :first_name,         String
       column :last_name,          String
@@ -60,6 +61,5 @@ Sequel.migration do
       column :created_at,         DateTime,   null: false
       column :updated_at,         DateTime,   null: false
     end
-
   end
 end

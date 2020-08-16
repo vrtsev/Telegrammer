@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PdrBot
   class User < Sequel::Model(:pdr_bot_users)
     def full_name

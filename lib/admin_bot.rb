@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 require_relative './pdr_bot'
 require_relative './jenia_bot'
 require_relative './example_bot'
@@ -14,4 +16,3 @@ module AdminBot
     config.bot = Telegram.bots[:admin_bot]
   end
 end
-

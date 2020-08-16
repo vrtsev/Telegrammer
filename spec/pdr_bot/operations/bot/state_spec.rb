@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 RSpec.describe PdrBot::Op::Bot::State do
   let(:result) { described_class.call }
 
@@ -29,4 +31,3 @@ RSpec.describe PdrBot::Op::Bot::State do
     end
   end
 end
-

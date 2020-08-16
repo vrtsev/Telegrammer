@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 require './config/boot'
 require 'sidekiq/testing'
 require 'telegram/bot/rspec/integration/poller'

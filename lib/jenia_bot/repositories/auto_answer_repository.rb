@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module JeniaBot
   class AutoAnswerRepository < Telegram::AppManager::BaseRepository
-    def get_all_desc
+    def all_desc
       model.order(Sequel.desc(:trigger)).to_a
     end
 
-    def find_approved_random_answer(chat_id, message)
+    def find_approved_random_answer(_chat_id, message)
       return unless message.present?
 
       model

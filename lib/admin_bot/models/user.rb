@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminBot
   class User < Sequel::Model(:admin_bot_users)
     class Roles

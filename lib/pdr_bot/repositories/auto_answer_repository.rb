@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PdrBot
   class AutoAnswerRepository < Telegram::AppManager::BaseRepository
     def find_approved_random_answer(chat_id, message)

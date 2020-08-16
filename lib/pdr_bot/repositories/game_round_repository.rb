@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PdrBot
   class GameRoundRepository < Telegram::AppManager::BaseRepository
     def find_latest_by_chat_id(chat_id)

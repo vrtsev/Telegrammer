@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_all 'apps/admin_bot/concerns'
 require_all 'apps/admin_bot/actions'
 require_all 'apps/admin_bot/responders'

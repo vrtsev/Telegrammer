@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PdrBot
   class GameStatRepository < Telegram::AppManager::BaseRepository
     def find_by_chat_and_user(chat_id, user_id)
@@ -30,14 +32,16 @@ module PdrBot
     end
 
     def increment(counter, chat_id:, user_id:)
-      model.dataset
+      model
+        .dataset
         .returning(counter)
         .where(chat_id: chat_id, user_id: user_id)
         .update(counter => Sequel.expr(1) + counter)
     end
 
     def decrement(counter, chat_id:, user_id:)
-      model.dataset
+      model
+        .dataset
         .returning(counter)
         .where(chat_id: chat_id, user_id: user_id)
         .update(counter => Sequel.expr(1) - counter)

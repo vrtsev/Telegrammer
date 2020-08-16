@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ExampleBot
   class Chat < Sequel::Model(:example_bot_chats)
     class Types

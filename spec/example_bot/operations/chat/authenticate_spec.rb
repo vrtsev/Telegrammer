@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 RSpec.describe ExampleBot::Op::Chat::Authenticate do
   let(:chat)   { Fabricate(:example_bot_chat) }
   let(:params) { { chat_id: chat.id } }
@@ -12,4 +14,3 @@ RSpec.describe ExampleBot::Op::Chat::Authenticate do
     it { expect(result[:approved]).to be_falsey }
   end
 end
-

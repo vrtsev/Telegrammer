@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module JeniaBot
   module ControllerHelpers
     def respond_with_error(op_result)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_all 'apps/pdr_bot/concerns'
 require_all 'apps/pdr_bot/responders'
 require_relative 'exception_handler.rb'

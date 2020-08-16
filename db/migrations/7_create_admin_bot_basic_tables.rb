@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 Sequel.migration do
   change do
-
     create_table :admin_bot_users do
       column :id,                 Integer,    unique: true, null: false, index: true
       column :role,               Integer,    default: 0
@@ -22,6 +23,5 @@ Sequel.migration do
       column :created_at,         DateTime,   null: false
       column :updated_at,         DateTime,   null: false
     end
-
   end
 end

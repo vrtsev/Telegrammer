@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 RSpec.describe PdrBot::Op::Message::Sync do
   let(:chat) { Fabricate(:pdr_bot_chat) }
   let(:user) { Fabricate(:pdr_bot_user) }
@@ -54,6 +56,5 @@ RSpec.describe PdrBot::Op::Message::Sync do
         expect(result[:message].created_at).to eq(Time.at(params[:date]))
       end
     end
-
   end
 end

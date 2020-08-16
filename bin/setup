@@ -1,8 +1,9 @@
 #!/usr/bin/env ruby
-require 'pathname'
+# frozen_string_literal: true
 
+require 'pathname'
 # path to your application root.
-APP_ROOT = Pathname.new File.expand_path('../../', __FILE__)
+APP_ROOT = Pathname.new File.expand_path('..', __dir__)
 
 Dir.chdir APP_ROOT do
   # This script is a starting point to setup your application.
@@ -12,12 +13,11 @@ Dir.chdir APP_ROOT do
   system 'gem install bundler --conservative'
   system 'bundle check || bundle install'
 
-
   puts "\n== Copying core example files =="
-  raise "Can not find '.env.example' file in root directory" unless File.exist?(".env.example")
-  system("cp .env.example .env") unless File.exist?(".env")
-  system("cp .env.example .env.production") unless File.exist?(".env.production")
+  raise "Can not find '.env.example' file in root directory" unless File.exist?('.env.example')
 
+  system('cp .env.example .env') unless File.exist?('.env')
+  system('cp .env.example .env.production') unless File.exist?('.env.production')
 
   puts "\n== Preparing databases =="
   system 'bin/rake db:drop'
@@ -26,7 +26,6 @@ Dir.chdir APP_ROOT do
   system 'bin/rake db:prepare_for_test'
   system 'bin/rake db:seed'
   system 'bin/rake redis:flushall'
-
 
   puts "\n== Removing old logs and tempfiles =="
   system 'rm -f log/*'

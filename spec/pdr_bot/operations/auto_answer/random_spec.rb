@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 RSpec.describe PdrBot::Op::AutoAnswer::Random do
   let(:current_chat) { Fabricate(:pdr_bot_chat) }
   let(:auto_answers) { Fabricate.times(4, :pdr_bot_auto_answer, chat_id: current_chat.id) }

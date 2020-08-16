@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 RSpec.describe JeniaBot::Op::AutoAnswer::Random do
   let(:chat)         { Fabricate(:jenia_bot_chat) }
   let(:auto_answers) { Fabricate.times(4, :jenia_bot_auto_answer, chat_id: chat.id) }

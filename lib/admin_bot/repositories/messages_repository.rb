@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminBot
   class MessageRepository < Telegram::AppManager::BaseRepository
     def delete_old(age)

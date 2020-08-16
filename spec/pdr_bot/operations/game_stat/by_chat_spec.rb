@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 RSpec.describe PdrBot::Op::GameStat::ByChat do
   let(:chat)   { Fabricate(:pdr_bot_chat) }
   let(:params) { { chat_id: chat.id } }
@@ -12,13 +14,15 @@ RSpec.describe PdrBot::Op::GameStat::ByChat do
     let!(:winner_chat_user)  { Fabricate(:pdr_bot_chat_user, chat_id: chat.id) }
     let!(:loser_chat_user)   { Fabricate(:pdr_bot_chat_user, chat_id: chat.id) }
     let!(:winner_stat) do
-      Fabricate(:pdr_bot_game_stat,
+      Fabricate(
+        :pdr_bot_game_stat,
         chat_id: winner_chat_user.chat_id,
         user_id: winner_chat_user.user_id
       )
     end
     let!(:loser_stat) do
-      Fabricate(:pdr_bot_game_stat,
+      Fabricate(
+        :pdr_bot_game_stat,
         chat_id: loser_chat_user.chat_id,
         user_id: loser_chat_user.user_id
       )
@@ -30,8 +34,8 @@ RSpec.describe PdrBot::Op::GameStat::ByChat do
     end
 
     describe 'loser stat' do
-      it { expect(result[:loser_stat].id).to eq(loser_stat.id)}
-      it { expect(result[:loser].id).to eq(loser_stat.user_id)}
+      it { expect(result[:loser_stat].id).to eq(loser_stat.id) }
+      it { expect(result[:loser].id).to eq(loser_stat.user_id) }
     end
   end
 end

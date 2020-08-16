@@ -1,4 +1,6 @@
-LOCALES_DIR_NAME = 'locales'.freeze
+# frozen_string_literal: true
+
+LOCALES_DIR_NAME = 'locales'
 I18n.load_path << Dir[File.expand_path(LOCALES_DIR_NAME) + '/**/*.yml']
 
 # Keys consistency validation

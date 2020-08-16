@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 Fabricator(:pdr_bot_chat_user, from: 'PdrBot::ChatUser') do
   id                    { Fabricate.sequence(:pdr_bot_message, 1) }
   user_id               { Fabricate(:pdr_bot_user).id }
