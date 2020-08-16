@@ -32,7 +32,7 @@ RSpec.describe JeniaBot::Op::Chat::Sync do
       let(:params) { { id: 999, type: chat_type } }
 
       before do
-        expect_any_instance_of(::Telegram::AppManager::Message).to receive(:send_to_app_owner)
+        expect_any_instance_of(::Telegram::AppManager::Message).to receive(:send)
       end
 
       it 'creates and returns chat' do

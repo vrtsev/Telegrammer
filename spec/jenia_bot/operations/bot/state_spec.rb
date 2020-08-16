@@ -1,13 +1,15 @@
 RSpec.describe JeniaBot::Op::Bot::State do
-  let(:result)       { described_class.call } 
+  let(:result) { described_class.call }
 
   context 'when state not found' do
     it 'returns default bot state' do
+      allow(ENV).to receive(:[]).with('JENIA_BOT_DEFAULT_STATE').and_return('true')
+
       REDIS.del("#{::Telegram.bots[:jenia_bot].username}:state")
       state = REDIS.get("#{::Telegram.bots[:jenia_bot].username}:state")
 
       expect(state).to be_nil
-      expect(result[:enabled]).to eq(described_class::DEFAULT_BOT_STATE)
+      expect(result[:enabled]).to eq(JSON.parse(ENV['JENIA_BOT_DEFAULT_STATE']))
     end
   end
 
