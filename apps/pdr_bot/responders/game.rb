@@ -5,8 +5,9 @@ module PdrBot
     class Game < Telegram::AppManager::BaseResponder
       def call
         message(game_start_message, bot: Telegram.bots[:pdr_bot], chat_id: params[:current_chat_id]).send
-        sleep(rand(0..3))
+        sleep(rand(2..5))
         message(searching_users_message, bot: Telegram.bots[:pdr_bot], chat_id: params[:current_chat_id]).send
+        sleep(rand(1..3))
       end
 
       def game_start_message
