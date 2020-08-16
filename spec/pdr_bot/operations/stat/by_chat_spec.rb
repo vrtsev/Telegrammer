@@ -1,4 +1,4 @@
-RSpec.describe PdrBot::Op::Stat::ByChat do
+RSpec.describe PdrBot::Op::GameStat::ByChat do
   let(:chat)   { Fabricate(:pdr_bot_chat) }
   let(:result) { described_class.call(chat: chat) }
 

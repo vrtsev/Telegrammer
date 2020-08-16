@@ -1,5 +1,5 @@
 module PdrBot
-  class Stat < Sequel::Model(:pdr_bot_stats)
+  class GameStat < Sequel::Model(:pdr_bot_game_stats)
 
     class Counters
       include Ruby::Enum

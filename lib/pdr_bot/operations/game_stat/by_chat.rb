@@ -2,7 +2,7 @@
 
 module PdrBot
   module Op
-    module Stat
+    module GameStat
       class ByChat < Telegram::AppManager::BaseOperation
         class Contract < Dry::Validation::Contract
           params do
@@ -25,14 +25,14 @@ module PdrBot
         end
 
         def find_chat_users_stats(ctx, params:, **)
-          ctx[:chat_stats] = PdrBot::StatRepository.new.find_all_by_chat_id(params[:chat_id])
+          ctx[:chat_stats] = PdrBot::GameStatRepository.new.find_all_by_chat_id(params[:chat_id])
           ctx[:chat_stats].present? ? true : operation_error(ctx, I18n.t('.pdr_bot.stats.not_found').sample)
         end
 
         def find_winner_leader_stat(ctx, params:, **)
-          ctx[:winner_stat] = PdrBot::StatRepository.new.find_leader_by_chat_id(
+          ctx[:winner_stat] = PdrBot::GameStatRepository.new.find_leader_by_chat_id(
             chat_id: params[:chat_id],
-            counter: PdrBot::Stat::Counters.winner
+            counter: PdrBot::GameStat::Counters.winner
           )
         end
 
@@ -41,9 +41,9 @@ module PdrBot
         end
 
         def find_loser_leader_stat(ctx, params:, **)
-          ctx[:loser_stat] = PdrBot::StatRepository.new.find_leader_by_chat_id(
+          ctx[:loser_stat] = PdrBot::GameStatRepository.new.find_leader_by_chat_id(
             chat_id: params[:chat_id],
-            counter: PdrBot::Stat::Counters.loser,
+            counter: PdrBot::GameStat::Counters.loser,
             exclude_user_id: ctx[:winner_stat].user_id
           )
         end

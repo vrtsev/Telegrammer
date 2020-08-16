@@ -1,4 +1,4 @@
-RSpec.describe PdrBot::Op::Stat::Increment do
+RSpec.describe PdrBot::Op::GameStat::Increment do
 
   context 'when params are invalid' do
     let(:params) { { chat_id: 'string', user_id: 'lala', counter: 111 } }
@@ -19,7 +19,7 @@ RSpec.describe PdrBot::Op::Stat::Increment do
     let(:user) { Fabricate(:pdr_bot_user) }
     let(:chat) { Fabricate(:pdr_bot_chat) }
     let(:chat_user) { Fabricate(:pdr_bot_chat_user, chat_id: chat.id, user_id: user.id) }
-    let(:params) { { chat_id: chat_user.chat_id, user_id: chat_user.user_id, counter: PdrBot::Stat::Counters.winner } }
+    let(:params) { { chat_id: chat_user.chat_id, user_id: chat_user.user_id, counter: PdrBot::GameStat::Counters.winner } }
     let(:result) { described_class.call(params: params) } 
 
     context 'when stat does not exist' do
@@ -39,7 +39,7 @@ RSpec.describe PdrBot::Op::Stat::Increment do
         end
 
         context 'when loser' do
-          let(:params) { { chat_id: chat_user.chat_id, user_id: chat_user.user_id, counter: PdrBot::Stat::Counters.loser } }
+          let(:params) { { chat_id: chat_user.chat_id, user_id: chat_user.user_id, counter: PdrBot::GameStat::Counters.loser } }
 
           it 'increments winner counter on chat user stat' do
             stat = result[:stat].reload
@@ -63,7 +63,7 @@ RSpec.describe PdrBot::Op::Stat::Increment do
         end
 
         context 'when loser' do
-          let(:params) { { chat_id: chat_user.chat_id, user_id: chat_user.user_id, counter: PdrBot::Stat::Counters.loser } }
+          let(:params) { { chat_id: chat_user.chat_id, user_id: chat_user.user_id, counter: PdrBot::GameStat::Counters.loser } }
 
           it 'increments winner counter on chat user stat' do
             stat = result[:stat].reload
