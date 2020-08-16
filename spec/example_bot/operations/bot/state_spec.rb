@@ -3,11 +3,13 @@ RSpec.describe ExampleBot::Op::Bot::State do
 
   context 'when state not found' do
     it 'returns default bot state' do
+      allow(ENV).to receive(:[]).with('EXAMPLE_BOT_DEFAULT_STATE').and_return('true')
+
       REDIS.del("#{::Telegram.bots[:example_bot].username}:state")
       state = REDIS.get("#{::Telegram.bots[:example_bot].username}:state")
 
       expect(state).to be_nil
-      expect(result[:enabled]).to eq(described_class::DEFAULT_BOT_STATE)
+      expect(result[:enabled]).to eq(JSON.parse(ENV['EXAMPLE_BOT_DEFAULT_STATE']))
     end
   end
 

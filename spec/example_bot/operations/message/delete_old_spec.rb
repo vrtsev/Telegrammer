@@ -1,6 +1,6 @@
 RSpec.describe ExampleBot::Op::Message::DeleteOld do
 
-  let(:old_message_date) { Date.today - (::ExampleBot::MessageRepository::DAYS_AGO_COUNT + 5) }
+  let(:old_message_date) { Date.today - (described_class::OLD_MESSAGES_AGE + 5) }
   let!(:old_messages_ids) do
     Fabricate.times(4, :example_bot_message, created_at: old_message_date.to_time).map(&:id)
   end
