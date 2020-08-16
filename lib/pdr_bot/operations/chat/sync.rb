@@ -67,9 +67,11 @@ module PdrBot
         end
 
         def report_new_chat(chat)
-          Telegram::AppManager::Message
-            .new(Telegram.bots[:admin_bot], I18n.t('.pdr_bot.new_chat_registered', chat_info: chat.to_hash).sample)
-            .send_to_app_owner
+          Telegram::AppManager::Message.new(
+            I18n.t('.pdr_bot.new_chat_registered', chat_info: chat.to_hash).sample,
+            bot: Telegram.bots[:admin_bot],
+            chat_id: ENV['TELEGRAM_APP_OWNER_ID']
+          ).send
         end
       end
     end

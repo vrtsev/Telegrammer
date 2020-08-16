@@ -1,7 +1,7 @@
-RSpec.describe PdrBot::Op::User::Sync do
+RSpec.describe PdrBot::Op::User::Find do
   context 'when params is not valid' do
-    let(:params) { { id: 'string' } }
-    let(:result) { described_class.call(params: params) } 
+    let(:params) { { user_id: 'string' } }
+    let(:result) { described_class.call(params: params) }
 
     it { expect(result.failure?).to be_truthy }
 
@@ -21,15 +21,7 @@ RSpec.describe PdrBot::Op::User::Sync do
     describe 'user' do
       context 'when exists' do
         let(:user)   { Fabricate(:pdr_bot_user) }
-        let(:params) do
-          {
-            chat_id: chat.id,
-            id: user.id,
-            first_name: user.first_name,
-            last_name: user.last_name,
-            username: user.username
-          }
-        end
+        let(:params) { { user_id: user.id } }
 
         it { expect(result[:user]).to eq(user) }
       end
@@ -37,10 +29,7 @@ RSpec.describe PdrBot::Op::User::Sync do
       context 'when does not exist' do
         let(:params) { { chat_id: chat.id, id: 999, username: 'sample uname' } }
 
-        it 'creates and returns chat' do
-          expect(result[:user].id).to eq(params[:id])
-          expect(result[:user].username).to eq(params[:username])
-        end
+        it { expect(result.success?).to be_falsey }
       end
     end
   end

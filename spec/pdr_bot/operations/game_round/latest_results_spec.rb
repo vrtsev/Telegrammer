@@ -4,7 +4,8 @@ RSpec.describe PdrBot::Op::GameRound::LatestResults do
 
   describe 'last game round' do
     context 'when does not exist' do
-      let(:result) { described_class.call(user: current_user, chat: current_chat) }
+      let(:params) { { chat_id: current_chat.id } }
+      let(:result) { described_class.call(params: params) }
 
       it { expect(result.failure?).to be_truthy }
       it { expect(result[:error].present?).to be_truthy }
@@ -30,7 +31,9 @@ RSpec.describe PdrBot::Op::GameRound::LatestResults do
           created_at: (Date.today - 1).to_time
         )
       end
-      let(:result) { described_class.call(user: current_user, chat: current_chat) }
+
+      let(:params) { { chat_id: current_chat.id } }
+      let(:result) { described_class.call(params: params) }
     
       it { expect(result.success?).to be_truthy }
       it { expect(result[:last_round].id).to eq(latest_game_round.id) }

@@ -1,10 +1,10 @@
 RSpec.describe PdrBot::Op::Message::DeleteOld do
 
-  let(:old_message_date) { Date.today - (::PdrBot::MessageRepository::DAYS_AGO_COUNT + 5) }
+  let(:old_message_date) { Date.today - (described_class::OLD_MESSAGES_AGE + 5) }
   let!(:old_messages_ids) do
     Fabricate.times(4, :pdr_bot_message, created_at: old_message_date.to_time).map(&:id)
   end
-  
+
   let!(:new_messages_ids) do
     Fabricate.times(4, :pdr_bot_message, created_at: Date.today.to_time).map(&:id)
   end

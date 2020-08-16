@@ -1,20 +1,21 @@
 RSpec.describe PdrBot::Op::AutoAnswer::Random do
   let(:current_chat) { Fabricate(:pdr_bot_chat) }
   let(:auto_answers) { Fabricate.times(4, :pdr_bot_auto_answer, chat_id: current_chat.id) }
-  let(:message)      { Fabricate(:pdr_bot_message, chat_id: current_chat.id, text: auto_answers.sample.trigger) } 
+  let(:message)      { Fabricate(:pdr_bot_message, chat_id: current_chat.id, text: auto_answers.sample.trigger + ' some message') }
 
   let(:other_chat)   { Fabricate(:pdr_bot_chat) }
   let(:other_auto_answers) { Fabricate.times(4, :pdr_bot_auto_answer, chat_id: other_chat.id) }
 
+  let(:params) { { chat_id: current_chat.id, message_text: message.text } }
+  let(:result) { described_class.call(params: params) }
+
   it 'should not return auto answer of another chat' do
-    result = described_class.call(chat: current_chat, message: message)
-    expect(other_chat.id).not_to eq(result[:auto_answer].chat_id)
+    expect(result[:auto_answer].chat_id).not_to eq(other_chat.id)
   end
 
   context 'when answer found' do
     it 'returns answer by trigger message' do
-      result = described_class.call(chat: current_chat, message: message)
-      expect(current_chat.id).to eq(result[:auto_answer].chat_id)
+      expect(result[:auto_answer].chat_id).to eq(current_chat.id)
       expect(auto_answers.map(&:answer)).to include(result[:answer])
     end
   end
@@ -23,7 +24,6 @@ RSpec.describe PdrBot::Op::AutoAnswer::Random do
     let(:message) { Fabricate(:pdr_bot_message, text: 'some random message 123') }
 
     it 'returns nil answer' do
-      result = described_class.call(chat: current_chat, message: message)
       expect(auto_answers.map(&:answer)).not_to include(result[:answer])
     end
   end

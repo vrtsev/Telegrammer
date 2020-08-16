@@ -15,6 +15,7 @@ module PdrBot
         step :validate
         step :find_chat_user
         step :decrement_counter
+        step :find_stat
 
         def validate(ctx, params:, **)
           ctx[:validation_result] = Contract.new.call(params)
@@ -32,6 +33,10 @@ module PdrBot
 
         def decrement_counter(ctx, params:, **)
           PdrBot::GameStatRepository.new.decrement(params[:counter_type], stat_params(ctx[:chat_user]))
+        end
+
+        def find_stat(ctx, params:, **)
+          ctx[:game_stat] = PdrBot::GameStatRepository.new.find_by_chat_and_user(params[:chat_id], params[:user_id])
         end
 
         private
