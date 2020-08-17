@@ -1,36 +1,31 @@
+# frozen_string_literal: true
+
 module JeniaBot
   module Op
     module Bot
       class State < Telegram::AppManager::BaseOperation
-
-        DEFAULT_BOT_STATE = false # To collect chat data first and check if errors present
-
         step :get_value
         fail :set_value, Output(:success) => Track(:success)
         pass :parse_value
-        pass :log
 
         def get_value(ctx, **)
-          ctx[:value] = REDIS.get("#{JeniaBot.bot.username}:state")
+          ctx[:value] = REDIS.get(redis_bot_state_key)
         end
 
         def set_value(ctx, **)
-          REDIS.set("#{JeniaBot.bot.username}:state", DEFAULT_BOT_STATE)
-          ctx[:value] = REDIS.get("#{JeniaBot.bot.username}:state")
+          REDIS.set(redis_bot_state_key, JSON.parse(ENV['JENIA_BOT_DEFAULT_STATE'])) # HACK: to convert 'true' to bool
+          ctx[:value] = REDIS.get(redis_bot_state_key)
         end
 
         def parse_value(ctx, **)
           ctx[:enabled] = JSON.parse(ctx[:value])
         end
 
-        def log(ctx, **)
-          if ctx[:enabled]
-            JeniaBot.logger.info "* Bot '#{JeniaBot.app_name}' enabled".bold.green
-          else
-            JeniaBot.logger.info "* Bot '#{JeniaBot.app_name}' disabled.. Skip processing".bold.red
-          end
-        end
+        private
 
+        def redis_bot_state_key
+          "#{::Telegram.bots[:jenia_bot].username}:state"
+        end
       end
     end
   end

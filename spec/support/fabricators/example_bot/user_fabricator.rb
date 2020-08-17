@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 Fabricator(:example_bot_user, from: 'ExampleBot::User') do
   id                  { Fabricate.sequence(:example_bot_user, 1) }
   username            { Faker::Internet.username }

@@ -1,13 +1,14 @@
+# frozen_string_literal: false
+
 require_all './lib/example_bot'
 
 module ExampleBot
-  include Telegram::BotManager::BotClassMethods
+  include Telegram::AppManager::Bot::ClassMethods
 
   configure do |config|
     config.app_name = 'ExampleBot'
-    config.locale = 'example_bot'
-    config.localizer = Telegram::BotManager::Localizer.new(locale)
-    config.logger = Telegram::BotManager::BotLogger.new(app_name)
+    config.default_locale = ENV['EXAMPLE_BOT_DEFAULT_LOCALE']
+    config.logger = Telegram::AppManager::Logger.new("log/#{app_name}.log")
     config.bot = Telegram.bots[:example_bot]
   end
 end

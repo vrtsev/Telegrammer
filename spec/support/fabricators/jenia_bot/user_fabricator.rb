@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 Fabricator(:jenia_bot_user, from: 'JeniaBot::User') do
   id                  { Fabricate.sequence(:jenia_bot_user, 1) }
   username            { Faker::Internet.username }

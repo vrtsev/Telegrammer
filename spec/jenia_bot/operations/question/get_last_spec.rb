@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 RSpec.describe JeniaBot::Op::Question::GetLast do
   let(:result) { described_class.call }
 

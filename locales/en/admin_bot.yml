@@ -1,0 +1,27 @@
+en:
+  admin_bot:
+    access_denied:
+      - 'You do not have access to this application'
+    start_message:
+      - "AdminBot. Your role: %{role}"
+    state:
+      change:
+        - "%{app_name} changed state to: %{state}"
+      current:
+        - "%{app_name} state is '%{state}' now"
+    reminder:
+      database_backup:
+        message:
+          - 'Do not forget to create DB backup'
+    jenia_bot:
+      start_message:
+        - 'Selected bot: %{app_name}'
+      auto_answer:
+        choose_question:
+          - 'Please, choose question or write your own'
+    pdr_bot:
+      start_message:
+        - 'Selected bot: %{app_name}'
+    example_bot:
+      start_message:
+        - 'Selected bot: %{app_name}'

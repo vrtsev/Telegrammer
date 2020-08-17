@@ -1,5 +1,19 @@
 version: '3.5'
 services:
+  pgbackup:
+    container_name: socialup_pgbackup
+    image: prodrigestivill/postgres-backup-local
+    env_file: .env.production
+    environment:
+      SCHEDULE: '@daily'
+    volumes:
+      - ./backups:/backups
+    depends_on:
+      - database
+    restart: always
+    networks:
+      - default
+
   web:
     container_name: socialup_web
     build: .
@@ -18,9 +32,9 @@ services:
     networks:
       - default
 
-  application:
-    container_name: socialup_application
-    command: 'true'
+  app: # container for executing commands, such as 'rake' etc.
+    container_name: socialup_app
+    command: 'true' # hack to exit container if no command passes
     build: .
     env_file: .env.production
     working_dir: /application
@@ -145,20 +159,6 @@ services:
       - .:/application:cached
       - db-data:/var/lib/postgresql/data:cached
     restart: always
-
-  pgbackup:
-    container_name: socialup_pgbackup
-    image: prodrigestivill/postgres-backup-local
-    env_file: .env.production
-    environment:
-      SCHEDULE: '@daily'
-    volumes:
-      - ./backups:/backups
-    depends_on:
-      - database
-    restart: always
-    networks:
-      - default
 
   redis:
     container_name: socialup_redis

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rotp'
 
 Sequel.migration do

@@ -1,31 +1,36 @@
+# frozen_string_literal: false
+
 RSpec.describe PdrBot::Op::Game::Run do
   let(:current_chat) { Fabricate(:pdr_bot_chat) }
   let(:current_user) { Fabricate(:pdr_bot_user) }
   let(:current_chat_user) { Fabricate(:pdr_bot_chat_user, chat_id: current_chat.id, user_id: current_user.id) }
-  let(:result) { described_class.call(chat: current_chat, user: current_user) }
+
+  let(:params) { { chat_id: current_chat.id, user_id: current_user.id } }
+  let(:result) { described_class.call(params: params) }
 
   describe 'chat last round' do
-    context "when performed earlier than #{described_class::LAST_ROUND_DATE_STEP} day" do
+    context 'when performed earlier than %%%% day' do
       before do
         Fabricate(:pdr_bot_game_round, chat_id: current_chat.id)
       end
 
       it { expect(result.failure?).to be_truthy }
-      it { expect(PdrBot.localizer.samples('game.not_allowed')).to include(result[:error]) }
+      it { expect(I18n.t('.pdr_bot.game.not_allowed')).to include(result[:error]) }
     end
 
     context do
-      context "when performed #{described_class::LAST_ROUND_DATE_STEP}" do
+      context 'when performed %%%' do
         let!(:chat_user) { Fabricate(:pdr_bot_chat_user, chat_id: current_chat.id, user_id: current_user.id) }
         let!(:last_round) do
-          Fabricate(:pdr_bot_game_round,
+          Fabricate(
+            :pdr_bot_game_round,
             chat_id: current_chat.id,
             created_at: (Date.today - 2).to_time
           )
         end
 
         it { expect(result.failure?).to be_truthy }
-        it { expect(PdrBot.localizer.samples('game.not_allowed')).not_to include(result[:error]) }
+        it { expect(I18n.t('.pdr_bot.game.not_allowed')).not_to include(result[:error]) }
       end
 
       describe 'users' do
@@ -37,7 +42,7 @@ RSpec.describe PdrBot::Op::Game::Run do
           let!(:current_chat_users) { Fabricate.times(1, :pdr_bot_chat_user, chat_id: current_chat.id) }
 
           it { expect(result.failure?).to be_truthy }
-          it { expect(PdrBot.localizer.samples('game.not_enough_users', min_count: described_class::MINIMUM_USER_COUNT )).to include(result[:error]) }
+          it { expect(I18n.t('.pdr_bot.game.not_enough_users', min_count: described_class::MINIMUM_USER_COUNT )).to include(result[:error]) }
         end
 
         context "when greater that #{described_class::MINIMUM_USER_COUNT}" do

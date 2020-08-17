@@ -1,44 +1,19 @@
+# frozen_string_literal: true
+
 module ExampleBot
   module ControllerHelpers
+    def respond_with_error(op_result)
+      raise "Operation failed: #{op_result.to_hash}" unless op_result[:error].present?
 
-    def operation_error_present?(result)
-      return false if result.success?
-
-      if result[:error].present?
-        report_to_chat(result[:error])
-        true
-      else
-        raise "Operation failed: #{result.to_hash}"
-      end
+      ::ExampleBot::Responders::Error.new(
+        error_msg: op_result[:error],
+        current_chat_id: @current_chat.id
+      ).call
     end
 
-    def rescue_with_handler(exception)
-      message = <<~MSG
-        #{exception.class}: #{exception.message}
-        #{exception.backtrace.first}
-      MSG
-
-      puts "[#{ExampleBot.app_name}] Application raised exception".bold.red
-      puts exception.full_message
-
-      report_app_owner(message)
-      report_to_chat(ExampleBot.localizer.pick('errors'))
-    end
-
-    def report_app_owner(message)
-      Telegram::BotManager::Message
-        .new(Telegram.bots[:admin_bot], message)
-        .send_to_app_owner
-    end
-
-    def report_to_chat(message)
-      return unless @bot_enabled
-      respond_with(:message, text: message)
-    end
-
+    # Used in BaseController for action logging
     def logger
       ExampleBot.logger
     end
-
   end
 end

@@ -1,5 +1,6 @@
-RSpec.describe ExampleBot::Op::User::Sync do
+# frozen_string_literal: false
 
+RSpec.describe ExampleBot::Op::User::Sync do
   context 'when params is not valid' do
     let(:params) { { id: 'string' } }
     let(:result) { described_class.call(params: params) }
@@ -17,19 +18,26 @@ RSpec.describe ExampleBot::Op::User::Sync do
 
   context 'when params is valid' do
     let(:chat) { Fabricate(:example_bot_chat) }
-    let(:result) { described_class.call(chat: chat, params: params) }
+    let(:result) { described_class.call(params: params) }
 
     describe 'user' do
-
       context 'when exists' do
         let(:user)   { Fabricate(:example_bot_user) }
-        let(:params) { { id: user.id } }
+        let(:params) do
+          {
+            chat_id: chat.id,
+            id: user.id,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            username: user.username
+          }
+        end
 
         it { expect(result[:user]).to eq(user) }
       end
 
       context 'when does not exist' do
-        let(:params) { { id: 999, username: 'sample uname' } }
+        let(:params) { { chat_id: chat.id, id: 999, username: 'sample uname' } }
 
         it 'creates and returns chat' do
           expect(result[:user].id).to eq(params[:id])
@@ -37,28 +45,5 @@ RSpec.describe ExampleBot::Op::User::Sync do
         end
       end
     end
-
-    describe 'chat user' do
-      let(:params) { { id: user.id } }
-
-      context 'when exists' do
-        let(:user) { Fabricate(:example_bot_user) }
-        let(:chat) { Fabricate(:example_bot_chat) }
-        let!(:chat_user) { Fabricate(:example_bot_chat_user, chat_id: chat.id, user_id: user.id) }
-
-        it { expect(result[:chat_user]).to eq(chat_user) }
-      end
-
-      context 'when does not exist' do
-        let(:user) { Fabricate(:example_bot_user) }
-        let(:chat) { Fabricate(:example_bot_chat) }
-
-        it 'creates and returns chat user' do
-          expect(result[:chat_user].user_id).to eq(user.id)
-          expect(result[:chat_user].chat_id).to eq(chat.id)
-        end
-      end
-    end
-
   end
 end

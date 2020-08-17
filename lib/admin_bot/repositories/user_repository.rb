@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module AdminBot
   class UserRepository < Telegram::AppManager::BaseRepository
-
     def find_by_login(login)
       model.where(username: login).first
     end
@@ -10,6 +11,5 @@ module AdminBot
     def model
       AdminBot::User
     end
-
   end
 end

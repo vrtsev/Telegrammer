@@ -3,11 +3,6 @@
 module Telegram
   module AppManager
     class BaseRepository
-
-      def find_all
-        raise "Please, use '#paged_each' method to avoid loading all records from big tables"
-      end
-
       def find(id)
         model.where(id: id).first
       end
@@ -31,7 +26,6 @@ module Telegram
       def count
         model.count
       end
-
     end
   end
 end

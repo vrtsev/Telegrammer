@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 Sequel.migration do
   change do
     create_table :pdr_bot_game_rounds do
-
       primary_key :id
       column :chat_id,      :Bignum,    null: false, index: true
 
@@ -11,7 +12,6 @@ Sequel.migration do
 
       column :created_at,   DateTime,   null: false
       column :updated_at,   DateTime,   null: false
-
     end
   end
 end

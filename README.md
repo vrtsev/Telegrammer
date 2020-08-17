@@ -1,4 +1,9 @@
-# 'Social Up' telegram bot manager application
+# Telegram bot manager application
+
+Purposes of project:
+- To create custom complex ruby application architecture from scratch without any frameworks (for education purposes)
+- To create application with useful bots inside
+
 Advanced application with multiple telegram bots inside
 Purpose of this project - quick development and integration multiple telegram bots in one application
 
@@ -40,50 +45,54 @@ First of all you need to create your own telegram bot and obtain an API key. Fol
 6. Save obtained API key. You will set ENV variable with this key later
 7. You should to set inline mode and turn off privacy mode for your bot. Inline mode will allow you to use inline keyboards and inline queries. Disabled privacy will allow you to sync user messages to DB. Find this settings in bot settings (@BotFather)
 
-## Setup and first run
+## Setup and first run (only using Docker compose)
 1. Create a copy of `.env.example` file and name it `.env`
 2. Open `.env` file and set ENV variables
 
 ```
 # Telegram settings
 # (write to '@get_any_telegram_id_bot' if you dont know your id)
-TELEGRAM_APP_OWNER_ID= /insert your personal telegram id/ 
-TELEGRAM_APP_OWNER_USERNAME= /write your telegram username/
+TELEGRAM_APP_OWNER_ID= /insert your personal telegram id/
 ```
+4. $ docker-compose build
+5. $ docker-compose run application bin/setup
+6. $ docker-compose up
 
-4. Run command `bin/setup`
-5. Run `bin/%bot_bin_file% to start bot
-6. Write `/start` message to your bot in telegram and see output in console
-
-## Run using docker-compose
-```
-$ docker-compose build
-$ docker-compose run application bin/setup
-$ docker-compose up
-```
 
 ## Available rake commands:
--`rake` - will run all spec tests
--`rake SPEC='spec/admin_bot/controller_spec.rb'` - run specified spec test
--`rake locales:replace_default` - will take your custom locales from `locales_custom` folder and replace default (can be used for production to keep your translations under secret)
--`rake redis:flushall` - clear all Redis keys and values
--`rake db:create` - create DB in Postgres
--`rake db:prepare_for_test` - Create and migrate DB for test env
--`rake db:drop` - drop database that specified in `ENV['POSTGRES_DB']` variable
--`rake db:version` - current migration version
--`rake db:migrate` - migrate DB
--`rake db:rollback` - rollback to previous migration version
--`rake db:clear` - clear all data in DB
+- `rake` - will run all spec tests
+- `rake SPEC='spec/admin_bot/controller_spec.rb'` - run specified spec test
+- `rake redis:flushall` - clear all Redis keys and values
+- `rake db:create` - create DB in Postgres
+- `rake db:prepare_for_test` - Create and migrate DB for test env
+- `rake db:drop` - drop database that specified in `ENV['POSTGRES_DB']` variable
+- `rake db:version` - current migration version
+- `rake db:migrate` - migrate DB
+- `rake db:rollback` - rollback to previous migration version
+- `rake db:clear` - clear all data in DB
+- `rake db:seed` - seed DB with example test data for development env
+
+
+## Adding new locales
+Add new locales to '/locales' folder. Keep in mind, that everything except '/locales/en' folder will be hidden from git (see .gitignore file)
+
+## Run tests
+Use command `docker-compose -f docker-compose.test.yml run app rspec` to run all tests
+
+## Deployment
+Use `bin/deploy` script file to perform actions needed for project deployment
+
+## Scripts
+- `bin/console` to run console with preloaded codebase
+- `bin/deploy` for performing deployment steps
+- `bin/setup` to perform initial project setup
 
 
 ## Contributing
-
 Bug reports and pull requests are welcome on GitHub at https://github.com/vrtsev/SocialUp. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
-
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
 
 ## Code of Conduct
-
-Everyone interacting in the BotManager project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/vrtsev/SocialUp/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the AppManager project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/vrtsev/SocialUp/blob/master/CODE_OF_CONDUCT.md).

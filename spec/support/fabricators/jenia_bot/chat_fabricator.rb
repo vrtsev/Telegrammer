@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 Fabricator(:jenia_bot_chat, from: 'JeniaBot::Chat') do
   id                  { Fabricate.sequence(:jenia_bot_message, 1) }
   approved            { true }

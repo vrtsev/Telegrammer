@@ -1,6 +1,8 @@
 \.env
 \.env.production
-\locales_custom\*
+\.env.test
+/locales/*
+!/locales/en
 log/
 backups/
 
@@ -9,9 +11,7 @@ backups/
 /apps/web/.bundle
 
 # Ignore all logfiles and tempfiles.
-/apps/web/log/*
 /apps/web/tmp/*
-!/apps/web/log/.keep
 !/apps/web/tmp/.keep
 
 # Ignore uploaded files in development.

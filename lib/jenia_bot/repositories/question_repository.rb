@@ -1,20 +1,21 @@
+# frozen_string_literal: true
+
 module JeniaBot
   class QuestionRepository < Telegram::AppManager::BaseRepository
-
     def find_by_text(text)
       model
         .where(text: text)
         .first
     end
 
-    def get_last(limit=1)
+    def get_last(limit = 1)
       model
         .limit(limit)
         .order(Sequel.desc(:created_at))
         .to_a
     end
 
-    def get_all_desc
+    def all_desc
       model
         .order(Sequel.desc(:created_at))
         .to_a
@@ -25,6 +26,5 @@ module JeniaBot
     def model
       JeniaBot::Question
     end
-
   end
 end

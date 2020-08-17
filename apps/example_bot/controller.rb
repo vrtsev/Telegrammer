@@ -1,67 +1,107 @@
+# frozen_string_literal: true
+
 module ExampleBot
-  class Controller < Telegram::AppManager::BaseController
+  class Controller < Telegram::AppManager::Controller
     include ControllerHelpers
+
+    exception_handler ExampleBot::ExceptionHandler
 
     before_action :sync_chat
     before_action :sync_user
+    before_action :sync_chat_user
     before_action :authenticate_chat
     before_action :sync_message
     before_action :bot_enabled?
+    around_action :with_locale
 
     def message(message)
       return unless message['text'].present?
-      result = ExampleBot::Op::AutoAnswer::Random.call(
-        chat: @current_chat, message: @message
-        )
-      return if operation_error_present?(result)
 
-      if result[:answer].present?
-        respond_with(:message, text: result[:answer])
-      else
-        message = ExampleBot::Views::ReceivedMessage.new(message: message)
-        respond_with(:message, text: message.text)
-      end
+      params = { chat_id: @current_chat.id, message_text: @message.text }
+      result = ExampleBot::Op::AutoAnswer::Random.call(params: params)
+      return respond_with_error(result) unless result.success?
+
+      ExampleBot::Responders::AutoAnswer.new(
+        current_chat_id: @current_chat.id,
+        current_message_id: @message.id,
+        current_message_text: @message.text,
+        auto_answer: result[:answer]
+      ).call
     end
 
     def start!
-      message = ExampleBot::Views::StartMessage.new
-      respond_with(:message, text: message.text)
+      params = { user_id: ENV['TELEGRAM_APP_OWNER_ID'] }
+      result = ::ExampleBot::Op::User::Find.call(params: params)
+      return respond_with_error(result) unless result.success?
+
+      ExampleBot::Responders::StartMessage.new(
+        current_chat_id: @current_chat.id,
+        bot_author: result[:user].username
+      ).call
     end
 
     private
 
     def sync_chat
-      result = ExampleBot::Op::Chat::Sync.call(params: Hashie.symbolize_keys(chat))
-      operation_error_present?(result)
+      params = Hashie.symbolize_keys(chat)
+      result = ::ExampleBot::Op::Chat::Sync.call(params: params)
+      handle_callback_failure(result[:error], __method__) unless result.success?
       @current_chat = result[:chat]
     end
 
     def sync_user
-      result = ExampleBot::Op::User::Sync.call(chat: @current_chat, params: Hashie.symbolize_keys(from))
-      operation_error_present?(result)
+      params = { chat_id: @current_chat.id }.merge(Hashie.symbolize_keys(from))
+      result = ::ExampleBot::Op::User::Sync.call(params: params)
+      handle_callback_failure(result[:error], __method__) unless result.success?
       @current_user = result[:user]
     end
 
+    def sync_chat_user
+      params = { chat_id: @current_chat.id, user_id: @current_user.id }
+      result = ::ExampleBot::Op::ChatUser::Sync.call(params: params)
+      handle_callback_failure(result[:error], __method__) unless result.success?
+      @current_chat_user = result[:chat_user]
+    end
+
     def authenticate_chat
-      throw :abort unless ExampleBot::Op::Chat::Authenticate.call(chat: @current_chat).success?
+      params = { chat_id: @current_chat.id }
+      result = ::ExampleBot::Op::Chat::Authenticate.call(params: params)
+      handle_callback_failure(result[:error], __method__) unless result.success?
+
+      unless result[:approved]
+        ::ExampleBot.logger.info "* Chat #{@current_chat.id} failed authentication".bold.red
+        throw :abort
+      end
     end
 
     def sync_message
-      result = ExampleBot::Op::Message::Sync.call(chat: @current_chat, user: @current_user, params: {
+      params = {
+        chat_id: @current_chat.id,
+        user_id: @current_user.id,
         message_id: payload['message_id'],
         text: payload['text'],
         date: payload['date']
-      })
-      operation_error_present?(result)
+      }
+      result = ExampleBot::Op::Message::Sync.call(params: params)
+      handle_callback_failure(result[:error], __method__) unless result.success?
+
       @message = result[:message]
     end
 
     def bot_enabled?
       result = ::ExampleBot::Op::Bot::State.call
-      operation_error_present?(result)
+      handle_callback_failure(result[:error], __method__) unless result.success?
+
       @bot_enabled = result[:enabled]
-      throw :abort unless @bot_enabled
+      unless @bot_enabled
+        ExampleBot.logger.info "* Bot '#{ExampleBot.app_name}' disabled.. Skip processing".bold.red
+        throw :abort
+      end
     end
 
+    def with_locale(&block)
+      # locale switching is not implemented
+      I18n.with_locale(ExampleBot.default_locale, &block)
+    end
   end
 end

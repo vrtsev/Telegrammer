@@ -1,5 +1,6 @@
-RSpec.describe ExampleBot::Op::Chat::Sync do
+# frozen_string_literal: false
 
+RSpec.describe ExampleBot::Op::Chat::Sync do
   context 'when params is not valid' do
     let(:params) { { id: 'string', type: 123 } }
     let(:result) { described_class.call(params: params) }
@@ -32,7 +33,7 @@ RSpec.describe ExampleBot::Op::Chat::Sync do
       let(:params) { { id: 999, type: chat_type } }
 
       before do
-        expect_any_instance_of(::Telegram::BotManager::Message).to receive(:send_to_app_owner)
+        expect_any_instance_of(::Telegram::AppManager::Message).to receive(:send)
       end
 
       it 'creates and returns chat' do
@@ -41,6 +42,5 @@ RSpec.describe ExampleBot::Op::Chat::Sync do
         expect(result[:chat].title).to eq(params[:title])
       end
     end
-
   end
 end

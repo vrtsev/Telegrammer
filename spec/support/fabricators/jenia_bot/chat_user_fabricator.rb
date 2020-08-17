@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 Fabricator(:jenia_bot_chat_user, from: 'JeniaBot::ChatUser') do
   id                  { Fabricate.sequence(:jenia_bot_message, 1) }
   user_id             { Fabricate(:jenia_bot_user).id }

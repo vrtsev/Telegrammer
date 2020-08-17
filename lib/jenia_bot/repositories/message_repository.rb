@@ -1,12 +1,17 @@
+# frozen_string_literal: true
+
 module JeniaBot
   class MessageRepository < Telegram::AppManager::BaseRepository
-    include Telegram::AppManager::BaseRepositories::MessageRepository
+    def delete_old(age)
+      model
+        .where { created_at < (Date.today - age).to_time }
+        .delete
+    end
 
     private
 
     def model
       JeniaBot::Message
     end
-
   end
 end

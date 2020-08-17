@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require './config/boot.rb'
 
@@ -9,7 +10,7 @@ def reload!(print = true)
   root_dir = File.expand_path('.', __dir__)
 
   # Directories within the project that should be reloaded.
-  reload_dirs = ['config', 'apps', 'lib']
+  reload_dirs = %w[config apps lib]
 
   # Loop through and reload every file in all relevant project directories.
   reload_dirs.each do |dir|

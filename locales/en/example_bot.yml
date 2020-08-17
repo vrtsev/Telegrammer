@@ -1,0 +1,19 @@
+en:
+  example_bot:
+    errors:
+      - "Application crashed"
+      - "Thanks to developers...I'm crashed"
+    start_message:
+      - "Example Telegram Bot (author @%{bot_author})\n
+        Repository: https://github.com/vrtsev/SocialUp\n\n
+        Available commands:\n
+        /start - show this message
+        \n
+        Write message: 'Hello bot' and you will see autoanswer\n
+        Напишите сообщение 'Привет', чтобы увидеть автоответ
+        \n"
+    new_chat_registered:
+      - "Registered a new chat in ExampleBot:\n%{chat_info}"
+    actions:
+      message:
+        - "Received message '%{message}'"

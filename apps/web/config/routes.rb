@@ -1,39 +1,15 @@
-Routes = [
-  {
-    path: '/',
-    to: HomeController,
-    name: 'home_path'
-  },
-  {
-    path: '/auth',
-    to: AuthController,
-    name: 'auth_path',
-  },
-  {
-    path: '/admin/dashboard',
-    to: Admin::DashboardController,
-    name: 'admin_dashboard_path'
-  },
+Rails.application.routes.draw do
+  root 'admin/dashboard#index'
 
-  {
-    path: '/admin/jenia_bot/auto_answers',
-    to: Admin::JeniaBot::AutoAnswersController,
-    name: 'admin_jenia_bot_auto_answers_path'
-  },
-  {
-    path: '/admin/jenia_bot/questions',
-    to: Admin::JeniaBot::QuestionsController,
-    name: 'admin_jenia_bot_questions_path'
-  },
-  {
-    path: '/admin/jenia_bot/messages',
-    to: Admin::JeniaBot::MessagesController,
-    name: 'admin_jenia_bot_messages_path'
-  },
+  namespace :admin do
+    resources :dashboard, only: :index
 
-  {
-    path: '/admin/pdr_bot/messages',
-    to: Admin::PdrBot::MessagesController,
-    name: 'admin_pdr_bot_messages_path'
-  },
-]
+    namespace :jenia_bot do
+      resources :messages
+    end
+
+    namespace :pdr_bot do
+      resources :messages
+    end
+  end
+end

@@ -1,20 +1,23 @@
+# frozen_string_literal: true
+
 # Configuration
 DB_CONNECTION_PARAMS = {
-  adapter:          :postgres,
-  user:             ENV['POSTGRES_USER'],
-  password:         ENV['POSTGRES_PASSWORD'],
-  host:             ENV['POSTGRES_HOST'],
-  port:             ENV['POSTGRES_PORT'],
-  database:         ENV['POSTGRES_DB'],
-  max_connections:  ENV['POSTGRES_MAX_CONNECTIONS']
-}
+  adapter: :postgres,
+  user: ENV['POSTGRES_USER'],
+  password: ENV['POSTGRES_PASSWORD'],
+  host: ENV['POSTGRES_HOST'],
+  port: ENV['POSTGRES_PORT'],
+  database: ENV['POSTGRES_DB'],
+  max_connections: ENV['POSTGRES_MAX_CONNECTIONS']
+}.freeze
 
 # Global extensions
 Sequel.extension :migration
 
 # Database connection
-db_credentials = DB_CONNECTION_PARAMS
-DB = Sequel.connect(db_credentials, logger:  Telegram::BotManager::Logger.new(formatter: Telegram::AppManager::Logger::SequelFormatter.new))
+formatter = Telegram::AppManager::Logger::SequelFormatter.new
+logger = Telegram::AppManager::Logger.new('log/database.log', formatter: formatter)
+DB = Sequel.connect(DB_CONNECTION_PARAMS, logger: logger)
 
 # Database extensions
 DB.extension(

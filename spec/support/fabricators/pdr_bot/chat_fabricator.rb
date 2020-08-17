@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 Fabricator(:pdr_bot_chat, from: 'PdrBot::Chat') do
   id                  { Fabricate.sequence(:pdr_bot_message, 1) }
   approved            true

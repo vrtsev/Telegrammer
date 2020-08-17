@@ -1,23 +1,21 @@
-class Application < Sinatra::Base
-  helpers Sinatra::Cookies
-  enable :sessions
-  set :root, File.expand_path('.', 'apps/web')
-  set :environment, APP_ENV
-  set :cookie_options, path: '/'
-  set :logging, true
-  set :views, File.join(settings.root, '/views')
+require_relative 'boot'
 
-  if  APP_ENV != :production
-    set :session_secret, 'secret_code'
-  end
+require 'rails/all'
 
-  helpers do
-    def flash
-      @flash = session.delete(:flash)
-    end
+# Require the gems listed in Gemfile, including any gems
+# you've limited to :test, :development, or :production.
+Bundler.require(*Rails.groups)
 
-    def current_user
-      @current_user
-    end
+module TelegramGui
+  class Application < Rails::Application
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 6.0
+
+    # Settings in config/environments/* take precedence over those specified here.
+    # Application configuration can go into files in config/initializers
+    # -- all .rb files in that directory are automatically loaded after loading
+    # the framework and any gems in your application.
+
+    config.paths['log'] = '/application/log/web.log'
   end
 end

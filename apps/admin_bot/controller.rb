@@ -1,54 +1,80 @@
+# frozen_string_literal: true
+
 module AdminBot
-  class Controller < Telegram::AppManager::BaseController
+  class Controller < Telegram::AppManager::Controller
     include ControllerHelpers
     include PdrBotActions
     include JeniaBotActions
     include ExampleBotActions
     include AdminBotActions
 
+    exception_handler AdminBot::ExceptionHandler
+
     before_action :sync_user
     before_action :authenticate_user
     before_action :sync_message
+    around_action :with_locale
 
+    # Global 'router' for callback queries
+    # Should be defined only once in controller
     def callback_query(query)
-      query = Telegram::BotManager::CallbackQuery.parse(query)
+      query = Telegram::AppManager::CallbackQuery.parse(query)
 
       case query.params[:bot]
-      when 'admin_bot'     then admin_bot(query)
-      when 'pdr_bot'       then pdr_bot(query)
-      when 'jenia_bot'     then jenia_bot(query)
-      when 'example_bot'   then example_bot(query)
+      when 'admin_bot'   then admin_bot_callback_query(query)
+      when 'pdr_bot'     then pdr_bot_callback_query(query)
+      when 'jenia_bot'   then jenia_bot_callback_query(query)
+      when 'example_bot' then example_bot_callback_query(query)
       end
     end
 
     private
 
     def sync_user
-      result = AdminBot::Op::User::Sync.call(params: Hashie.symbolize_keys(from))
-      operation_error_present?(result)
-      @current_admin = result[:user]
+      params = Hashie.symbolize_keys(from)
+      result = ::AdminBot::Op::User::Sync.call(params: params)
+      handle_callback_failure(result[:error], __method__) unless result.success?
+      @current_user = result[:user]
     end
 
     def authenticate_user
-      result = AdminBot::Op::User::Authenticate.call(user: @current_admin)
+      params = { user_id: @current_user.id }
+      result = AdminBot::Op::User::Authenticate.call(params: params)
+      handle_callback_failure(result[:error], __method__) unless result.success?
+      return if result[:approved]
 
-      unless result.success?
-        respond_with(:message, text: AdminBot.localizer.pick('access_denied'))
-        throw :abort
-      end
+      ::AdminBot.logger.info "* User #{@current_user.full_name} failed authentication".bold.red
+
+      ::AdminBot::Responders::AdminBot::AccessDenied.new(
+        current_chat_id: payload.dig('chat', 'id')
+      ).call
+
+      ::AdminBot::Responders::AdminBot::UnauthorizedUserReport.new(
+        app_ownwer_chat_id: ENV['TELEGRAM_APP_OWNER_ID'],
+        current_user_id: @current_user.id,
+        payload_text: payload['text']
+      ).call
+
+      throw :abort
     end
 
     def sync_message
       return unless payload['text'].present?
 
-      result = AdminBot::Op::Message::Sync.call(params: {
+      params = {
         message_id: payload['message_id'],
         text: payload['text'],
         date: payload['date']
-      })
-      operation_error_present?(result)
+      }
+      result = AdminBot::Op::Message::Sync.call(params: params)
+      handle_callback_failure(result[:error], __method__) unless result.success?
+
       @message = result[:message]
     end
 
+    def with_locale(&block)
+      # locale switching is not implemented
+      I18n.with_locale(AdminBot.default_locale, &block)
+    end
   end
 end

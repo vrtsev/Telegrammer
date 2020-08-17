@@ -1,6 +1,6 @@
-APP_ENV = :test
-require './config/boot'
+# frozen_string_literal: false
 
+require './config/boot'
 require 'sidekiq/testing'
 require 'telegram/bot/rspec/integration/poller'
 
@@ -16,8 +16,8 @@ RSpec.configure do |config|
   end
 
   config.before(:all) do
-    Telegram::BotManager.configure do |bot_manager_config|
-      bot_manager_config.controller_logging = false
+    Telegram::AppManager.configure do |app_manager_config|
+      app_manager_config.controller_logging = false
     end
 
     # Enable / disable verbose loggers in specs
@@ -29,9 +29,9 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    REDIS.set("#{JeniaBot.bot.username}:state", true)
-    REDIS.set("#{PdrBot.bot.username}:state", true)
-    REDIS.set("#{ExampleBot.bot.username}:state", true)
+    REDIS.set("#{::Telegram.bots[:jenia_bot].username}:state", true)
+    REDIS.set("#{::Telegram.bots[:pdr_bot].username}:state", true)
+    REDIS.set("#{::Telegram.bots[:example_bot].username}:state", true)
     DatabaseCleaner.start
   end
 

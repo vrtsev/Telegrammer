@@ -4,6 +4,7 @@
 # Add necessary setup steps to this file:
 
 echo '!!! DO NOT FORGET TO PULL LATEST COMMITS !!!'
+eval "git pull"
 
 echo '== Stopping all containers'
 eval "docker-compose -f docker-compose.production.yml stop"
@@ -13,6 +14,9 @@ eval "docker-compose -f docker-compose.production.yml run --rm application bundl
 
 echo '== Preparing databases =='
 eval 'docker-compose -f docker-compose.production.yml run --rm application bash -c "bundle exec rake db:migrate"'
+
+echo '== Seed with prod data =='
+eval 'docker-compose -f docker-compose.production.yml run --rm application rake db:production:seed"'
 
 echo '== Starting application =='
 eval 'docker-compose -f docker-compose.production.yml up'

@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 Sequel.migration do
   change do
-
     # Example bot
     alter_table :example_bot_users do
       set_column_type :id, :Bignum
@@ -47,6 +48,5 @@ Sequel.migration do
     alter_table :admin_bot_users do
       set_column_type :id, :Bignum
     end
-
   end
 end
