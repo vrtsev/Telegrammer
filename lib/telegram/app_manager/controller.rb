@@ -27,18 +27,14 @@ module Telegram
       private
 
       def log_action(&block)
-        if Telegram::AppManager.configuration.controller_logging
-          timer_start = Time.now
+        return yield unless Telegram::AppManager.configuration.controller_logging
 
-          payload_data = payload['text'] || payload['data']
-
-          logger.info "\nProcessing '#{payload_data.to_s.bold.cyan}' from user #{from['id'].to_s.bold.magenta} for chat id #{chat['id']}"
-          logger.info "* Recognized action #{self.action_name.to_s.bold.green}"
-          yield
-          logger.info "Processing completed in #{Time.now - timer_start} sec\n"
-        else
-          yield
-        end
+        ::Telegram::AppManager::Logger::ActionLogMessage.new(
+          logger,
+          payload: payload['text'] || payload['data'],
+          user_id: from['id'],
+          chat_id: chat['id']
+        ).call(&block)
       end
 
       def handle_callback_failure(error, callback_name)
