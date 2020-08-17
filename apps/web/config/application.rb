@@ -17,5 +17,6 @@ module TelegramGui
     # the framework and any gems in your application.
 
     config.paths['log'] = '/application/log/web.log'
+    config.hosts << ENV['PRODUCTION_HOST']
   end
 end
