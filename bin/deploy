@@ -10,13 +10,13 @@ echo '== Stopping all containers'
 eval "docker-compose -f docker-compose.production.yml stop"
 
 echo '== Installing dependencies =='
-eval "docker-compose -f docker-compose.production.yml run --rm application bundle install"
+eval "docker-compose -f docker-compose.production.yml run --rm app bundle install"
 
 echo '== Preparing databases =='
-eval 'docker-compose -f docker-compose.production.yml run --rm application bash -c "bundle exec rake db:migrate"'
+eval 'docker-compose -f docker-compose.production.yml run --rm app bash -c "bundle exec rake db:migrate"'
 
 echo '== Seed with prod data =='
-eval 'docker-compose -f docker-compose.production.yml run --rm application rake db:production:seed"'
+eval 'docker-compose -f docker-compose.production.yml run --rm app rake db:production:seed"'
 
 echo '== Starting application =='
 eval 'docker-compose -f docker-compose.production.yml up'
