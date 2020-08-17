@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 require 'pry'
 require 'rake'
 require 'rake/testtask'
@@ -12,17 +14,17 @@ RSpec::Core::RakeTask.new(:spec) do |t|
   # t.rspec_opts << ' more options'
 end
 
-task :default => :spec
+task default: :spec
 
 namespace :redis do
   require 'redis'
 
-  desc "Flush all redis data"
+  desc 'Flush all redis data'
   task :flushall do
     REDIS = Redis.new(
-      host:     ENV['REDIS_HOST'],
-      port:     ENV['REDIS_PORT'],
-      db:       ENV['REDIS_DB']
+      host: ENV['REDIS_HOST'],
+      port: ENV['REDIS_PORT'],
+      db: ENV['REDIS_DB']
     )
 
     REDIS.ping
@@ -35,7 +37,7 @@ namespace :db do
   require 'sequel'
   Sequel.extension :migration
 
-  DB_MIGRATIONS_PATH = 'db/migrations'
+  DB_MIGRATIONS_PATH = 'db/migrations'.freeze
   DB_CONNECTION_PARAMS = {
     adapter: :postgres,
     user: ENV['POSTGRES_USER'],
@@ -43,7 +45,7 @@ namespace :db do
     host: ENV['POSTGRES_HOST'],
     port: ENV['POSTGRES_PORT'],
     database: ENV['POSTGRES_DB']
-  }
+  }.freeze
 
   def current_schema_version(db_connection)
     if db_connection.tables.include?(:schema_info)
@@ -51,7 +53,7 @@ namespace :db do
     end || 0
   end
 
-  desc "Create database"
+  desc 'Create database'
   task :create do
     Sequel.connect(DB_CONNECTION_PARAMS.merge(database: 'postgres'))
           .execute "CREATE DATABASE #{ENV['POSTGRES_DB']}"
@@ -60,7 +62,7 @@ namespace :db do
     puts "Do not forger to run 'rake db:migrate' command"
   end
 
-  desc "Create test database"
+  desc 'Create test database'
   task :prepare_for_test do
     test_database_name = ENV['POSTGRES_DB'] + '_test'
     connection = Sequel.connect(DB_CONNECTION_PARAMS.merge(database: 'postgres'))
@@ -77,10 +79,10 @@ namespace :db do
       DB_MIGRATIONS_PATH
     )
 
-    puts "Prepared DB for test environment"
+    puts 'Prepared DB for test environment'
   end
 
-  desc "Drop database with all data"
+  desc 'Drop database with all data'
   task :drop do
     Sequel.connect(DB_CONNECTION_PARAMS.merge(database: 'postgres'))
           .execute "DROP DATABASE IF EXISTS #{ENV['POSTGRES_DB']}"
@@ -88,21 +90,21 @@ namespace :db do
     puts "Dropped database '#{ENV['POSTGRES_DB']}'"
   end
 
-  desc "Prints current schema version"
+  desc 'Prints current schema version'
   task :version do
     DB = Sequel.connect(DB_CONNECTION_PARAMS)
     puts "Schema Version: #{current_schema_version(DB)}"
   end
 
-  desc "Perform migration up to latest migration available"
+  desc 'Perform migration up to latest migration available'
   task :migrate do
     DB = Sequel.connect(DB_CONNECTION_PARAMS)
     Sequel::Migrator.run(DB, DB_MIGRATIONS_PATH)
     puts "Migrated. Schema Version: #{current_schema_version(DB)}"
   end
 
-  desc "Perform rollback to specified target or full rollback as default"
-  task :rollback do |t|
+  desc 'Perform rollback to specified target or full rollback as default'
+  task :rollback do
     DB = Sequel.connect(DB_CONNECTION_PARAMS)
     version = current_schema_version(DB)
     return puts 'Your DB does not contain any migrations' if version.zero?
@@ -111,27 +113,27 @@ namespace :db do
     puts "Rolled back. Schema Version: #{current_schema_version(DB)}"
   end
 
-  desc "Perform database reset (drop shema with all tables and data)"
+  desc 'Perform database reset (drop shema with all tables and data)'
   task :clear do
     DB = Sequel.connect(DB_CONNECTION_PARAMS)
-    DB.execute "DROP SCHEMA public CASCADE;"
-    DB.execute "CREATE SCHEMA public;"
+    DB.execute 'DROP SCHEMA public CASCADE;'
+    DB.execute 'CREATE SCHEMA public;'
     puts "DB clear. Schema Version: #{current_schema_version(DB)}"
   end
 
-  desc "Seed database with example test data"
+  desc 'Seed database with example test data'
   task :seed do
     require './config/boot.rb'
     require './db/seed.rb'
-    puts "DB seed completed"
+    puts 'DB seed completed'
   end
 
   namespace :production do
-    desc "Seed database with initial production data"
+    desc 'Seed database with initial production data'
     task :seed do
       require './config/boot.rb'
       require './db/seed.production.rb'
-      puts "PRODUCTION DB seed completed"
+      puts 'PRODUCTION DB seed completed'
     end
   end
 end

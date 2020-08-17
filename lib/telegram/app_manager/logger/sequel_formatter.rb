@@ -7,7 +7,7 @@ module Telegram
         FORBIDDEN_LOG_STATEMENTS = ['SET ', 'SELECT '].freeze
         MESSAGE_PREFIX = "\t[SQL] "
 
-        def call(severity, time, progname, msg)
+        def call(_severity, _time, _progname, msg)
           return if forbidden_statements_present?(msg)
 
           msg = msg.sub('INSERT INTO', 'INSERT INTO'.bold.green)
