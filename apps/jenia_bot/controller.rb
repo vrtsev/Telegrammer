@@ -38,11 +38,11 @@ module JeniaBot
 
       JeniaBot::Responders::StartMessage.new(
         current_chat_id: @current_chat.id,
-        bot_author: result[:owner_user].username
+        bot_author: result[:user].username
       ).call
     end
 
-    def jenia!()
+    def jenia!
       result = JeniaBot::Op::Question::GetLast.call
       return respond_with_error(result) unless result.success?
 

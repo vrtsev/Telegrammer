@@ -35,7 +35,7 @@ module PdrBot
 
       PdrBot::Responders::StartMessage.new(
         current_chat_id: @current_chat.id,
-        bot_author: result[:owner_user].username
+        bot_author: result[:user].username
       ).call
     end
 

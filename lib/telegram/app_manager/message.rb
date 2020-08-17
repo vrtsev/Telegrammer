@@ -38,7 +38,8 @@ module Telegram
       def send
         bot.send_message(
           text: text,
-          chat_id: chat_id
+          chat_id: chat_id,
+          reply_markup: reply_markup
         )
       end
 
@@ -47,7 +48,8 @@ module Telegram
           'send_message',
           text: text,
           chat_id: chat_id,
-          reply_to_message_id: message_id
+          reply_to_message_id: message_id,
+          reply_markup: reply_markup
         )
       end
 
@@ -56,7 +58,8 @@ module Telegram
           'edit_message_text',
           text: text,
           chat_id: chat_id,
-          message_id: message_id
+          message_id: message_id,
+          reply_markup: reply_markup
         )
       end
 
@@ -64,7 +67,8 @@ module Telegram
         bot.public_send(
           'edit_message_text',
           text: text,
-          inline_message_id: message_id
+          inline_message_id: message_id,
+          reply_markup: reply_markup
         )
       end
     end
