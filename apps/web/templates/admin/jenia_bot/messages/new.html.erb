@@ -1,0 +1,44 @@
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="#">Admin</a></li>
+    <li><a href="#">Jenia Bot</a></li>
+    <li class="is-active"><a href="#" aria-current="page">Send message</a></li>
+  </ul>
+</nav>
+
+<div class="form-wrapper">
+  <form method="post" action="/admin/jenia_bot/messages">
+    <div class="field">
+      <label class="label">Message text</label>
+      <div class="control">
+        <textarea name="text" class="textarea" placeholder="Enter your message text here"></textarea>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Bot</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Jenia Bot" disabled style="width: 300px">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Chat</label>
+      <div class="control">
+        <div class="select">
+          <select name="chat_id">
+            <% chats.each do |chat| %>
+              <option value="<%= chat.id %>" <% if params[:chat_id].to_i == chat.id %> selected <% end %>><%= chat.title ? chat.title : "#{chat.first_name} #{chat.last_name}" %></option>
+            <% end %>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="field is-grouped">
+      <div class="control">
+        <button type="submit" class="button is-link">Send</button>
+      </div>
+    </div>
+  </form>
+</div>

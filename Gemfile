@@ -42,24 +42,19 @@ gem 'trailblazer-operation' # Service objects for business logic
 ## Extensions
 gem 'hashie'
 
+## Web app
+gem 'hanami-controller'
+gem 'hanami-router'
+gem 'hanami-view'
+
+group :development do
+  gem 'shotgun'
+end
+
 group :test do
   gem 'database_cleaner'
   gem 'fabrication'
   gem 'faker', git: 'https://github.com/stympy/faker.git', branch: 'master'
   gem 'mock_redis'
   gem 'rspec'
-end
-
-## Web app
-gem 'bootsnap', '>= 1.4.2', require: false
-gem 'puma', '~> 4.1', require: false
-gem 'rails', '6.0.0', require: false
-gem 'turbolinks', '~> 5', require: false
-gem 'zeitwerk'
-
-group :development do
-  gem 'listen', '>= 3.0.5', '< 3.2', require: false
-  gem 'spring', require: false
-  gem 'spring-watcher-listen', '~> 2.0.0', require: false
-  gem 'web-console', '>= 3.3.0', require: false
 end
