@@ -3,40 +3,46 @@
 module Telegram
   module AppManager
     class Application
-      def initialize(configuration)
-        @configuration = configuration
+      extend Helpers::Logging
 
-        app_start_message if AppManager.configuration.show_app_start_message
-      end
+      class << self
+        def config
+          @config ||= Configuration.new
+        end
 
-      def run
-        puts "[#{@configuration.app_name}] Application is listening messages...".bold.green
+        def config=(config)
+          @config = config
+        end
 
-        Telegram::Bot::UpdatesPoller.start(
-          @configuration.bot,
-          controller
-        )
-      rescue HTTPClient
-        puts "[#{@configuration.app_name}] Poller timeout error. Reconnecting".bold.red
-        run
-      end
+        def configure
+          yield(config)
+        end
 
-      private
+        def run
+          logger.info "[#{config.app_name}] Application is listening messages...".bold.green
+          Telegram::Bot::UpdatesPoller.start(config.telegram_bot, config.controller)
+        rescue HTTPClient::ReceiveTimeoutError, OpenSSL => e
+          logger.info "[#{config.app_name}] Poller timeout error. Reconnecting".bold.red
+          run
+        end
 
-      def controller
-        raise "Implement method #{__method__} in your app file"
-      end
+        private
 
-      def app_start_message
-        puts <<~INFO
-          =========================================================
-          Application is initialized and configured
+        def app_start_message
+          logger.info <<~INFO
+            \n=========================================================
+            Application is starting
 
-          App name: #{@configuration.app_name.to_s.bold.cyan}
-          Telegram bot username: #{@configuration.bot.username}
-          Default locale: #{@configuration.default_locale}
-          =========================================================\n
-        INFO
+            App name: #{config.app_name.to_s.bold.cyan}
+            Telegram bot username: #{config.telegram_bot.username}
+            Main controller: #{config.controller}
+            Controller logging enabled: #{config.controller_logging}
+
+            Make sure your bot has group privacy setting disabled in telegram
+            to allow application to sync incoming data
+            =========================================================\n
+          INFO
+        end
       end
     end
   end

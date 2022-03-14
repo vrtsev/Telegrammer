@@ -1,7 +1,6 @@
-REDIS = Redis.new(
-  host: ENV['REDIS_HOST'],
-  port: ENV['REDIS_PORT'],
-  db: ENV['REDIS_DB']
-)
+# frozen_string_literal: true
+
+$redis_url = "redis://#{ENV['REDIS_HOST']}:#{ENV['REDIS_PORT']}/#{ENV['REDIS_DB']}"
+REDIS = Redis.new(url: $redis_url)
 
 REDIS.ping

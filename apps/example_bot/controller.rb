@@ -2,106 +2,25 @@
 
 module ExampleBot
   class Controller < Telegram::AppManager::Controller
-    include ControllerHelpers
+    def message(payload)
+      return unless current_message.text.present?
 
-    exception_handler ExampleBot::ExceptionHandler
+      params = { chat_id: current_chat.id, message_text: current_message.text, bot: :example_bot }
+      result = AutoResponses::Random.call(params)
 
-    before_action :sync_chat
-    before_action :sync_user
-    before_action :sync_chat_user
-    before_action :authenticate_chat
-    before_action :sync_message
-    before_action :bot_enabled?
-    around_action :with_locale
-
-    def message(message)
-      return unless message['text'].present?
-
-      params = { chat_id: @current_chat.id, message_text: @message.text }
-      result = ExampleBot::Op::AutoAnswer::Random.call(params: params)
-      return respond_with_error(result) unless result.success?
-
-      ExampleBot::Responders::AutoAnswer.new(
-        current_chat_id: @current_chat.id,
-        current_message_id: @message.id,
-        current_message_text: @message.text,
-        auto_answer: result[:answer]
-      ).call
+      response Responders::AutoResponse, response: result.response
     end
 
     def start!
-      params = { user_id: ENV['TELEGRAM_APP_OWNER_ID'] }
-      result = ::ExampleBot::Op::User::Find.call(params: params)
-      return respond_with_error(result) unless result.success?
+      app_owner_user = User.find_by(external_id: ENV['TELEGRAM_APP_OWNER_ID'])
 
-      ExampleBot::Responders::StartMessage.new(
-        current_chat_id: @current_chat.id,
-        bot_author: result[:user].username
-      ).call
+      response Responders::StartMessage, bot_author: app_owner_user.username
     end
 
     private
 
-    def sync_chat
-      params = Hashie.symbolize_keys(chat)
-      result = ::ExampleBot::Op::Chat::Sync.call(params: params)
-      handle_callback_failure(result[:error], __method__) unless result.success?
-      @current_chat = result[:chat]
-    end
-
-    def sync_user
-      params = { chat_id: @current_chat.id }.merge(Hashie.symbolize_keys(from))
-      result = ::ExampleBot::Op::User::Sync.call(params: params)
-      handle_callback_failure(result[:error], __method__) unless result.success?
-      @current_user = result[:user]
-    end
-
-    def sync_chat_user
-      params = { chat_id: @current_chat.id, user_id: @current_user.id }
-      result = ::ExampleBot::Op::ChatUser::Sync.call(params: params)
-      handle_callback_failure(result[:error], __method__) unless result.success?
-      @current_chat_user = result[:chat_user]
-    end
-
-    def authenticate_chat
-      params = { chat_id: @current_chat.id }
-      result = ::ExampleBot::Op::Chat::Authenticate.call(params: params)
-      handle_callback_failure(result[:error], __method__) unless result.success?
-
-      unless result[:approved]
-        ::ExampleBot.logger.info "* Chat #{@current_chat.id} failed authentication".bold.red
-        throw :abort
-      end
-    end
-
-    def sync_message
-      params = {
-        chat_id: @current_chat.id,
-        user_id: @current_user.id,
-        message_id: payload['message_id'],
-        text: payload['text'],
-        date: payload['date']
-      }
-      result = ExampleBot::Op::Message::Sync.call(params: params)
-      handle_callback_failure(result[:error], __method__) unless result.success?
-
-      @message = result[:message]
-    end
-
-    def bot_enabled?
-      result = ::ExampleBot::Op::Bot::State.call
-      handle_callback_failure(result[:error], __method__) unless result.success?
-
-      @bot_enabled = result[:enabled]
-      unless @bot_enabled
-        ExampleBot.logger.info "* Bot '#{ExampleBot.app_name}' disabled.. Skip processing".bold.red
-        throw :abort
-      end
-    end
-
-    def with_locale(&block)
-      # locale switching is not implemented
-      I18n.with_locale(ExampleBot.default_locale, &block)
+    def handle_exception(exception)
+      response Responders::CommandException if action_type == :command
     end
   end
 end

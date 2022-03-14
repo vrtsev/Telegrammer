@@ -1,8 +1,0 @@
-#!/usr/bin/env ruby
-# frozen_string_literal: true
-
-require './config/environment.rb'
-require './lib/admin_bot.rb'
-require './apps/admin_bot/application.rb'
-
-AdminBot::Application.new(AdminBot.configuration).run

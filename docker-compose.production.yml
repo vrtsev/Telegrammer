@@ -1,11 +1,12 @@
-version: '3.5'
+version: '3.9'
 services:
   pgbackup:
-    container_name: socialup_pgbackup
+    container_name: telegrammer_pgbackup
     image: prodrigestivill/postgres-backup-local
     env_file: .env.production
     environment:
       SCHEDULE: '@daily'
+      POSTGRES_DB: telegram_app_manager_production
     volumes:
       - ./backups:/backups
     depends_on:
@@ -14,27 +15,9 @@ services:
     networks:
       - default
 
-  web:
-    container_name: socialup_web
-    build: .
-    command: bash -c "./bin/web"
-    env_file: .env.production
-    working_dir: /application
-    stdin_open: true
-    tty: true
-    volumes:
-      - .:/application:cached
-      - bundle-cache:/usr/local/bundle:cached
-    ports:
-      - 3000:3000
-    depends_on:
-      - database
-    networks:
-      - default
-
-  app: # container for executing commands, such as 'rake' etc.
-    container_name: socialup_app
-    command: 'true' # hack to exit container if no command passes
+  console:
+    container_name: telegrammer_console
+    command: bin/console
     build: .
     env_file: .env.production
     working_dir: /application
@@ -48,27 +31,11 @@ services:
       - redis
     networks:
       - default
-
-  admin_bot:
-    container_name: socialup_admin_bot
-    build: .
-    command: bash -c "ruby ./bin/admin_bot"
-    env_file: .env.production
-    working_dir: /application
-    volumes:
-      - .:/application:cached
-      - bundle-cache:/usr/local/bundle:cached
-    depends_on:
-      - database
-      - redis
-    networks:
-      - default
-    restart: always
 
   pdr_bot:
-    container_name: socialup_pdr_bot
+    container_name: telegrammer_pdr_bot
     build: .
-    command: bash -c "ruby ./bin/pdr_bot"
+    command: ruby ./bin/bots/pdr_bot
     env_file: .env.production
     working_dir: /application
     volumes:
@@ -82,9 +49,9 @@ services:
     restart: always
 
   jenia_bot:
-    container_name: socialup_jenia_bot
+    container_name: telegrammer_jenia_bot
     build: .
-    command: bash -c "ruby ./bin/jenia_bot"
+    command: ruby ./bin/bots/jenia_bot
     env_file: .env.production
     working_dir: /application
     volumes:
@@ -98,9 +65,9 @@ services:
     restart: always
 
   example_bot:
-    container_name: socialup_example_bot
+    container_name: telegrammer_example_bot
     build: .
-    command: bash -c "ruby ./bin/example_bot"
+    command: ruby ./bin/bots/example_bot
     env_file: .env.production
     working_dir: /application
     volumes:
@@ -114,7 +81,7 @@ services:
     restart: always
 
   sidekiq:
-    container_name: socialup_sidekiq
+    container_name: telegrammer_sidekiq
     build: .
     command: bash -c "bundle exec sidekiq -e development -r ./config/boot.rb -C ./config/sidekiq.yml"
     env_file: .env.production
@@ -132,7 +99,7 @@ services:
     restart: always
 
   sidekiqui:
-    container_name: socialup_sidekiqui
+    container_name: telegrammer_sidekiqui
     build: .
     command: bundle exec rackup apps/sidekiqui/config.ru -p 9393 --server=webrick --host 0.0.0.0
     env_file: .env.production
@@ -149,7 +116,7 @@ services:
       - default
 
   database:
-    container_name: socialup_database
+    container_name: telegrammer_database
     image: postgres:10.3-alpine
     command: postgres -c 'max_connections=150'
     ports:
@@ -161,7 +128,7 @@ services:
     restart: always
 
   redis:
-    container_name: socialup_redis
+    container_name: telegrammer_redis
     image: redis:4.0-alpine
     command: redis-server /usr/local/etc/redis/redis.conf
     env_file: .env.production

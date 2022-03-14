@@ -3,11 +3,21 @@
 module Telegram
   module AppManager
     class Configuration
-      attr_accessor :controller_logging, :show_app_start_message
+      DEFAULT_CONTROLLER_LOGING_ENABLED = true
+
+      # TODO Add params validation here
+
+      attr_accessor \
+        :app_name,
+        :telegram_bot,
+        :controller,
+        :controller_logging
 
       def initialize
-        @controller_logging = true
-        @show_app_start_message = true
+        @app_name = nil
+        @telegram_bot = nil
+        @controller = nil
+        @controller_logging = DEFAULT_CONTROLLER_LOGING_ENABLED
       end
     end
   end

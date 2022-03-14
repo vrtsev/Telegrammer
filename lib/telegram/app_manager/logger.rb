@@ -3,24 +3,33 @@
 module Telegram
   module AppManager
     class Logger < ::Logger
-      class DefaultFormatter < ::Logger::Formatter
-        def call(_severity, _time, _progname, msg)
-          "#{msg2str(msg)}\n"
-        end
+      include Logger::Helpers
+
+      attr_reader :file_path
+
+      def initialize(file_path = nil, **args)
+        @file_path = file_path
+        super(logdev, args)
+
+        @default_formatter = DefaultFormatter.new
+        $stdout.sync = true
       end
 
-      def initialize(log_file = nil, **args)
-        $stdout.sync = true
+      private
 
-        if log_file
-          dirname = File.dirname(log_file)
-          FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
+      def log_file
+        dirname = File.dirname(file_path)
+        FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
+        FileUtils.touch(file_path) unless File.exists?(file_path)
+        File.open(file_path, 'a')
+      end
 
-          @file = File.open(log_file, 'a')
-        end
+      def logdev
+        targets = Array.new
+        targets << STDOUT   if ENV['CONSOLE_LOGGING'] == 'true'
+        targets << log_file if file_path.present?
 
-        super(MultiIO.new(STDOUT, @file), args)
-        @default_formatter = DefaultFormatter.new
+        MultiIO.new(targets)
       end
     end
   end

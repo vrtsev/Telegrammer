@@ -2,17 +2,15 @@
 
 module JeniaBot
   module Responders
-    class StartMessage < Telegram::AppManager::BaseResponder
+    class StartMessage < Telegram::AppManager::Responder
       def call
-        message(
-          start_message,
-          bot: Telegram.bots[:jenia_bot],
-          chat_id: params[:current_chat_id]
-        ).send
+        respond_with(:message, text: start_message_text)
       end
 
-      def start_message
-        I18n.t('.jenia_bot.start_message', bot_author: params[:bot_author]).sample
+      private
+
+      def start_message_text
+        Translation.for('jenia_bot.start_message')
       end
     end
   end

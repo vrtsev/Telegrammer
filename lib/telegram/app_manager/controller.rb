@@ -5,50 +5,50 @@ module Telegram
     class Controller < Telegram::Bot::UpdatesController
       include Telegram::Bot::UpdatesController::MessageContext
       include Telegram::Bot::UpdatesController::Session
+      include Telegram::Bot::UpdatesController::TypedUpdate
+      include Helpers::Logging
+      include Helpers::Responding
+      include Controller::Callbacks
+      include Controller::Actions
 
-      redis_url = "redis://#{ENV['REDIS_HOST']}:#{ENV['REDIS_PORT']}/#{ENV['REDIS_DB']}"
-      self.session_store = :redis_cache_store, { url: redis_url }
+      self.session_store = :redis_cache_store, { url: $redis_url }
 
-      def self.exception_handler(handler_class)
-        rescue_from StandardError do |exception|
-          options = {
-            payload: payload,
-            action_options: action_options,
-            bot: bot
-          }
-
-          handler_class.new(exception, options).call
+      rescue_from StandardError do |exception|
+        if ENV['APP_ENV'] != 'test'
+          logger.error 'Application raised exception'.bold.red
+          logger.error exception.full_message
         end
+
+        response(Responder::ExceptionReport, exception: exception, payload: payload.to_h)
+        handle_exception(exception)
       end
 
-      exception_handler ::Telegram::AppManager::ExceptionHandler
       around_action :log_action
+      before_action :bot_enabled?,
+                    :sync_chat,
+                    :sync_user,
+                    :sync_chat_user,
+                    :on_user_left_chat,
+                    :sync_message,
+                    :authenticate_chat!
+      before_action :authorize_admin!, only: [:enable!, :disable!]
+
+      attr_reader :current_chat,
+                  :current_user,
+                  :current_chat_user,
+                  :current_message
 
       private
 
-      def log_action(&block)
-        return yield unless Telegram::AppManager.configuration.controller_logging
+      def handle_exception(exception)
+        return if ENV['APP_ENV'] == 'test'
 
-        ::Telegram::AppManager::Logger::ActionLogMessage.new(
-          logger,
-          payload: payload['text'] || payload['data'],
-          user_id: from['id'],
-          chat_id: chat['id']
-        ).call(&block)
+        message = "Hint: You can handle exception in your controller by implementing '#{__method__}' private method"
+        logger.error "\n [TelegramAppManager] #{message} \n".bold
       end
 
-      def handle_callback_failure(error, callback_name)
-        error_msg = if error.present?
-                      "Callback '#{callback_name}' error: #{error}"
-                    else
-                      "Unknown callback '#{callback_name}' error"
-                    end
-
-        raise error_msg
-      end
-
-      def logger
-        raise 'Implement logger method in controller' unless Telegram::AppManager.configuration.controller_logging
+      def current_application
+        self.class.module_parent::Application
       end
     end
   end

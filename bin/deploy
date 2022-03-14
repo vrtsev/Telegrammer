@@ -3,20 +3,23 @@
 # This script is a starting point to deploy your application on server.
 # Add necessary setup steps to this file:
 
-echo '!!! DO NOT FORGET TO PULL LATEST COMMITS !!!'
+echo '== Pulling latest commits from repo (branch: master) =='
 eval "git pull"
 
 echo '== Stopping all containers'
 eval "docker-compose -f docker-compose.production.yml stop"
 
 echo '== Installing dependencies =='
-eval "docker-compose -f docker-compose.production.yml run --rm app bundle install"
+eval "docker-compose -f docker-compose.production.yml run --rm console bundle install"
 
 echo '== Preparing databases =='
-eval 'docker-compose -f docker-compose.production.yml run --rm app bash -c "bundle exec rake db:migrate"'
+eval 'docker-compose -f docker-compose.production.yml run --rm console rake db:migrate'
 
-echo '== Seed with prod data =='
-eval 'docker-compose -f docker-compose.production.yml run --rm app rake db:production:seed"'
+echo '== Checking translations =='
+eval 'docker-compose -f docker-compose.production.yml run --rm console rake translations:check'
+
+echo '== Disabling all bots =='
+eval 'docker-compose -f docker-compose.production.yml run --rm console rake bots:disable_all'
 
 echo '== Starting application =='
 eval 'docker-compose -f docker-compose.production.yml up'

@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require './config/environment.rb'
+require './lib/application.rb'
+require './apps/example_bot/application.rb'
+
+ExampleBot::Application.run
