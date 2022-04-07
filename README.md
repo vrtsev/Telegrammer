@@ -1,39 +1,34 @@
-# Telegram bot manager application
+# Telegrammer. Telegram bots manager application
+
+![](https://img.shields.io/badge/ruby-v.3.1.1-red)
+[![Ruby Style Guide](https://img.shields.io/badge/code_style-rubocop-brightgreen.svg)](https://github.com/rubocop/rubocop)
+
+This application is based on https://github.com/telegram-bot-rb/telegram-bot gem and using Telegram API
 
 Purposes of project:
-- To create custom complex ruby application architecture from scratch without any frameworks (for education purposes)
-- To create application with useful bots inside
-
-Advanced application with multiple telegram bots inside
-Purpose of this project - quick development and integration multiple telegram bots in one application
+- to create custom complex ruby application architecture from scratch without any frameworks (for education purposes)
+- quick development and integration of multiple telegram bots in one application
 
 To see example bot in action, please, telegram to @socialup_example_bot
 
 ![Framework console preview](https://user-images.githubusercontent.com/20019225/64276330-5c09f300-cf50-11e9-81dc-6a28ecd7cac1.JPG)
 ![Framework example bot preview](https://user-images.githubusercontent.com/20019225/64276329-5c09f300-cf50-11e9-9db2-fc871386fc72.jpg)
 
-This application is based on:
-- https://github.com/telegram-bot-rb/telegram-bot gem and using Telegram API
-- https://github.com/vrtsev/telegram-bot-manager-ruby gem as a wrapper for `telegram-bot` gem with advanced instruments
-- https://github.com/vrtsev/telegram-app-manager-framework and follows architecture conventions for quick bot development and integration
 
-App includes out-of-the-box:
-- Database (Postgres), ORM and migrations (Sequel)
-- Key-value database (Redis)
+App includes:
+- Database (Postgres), ActiveRecord ORM
+- Key-value database (Redis) integration
 - Background processing (Sidekiq) with web UI (SidekiqUI)
 - Schedules for background workers (Sidekiq-scheduler)
-- Background Workers statistic (Sidekiq-statistic)
-- multiple environments (production, development, test)
-- Rake tasks for general tasks such as migrate db etc..
+- Background workers statistic (Sidekiq-statistic)
+- Multiple environments (production, development, test)
 - Docker-compose file to quickly run the whole app in isolation
 - Console action logging (colorized for better readability)
-- Locales that contains your telegram message parts and can be easily changed to other locale file
 - Prepared test environment (using RSpec by default)
-- Trailblazer-operation gem by default to write service objects with business logic
 
 ## Requirements
 Please keep in mind that you have to install `redis` and `postgres` on your local machine
-Or just use docker. Docker-compose file included
+Or just use included docker-compose file
 
 ## Preparation and obtaining an API key
 First of all you need to create your own telegram bot and obtain an API key. Follow this steps, it's very simple and will take less than 5 mins:
@@ -46,38 +41,32 @@ First of all you need to create your own telegram bot and obtain an API key. Fol
 7. You should to set inline mode and turn off privacy mode for your bot. Inline mode will allow you to use inline keyboards and inline queries. Disabled privacy will allow you to sync user messages to DB. Find this settings in bot settings (@BotFather)
 
 ## Setup and first run (only using Docker compose)
-1. Create a copy of `.env.example` file and name it `.env`
-2. Open `.env` file and set ENV variables
+1. Open `.env` file and set ENV variables
 
 ```
 # Telegram settings
 # (write to '@get_any_telegram_id_bot' if you dont know your id)
 TELEGRAM_APP_OWNER_ID= /insert your personal telegram id/
+
+YOUR_BOT_API_TOKEN= /insert bot token here. Use @BotFather/
+YOUR_BOT_USERNAME= /to parse commands with bot mention. Example: SushiDeliveryBot/
 ```
-4. $ docker-compose build
-5. $ docker-compose run application bin/setup
-6. $ docker-compose up
+2. $ docker-compose build
+3. $ docker-compose run console bin/setup
+4. $ docker-compose up
 
 
 ## Available rake commands:
 - `rake` - will run all spec tests
-- `rake SPEC='spec/admin_bot/controller_spec.rb'` - run specified spec test
 - `rake redis:flushall` - clear all Redis keys and values
-- `rake db:create` - create DB in Postgres
-- `rake db:prepare_for_test` - Create and migrate DB for test env
-- `rake db:drop` - drop database that specified in `ENV['POSTGRES_DB']` variable
-- `rake db:version` - current migration version
-- `rake db:migrate` - migrate DB
-- `rake db:rollback` - rollback to previous migration version
-- `rake db:clear` - clear all data in DB
-- `rake db:seed` - seed DB with example test data for development env
+- `rake bots:disable_all` - disable all bots (sets `enabled: false` in `bot_settings` table)
+- `rake translations:check` - Check if all translations is imported to DB. It compares registered keys in `Translation` model with existing translation records in DB
+- `rake db:new_migration name=create_some_table` - Generate migration file
 
-
-## Adding new locales
-Add new locales to '/locales' folder. Keep in mind, that everything except '/locales/en' folder will be hidden from git (see .gitignore file)
 
 ## Run tests
-Use command `docker-compose -f docker-compose.test.yml run app rspec` to run all tests
+- Use command `docker-compose -f docker-compose.test.yml run console rspec` to run all tests
+- To run particular test use `docker-compose -f docker-compose.test.yml run console rspec ./spec/controllers/example_bot_controller_spec.rb`
 
 ## Deployment
 Use `bin/deploy` script file to perform actions needed for project deployment
@@ -87,12 +76,11 @@ Use `bin/deploy` script file to perform actions needed for project deployment
 - `bin/deploy` for performing deployment steps
 - `bin/setup` to perform initial project setup
 
-
 ## Contributing
-Bug reports and pull requests are welcome on GitHub at https://github.com/vrtsev/SocialUp. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/vrtsev/Telegrammer. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The project is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
 
 ## Code of Conduct
-Everyone interacting in the AppManager project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/vrtsev/SocialUp/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Telegrammer project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/vrtsev/Telegrammer/blob/master/CODE_OF_CONDUCT.md).

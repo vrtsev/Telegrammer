@@ -1,8 +1,8 @@
-version: '3.5'
+version: '3.9'
 services:
   adminer:
-    container_name: socialup_adminer
-    image: adminer:latest
+    container_name: telegrammer_adminer
+    image: adminer:4.8.1
     ports:
       - 8080:8080
     env_file: .env
@@ -10,7 +10,7 @@ services:
       - .:/application:cached
 
   redisui:
-    container_name: socialup_redisui
+    container_name: telegrammer_redisui
     image: rediscommander/redis-commander:latest
     ports:
       - 8081:8081

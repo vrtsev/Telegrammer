@@ -2,137 +2,67 @@
 
 module PdrBot
   class Controller < Telegram::AppManager::Controller
-    include ControllerHelpers
+    before_action :authorize_admin!, only: [:say!, :clear_stats!]
 
-    exception_handler PdrBot::ExceptionHandler
+    def message(payload)
+      return unless current_message.text.present?
 
-    before_action :sync_chat
-    before_action :sync_user
-    before_action :sync_chat_user
-    before_action :authenticate_chat
-    before_action :sync_message
-    before_action :bot_enabled?
-    around_action :with_locale
+      params = { chat_id: current_chat.id, message_text: current_message.text, bot: :pdr_bot }
+      result = AutoResponses::Random.call(params)
 
-    def message(message)
-      return unless message['text'].present?
-
-      params = { chat_id: @current_chat.id, message_text: @message.text }
-      result = PdrBot::Op::AutoAnswer::Random.call(params: params)
-      return unless result[:answer].present?
-
-      PdrBot::Responders::AutoAnswer.new(
-        current_chat_id: @current_chat.id,
-        current_message_id: @message.id,
-        auto_answer: result[:answer]
-      ).call
+      response Responders::AutoResponse, response: result.response
     end
 
     def start!
-      params = { user_id: ENV['TELEGRAM_APP_OWNER_ID'] }
-      result = ::PdrBot::Op::User::Find.call(params: params)
-      return respond_with_error(result) unless result.success?
+      app_owner_user = User.find_by(external_id: ENV['TELEGRAM_APP_OWNER_ID'])
 
-      PdrBot::Responders::StartMessage.new(
-        current_chat_id: @current_chat.id,
-        bot_author: result[:user].username
-      ).call
+      response Responders::StartMessage, bot_author: app_owner_user.username
     end
 
     def pdr!
-      params = { chat_id: @current_chat.id, user_id: @current_user.id }
-      result = ::PdrBot::Op::Game::Run.call(params: params)
-      return respond_with_error(result) unless result.success?
+      params = { chat_id: current_chat.id, initiator_id: current_user.id }
+      result = PdrGame::Run.call(params)
+      return respond_with_error(result.exception) unless result.success?
 
-      PdrBot::Responders::Game.new(current_chat_id: @current_chat.id).call
+      response Responders::Game::Start
       results!
     end
 
     def results!
-      params = { chat_id: @current_chat.id }
-      result = ::PdrBot::Op::GameRound::LatestResults.call(params: params)
-      return respond_with_error(result) unless result.success?
+      params = { chat_id: current_chat.id }
+      result = PdrGame::Rounds::LatestResults.call(params)
+      return respond_with_error(result.exception) unless result.success?
 
-      PdrBot::Responders::Results.new(
-        current_chat_id: @current_chat.id,
-        winner_full_name: result[:winner].full_name,
-        loser_full_name: result[:loser].full_name
-      ).call
+      response Responders::Game::Results, winner_name: result.winner.name, loser_name: result.loser.name
     end
 
     def stats!
-      params = { chat_id: @current_chat.id }
-      result = ::PdrBot::Op::GameStat::ByChat.call(params: params)
-      return respond_with_error(result) unless result.success?
+      params = { chat_id: current_chat.id }
+      result = PdrGame::Stats::ByChat.call(params)
+      return respond_with_error(result.exception) unless result.success?
 
-      PdrBot::Responders::Stats.new(
-        current_chat_id: @current_chat.id,
-        winner_stat: result[:winner_stat],
-        loser_stat: result[:loser_stat],
-        chat_stats: result[:chat_stats]
-      ).call
+      response(
+        Responders::Game::Stats,
+        winner_leader_stat: result.winner_leader_stat,
+        loser_leader_stat: result.loser_leader_stat,
+        chat_stats: result.chat_stats
+      )
+    end
+
+    def reset_stats!
+      params = { chat_id: current_chat.id }
+      result = PdrGame::Stats::Reset.call(params)
+      return respond_with_error(result.exception) unless result.success?
     end
 
     private
 
-    def sync_chat
-      params = Hashie.symbolize_keys(chat)
-      result = ::PdrBot::Op::Chat::Sync.call(params: params)
-      handle_callback_failure(result[:error], __method__) unless result.success?
-      @current_chat = result[:chat]
+    def respond_with_error(exception)
+      response Responders::ServiceError, error_code: exception.error_code
     end
 
-    def sync_user
-      params = { chat_id: @current_chat.id }.merge(Hashie.symbolize_keys(from))
-      result = ::PdrBot::Op::User::Sync.call(params: params)
-      handle_callback_failure(result[:error], __method__) unless result.success?
-      @current_user = result[:user]
-    end
-
-    def sync_chat_user
-      params = { chat_id: @current_chat.id, user_id: @current_user.id }
-      result = ::PdrBot::Op::ChatUser::Sync.call(params: params)
-      handle_callback_failure(result[:error], __method__) unless result.success?
-      @current_chat_user = result[:chat_user]
-    end
-
-    def authenticate_chat
-      params = { chat_id: @current_chat.id }
-      result = ::PdrBot::Op::Chat::Authenticate.call(params: params)
-      handle_callback_failure(result[:error], __method__) unless result.success?
-
-      unless result[:approved]
-        ::PdrBot.logger.info "* Chat #{@current_chat.id} failed authentication".bold.red
-        throw :abort
-      end
-    end
-
-    def sync_message
-      params = {
-        chat_id: @current_chat.id,
-        user_id: @current_user.id,
-        message_id: payload['message_id'],
-        text: payload['text'],
-        date: payload['date']
-      }
-      result = PdrBot::Op::Message::Sync.call(params: params)
-      handle_callback_failure(result[:error], __method__) unless result.success?
-      @message = result[:message]
-    end
-
-    def bot_enabled?
-      result = ::PdrBot::Op::Bot::State.call
-      handle_callback_failure(result[:error], __method__) unless result.success?
-      @bot_enabled = result[:enabled]
-      unless @bot_enabled
-        PdrBot.logger.info "* Bot '#{PdrBot.app_name}' disabled.. Skip processing".bold.red
-        throw :abort
-      end
-    end
-
-    def with_locale(&block)
-      # locale switching is not implemented
-      I18n.with_locale(PdrBot.default_locale, &block)
+    def handle_exception(exception)
+      response Responders::CommandException if action_type == :command
     end
   end
 end

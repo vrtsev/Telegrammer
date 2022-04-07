@@ -1,8 +1,0 @@
-AllCops:
-  TargetRubyVersion: 2.6.2
-  Exclude:
-    - './db/migrations/*'
-    - './spec/**/*'
-
-Documentation:
-  Enabled: false

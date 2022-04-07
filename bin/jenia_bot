@@ -1,8 +1,0 @@
-#!/usr/bin/env ruby
-# frozen_string_literal: true
-
-require './config/environment.rb'
-require './lib/jenia_bot.rb'
-require './apps/jenia_bot/application.rb'
-
-JeniaBot::Application.new(JeniaBot.configuration).run

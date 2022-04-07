@@ -2,9 +2,9 @@
 
 module Telegram
   module AppManager
-    class Logger
+    class Logger < ::Logger
       class MultiIO
-        def initialize(*targets)
+        def initialize(targets = [])
           @targets = targets.compact
         end
 
@@ -12,9 +12,9 @@ module Telegram
           @targets.each do |target|
             if target.is_a?(File)
               # Remove colorization
-              args.map! { |a| a&.gsub(/\e\[(\d+)(;\d+)*m/, '') }
+              uncolorized = args.map { |a| a&.gsub(/\e\[(\d+)(;\d+)*m/, '') }
 
-              target.write(*args)
+              target.write(*uncolorized)
               target.rewind
             else
               target.write(*args)

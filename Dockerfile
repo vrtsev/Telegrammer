@@ -1,4 +1,4 @@
-FROM ruby:2.6.2-slim-stretch
+FROM ruby:3.1.1-slim-buster
 ENV LANG C.UTF-8
 
 # "man" dirs creation prevents fail when install postgresql-client

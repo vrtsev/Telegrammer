@@ -1,4 +1,3 @@
----
 # Set desired concurrency here. By default 1
 :concurrency: 1
 :logfile: log/sidekiq.log
@@ -8,23 +7,8 @@
   - default
   - low
 
-:schedule:
-  AdminBot::DeleteOldMessagesWorker:
-    cron: '0 0 1 * *'   # Runs every month
-    class: AdminBot::DeleteOldMessagesWorker
-    description: 'This job deletes old messages for AdminBot'
-
-  JeniaBot::DeleteOldMessagesWorker:
-    cron: '0 0 1 * *'   # Runs every month
-    class: JeniaBot::DeleteOldMessagesWorker
-    description: 'This job deletes old messages for JeniaBot'
-
-  PdrBot::DeleteOldMessagesWorker:
-    cron: '0 0 1 * *'   # Runs every month
-    class: PdrBot::DeleteOldMessagesWorker
-    description: 'This job deletes old messages for PdrBot'
-
-  ExampleBot::DeleteOldMessagesWorker:
-    cron: '0 0 1 * *'   # Runs every month
-    class: ExampleBot::DeleteOldMessagesWorker
-    description: 'This job deletes old messages for ExampleBot'
+# :schedule:
+  # WorkerClass:
+  #   cron: '0 0 1 * *' # Runs every month
+  #   class: WorkerClass
+  #   description: 'Worker description'

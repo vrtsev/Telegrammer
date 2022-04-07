@@ -1,8 +1,8 @@
-version: '3.5'
+version: '3.9'
 services:
-  app: # container for executing commands, such as 'rake' etc.
-    container_name: socialup_app
-    command: 'true' # hack to exit container if no command passes
+  console:
+    container_name: telegrammer_console
+    command: 'bin/console'
     build: .
     working_dir: /application
     stdin_open: true
@@ -19,7 +19,7 @@ services:
       - web
 
   database:
-    container_name: socialup_database
+    container_name: telegrammer_database
     image: postgres:10.3-alpine
     command: postgres -c 'max_connections=150'
     ports:
@@ -30,7 +30,7 @@ services:
       - db-data:/var/lib/postgresql/data:cached
 
   redis:
-    container_name: socialup_redis
+    container_name: telegrammer_redis
     image: redis:4.0-alpine
     command: redis-server /usr/local/etc/redis/redis.conf
     env_file: .env.test
