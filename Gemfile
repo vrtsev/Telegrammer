@@ -20,6 +20,7 @@ gem 'sidekiq', '6.4.1' # background processing
 gem 'sidekiq-scheduler', '3.1.1' # scheduled background workers
 gem 'sidekiq-statistic', git: 'https://github.com/davydovanton/sidekiq-statistic.git', ref: 'f7476c9'
 gem 'sinatra', '~> 2.0', require: false # UI for sidekiq and web app
+gem 'webrick', '1.7.0'
 
 ## Databases
 gem 'activerecord', '6.1.5' # DB ORM
