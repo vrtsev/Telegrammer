@@ -14,6 +14,7 @@ example_bot_translations = [
 
 jenia_bot_translations = [
   { key: :'jenia_bot.command_exception', values: ['Now now', 'Noo', 'Later...'] },
+  { key: :'jenia_bot.default_call_answer', values: ['I am here', 'Who is calling me'] },
   { key: :'jenia_bot.start_message', values: [<<~TEXT
       Hi, it is a JeniaBot!
       Call a command /jenia and I will show you a list with questions
@@ -40,9 +41,9 @@ pdr_bot_translations = [
   { key: :'pdr_bot.game.start.searching_users',            values: ['Here it is!!!', 'Ok, I have results'] },
   { key: :'pdr_bot.game.reminder',                         values: ['Lets start the game: /pdr'] },
   { key: :'pdr_bot.game.errors.latest_round_not_expired',  values: ['We’ve already launched the game today ... Be careful. Run the results command (like /results)', 'Loser has been already found. Run /results command'] },
-  { key: :'pdr_bot.game.errors.not_enough_users',          values: ['No no, for the game I need more than %{min_count} registered people'] },
+  { key: :'pdr_bot.game.errors.not_enough_users',          values: ['No no, for the game I need more than %{min_count} registered people. The more people will write to chat - the more will be registered. Keep in mind game is available only in group chats'] },
   { key: :'pdr_bot.game.errors.stats_not_found',           values: ['There is not statistics yet. Run at least a game, or wait until enough players will be registered'] },
-  { key: :'pdr_bot.game.errors.no_rounds',                 values: ['Еще нету раундов. Запусти игру чтобы узнать сегодняшних победителей: /pdr'] },
+  { key: :'pdr_bot.game.errors.no_rounds',                 values: ['There is no game rounds. Run command "/pdr" to know who is a leaders of the day'] },
 
   { key: :'pdr_bot.game.results.title',                    values: ['Here is stats:', 'We decided that:'] },
   { key: :'pdr_bot.game.results.loser',                    values: ['💩 loser is %{user_name}...', '💩 %{user_name} is loser today...'] },

@@ -49,14 +49,10 @@ module Telegram
         end
 
         def url_for(file_id)
-          request = telegram_bot.request(:getFile, file_id: file_id)
+          request = params[:bot].request(:getFile, file_id: file_id)
           file_path = request.dig('result', 'file_path')
 
-          "#{CONTENT_BASE_URL}/bot#{telegram_bot.token}/#{file_path}"
-        end
-
-        def telegram_bot
-          self.class.module_parent::Application.config.telegram_bot
+          "#{CONTENT_BASE_URL}/bot#{params[:bot].token}/#{file_path}"
         end
       end
     end

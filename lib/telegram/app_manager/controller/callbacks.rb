@@ -44,7 +44,7 @@ module Telegram
         end
 
         def on_user_left_chat
-          return unless payload.left_chat_member
+          return unless payload.try(:left_chat_member).present?
 
           chat_user = ChatUser.joins(:chat, :user).find_by(
             chats: { external_id: current_chat.external_id },
@@ -57,9 +57,13 @@ module Telegram
         end
 
         def sync_message
-          return if payload.message_id.blank?
+          return if payload.try(:message_id).blank?
 
-          message_params = Builders::Message.build(payload: payload, chat_user_id: current_chat_user.id)
+          message_params = Builders::Message.build(
+            payload: payload,
+            chat_user_id: current_chat_user.id,
+            bot: current_application.config.telegram_bot
+          )
           @current_message = ::Message.sync(message_params, external_id: message_params[:external_id])
 
           logger.log_callback("Synced message: '#{@current_message.text}'")

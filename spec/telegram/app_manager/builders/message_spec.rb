@@ -4,7 +4,8 @@ RSpec.describe Telegram::AppManager::Builders::Message do
   describe '.build' do
     subject { described_class.build(**params) }
 
-    let(:params) { Hash[payload: payload, chat_user_id: chat_user.id] }
+    let(:params) { Hash[payload: payload, chat_user_id: chat_user.id, bot: bot] }
+    let(:bot) { Telegram.bots[:example_bot] }
     let(:chat_user) { create(:chat_user) }
     let(:payload) { Telegram::Bot::Types::Message.new(payload_params)  }
     let(:base_payload_params) { Hash[message_id: 123456789, date: 1649255514] }

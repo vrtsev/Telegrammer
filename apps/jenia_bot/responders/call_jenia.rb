@@ -3,20 +3,19 @@
 module JeniaBot
   module Responders
     class CallJenia < Telegram::AppManager::Responder
-      class Contract < Telegram::AppManager::Contract
-        params do
-          required(:response).filled(:string)
-          optional(:questions).filled(:array)
-        end
-      end
-
       KEYBOARD_SLICE_COUNT = 1
 
       def call
-        reply_with(:message, text: params[:response], reply_markup: reply_markup)
+        reply_with(:message, text: response_text, reply_markup: reply_markup)
       end
 
       private
+
+      def response_text
+        return params[:response] if params[:response].present?
+
+        Translation.for('jenia_bot.default_call_answer')
+      end
 
       def reply_markup
         {

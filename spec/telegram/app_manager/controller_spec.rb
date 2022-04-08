@@ -227,12 +227,19 @@ RSpec.describe Telegram::AppManager::Controller, type: :controller, telegram_bot
 
       before do
         allow(::Message).to receive(:sync).and_return(current_message)
-        allow(Telegram::AppManager::Builders::Message).to receive(:build).with({ payload: payload, chat_user_id: current_chat_user.id })
-          .and_return(message_params)
+        allow(Telegram::AppManager::Builders::Message).to receive(:build).with({
+          payload: payload,
+          chat_user_id: current_chat_user.id,
+          bot: bot
+        }).and_return(message_params)
       end
 
       it 'calls Telegram::AppManager::Builders::Message.build' do
-        expect(Telegram::AppManager::Builders::Message).to receive(:build).with({ payload: payload, chat_user_id: current_chat_user.id })
+        expect(Telegram::AppManager::Builders::Message).to receive(:build).with({
+          payload: payload,
+          chat_user_id: current_chat_user.id,
+          bot: bot
+        })
         subject
       end
 

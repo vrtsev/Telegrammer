@@ -6,6 +6,7 @@ class Translation < ActiveRecord::Base
     example_bot.auto_response
     example_bot.start_message
     jenia_bot.command_exception
+    jenia_bot.default_call_answer
     jenia_bot.start_message
     pdr_bot.command_exception
     pdr_bot.start_message
@@ -17,11 +18,9 @@ class Translation < ActiveRecord::Base
     pdr_bot.game.errors.stats_not_found
     pdr_bot.game.errors.no_rounds
     pdr_bot.game.results.title
-    pdr_bot.game.results.special_message
-    pdr_bot.game.results.winner
     pdr_bot.game.results.loser
+    pdr_bot.game.results.winner
     pdr_bot.game.stats.leaders.title
-    pdr_bot.game.stats.leaders.special_message
     pdr_bot.game.stats.leaders.winner
     pdr_bot.game.stats.leaders.loser
     pdr_bot.game.stats.chat_user_stat

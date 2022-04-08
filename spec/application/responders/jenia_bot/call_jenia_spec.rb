@@ -5,7 +5,12 @@ RSpec.describe JeniaBot::Responders::CallJenia, type: :responder, telegram_bot: 
 
   let(:bot) { Telegram.bots[:jenia_bot] }
 
-  it_should_behave_like 'invalid service'
+  context 'when response param is not present' do
+    let(:params) { Hash[response: nil] }
+    let(:message_params) { Hash[chat_id: current_chat.external_id, reply_to_message_id: current_message.external_id] }
+
+    it { expect { subject }.to send_telegram_message(bot, nil, message_params) }
+  end
 
   context 'when response param is present' do
     let(:message_params) do
