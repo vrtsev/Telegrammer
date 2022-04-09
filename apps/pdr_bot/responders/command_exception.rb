@@ -10,7 +10,7 @@ module PdrBot
       private
 
       def error_text
-        Translation.for('pdr_bot.command_exception')
+        t('pdr_bot.command_exception')
       end
     end
   end

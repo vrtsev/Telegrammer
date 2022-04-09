@@ -14,7 +14,7 @@ module ExampleBot
       end
 
       def received_message
-        Translation.for('example_bot.auto_response', message: current_message.text)
+        t('example_bot.auto_response', message: current_message.text)
       end
     end
   end

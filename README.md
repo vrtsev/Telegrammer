@@ -2,6 +2,8 @@
 
 ![](https://img.shields.io/badge/ruby-v.3.1.1-red)
 
+!Currently in production!
+
 This application is based on https://github.com/telegram-bot-rb/telegram-bot gem and using Telegram API
 
 Purposes of project:
@@ -40,11 +42,11 @@ First of all you need to create your own telegram bot and obtain an API key. Fol
 7. You should to set inline mode and turn off privacy mode for your bot. Inline mode will allow you to use inline keyboards and inline queries. Disabled privacy will allow you to sync user messages to DB. Find this settings in bot settings (@BotFather)
 
 ## Setup and first run (only using Docker compose)
-1. Create .env file for dev environment: `$ cp .env.example .env.development`
+1. Create .env file for dev environment: `cp .env.example .env.development`
 2. Replace default ENV values, set bot token and username, set your own telegram user id
-3. Run `$ docker-compose build`
-4. Run `$ docker-compose run console bin/setup`
-5. Run `$ docker-compose up`
+3. Run `docker-compose build`
+4. Run `docker-compose run console bin/setup`
+5. Run `docker-compose up`
 6. Send to your telegram bot command `/enable` to set enabled state
 7. Send `/start` and enjoy
 
@@ -59,10 +61,10 @@ First of all you need to create your own telegram bot and obtain an API key. Fol
 ## Run tests
 Make sure you:
 1. created `.env.test` file with proper ENV values
-2. performed test DB migration: `$ docker-compose -f docker-compose.test.yml run console rake db:migrate RAILS_ENV=test`
+2. performed test DB migration: `docker-compose -f docker-compose.test.yml run console rake db:migrate RAILS_ENV=test`
 
-- Use command `$ docker-compose -f docker-compose.test.yml run console rspec` to run all tests
-- To run particular test use `$ docker-compose -f docker-compose.test.yml run console rspec ./spec/controllers/example_bot_controller_spec.rb`
+- Use command `docker-compose -f docker-compose.test.yml run console rspec` to run all tests
+- To run particular test use `docker-compose -f docker-compose.test.yml run console rspec ./spec/controllers/example_bot_controller_spec.rb`
 
 ## Deployment
 Use `bin/deploy` script file to perform actions needed for project deployment

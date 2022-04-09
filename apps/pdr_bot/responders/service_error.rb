@@ -25,19 +25,19 @@ module PdrBot
       end
 
       def latest_round_not_expired_error
-        Translation.for('pdr_bot.game.errors.latest_round_not_expired')
+        t('pdr_bot.game.errors.latest_round_not_expired')
       end
 
       def not_enough_users_error
-        Translation.for('pdr_bot.game.errors.not_enough_users', min_count: PdrGame::Run::MINIMUM_USER_COUNT)
+        t('pdr_bot.game.errors.not_enough_users', min_count: PdrGame::Run::MINIMUM_USER_COUNT)
       end
 
       def stats_not_found_error
-        Translation.for('pdr_bot.game.errors.stats_not_found')
+        t('pdr_bot.game.errors.stats_not_found')
       end
 
       def no_rounds_error
-        Translation.for('pdr_bot.game.errors.no_rounds')
+        t('pdr_bot.game.errors.no_rounds')
       end
     end
   end

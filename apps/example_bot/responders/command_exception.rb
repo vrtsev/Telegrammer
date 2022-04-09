@@ -10,7 +10,7 @@ module ExampleBot
       private
 
       def error_text
-        Translation.for('example_bot.command_exception')
+        t('example_bot.command_exception')
       end
     end
   end

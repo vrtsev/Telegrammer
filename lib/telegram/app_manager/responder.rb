@@ -46,6 +46,10 @@ module Telegram
       # def answer_pre_checkout_query(ok, params = {}); end
       # def answer_shipping_query(ok, params = {}); end
 
+      def t(key, **params)
+        Translation.for(key, **params.merge!(chat_id: current_chat.id))
+      end
+
       def method_missing(method_name, *args, &block)
         return super unless context.instance_variables.include?("@#{method_name}".to_sym)
 

@@ -10,7 +10,7 @@ module JeniaBot
       private
 
       def error_text
-        Translation.for('jenia_bot.command_exception')
+        t('jenia_bot.command_exception')
       end
     end
   end

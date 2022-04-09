@@ -27,10 +27,12 @@ module Telegram
         end
 
         def chat_name
-          "#{params.dig(:chat, :title)} /
-            #{params.dig(:chat, :username)} /
-            #{params.dig(:chat, :first_name)} /
-            #{params.dig(:chat, :last_name)}"
+          [
+            params.dig(:chat, :title),
+            params.dig(:chat, :username),
+            params.dig(:chat, :first_name),
+            params.dig(:chat, :last_name)
+          ].compact.join(' / ')
         end
       end
     end

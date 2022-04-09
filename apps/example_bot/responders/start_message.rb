@@ -10,7 +10,7 @@ module ExampleBot
       private
 
       def start_message_text
-        Translation.for('example_bot.start_message')
+        t('example_bot.start_message')
       end
     end
   end

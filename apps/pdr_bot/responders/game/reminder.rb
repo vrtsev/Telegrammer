@@ -11,7 +11,7 @@ module PdrBot
         private
 
         def text
-          Translation.for('pdr_bot.game.reminder')
+          t('pdr_bot.game.reminder')
         end
       end
     end

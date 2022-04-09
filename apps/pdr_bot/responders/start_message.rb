@@ -10,7 +10,7 @@ module PdrBot
       private
 
       def start_message_text
-        Translation.for('pdr_bot.start_message')
+        t('pdr_bot.start_message')
       end
     end
   end

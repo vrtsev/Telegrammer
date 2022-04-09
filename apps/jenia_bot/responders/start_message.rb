@@ -10,7 +10,7 @@ module JeniaBot
       private
 
       def start_message_text
-        Translation.for('jenia_bot.start_message')
+        t('jenia_bot.start_message')
       end
     end
   end

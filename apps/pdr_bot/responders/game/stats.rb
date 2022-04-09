@@ -31,24 +31,24 @@ module PdrBot
         end
 
         def title
-          Translation.for('pdr_bot.game.stats.leaders.title')
+          t('pdr_bot.game.stats.leaders.title')
         end
 
         def winner_leader_stat
-          Translation.for('pdr_bot.game.stats.leaders.winner',
+          t('pdr_bot.game.stats.leaders.winner',
                           user_name: params[:winner_leader_stat].user.name,
                           count: params[:winner_leader_stat].winner_count)
         end
 
         def loser_leader_stat
-          Translation.for('pdr_bot.game.stats.leaders.loser',
+          t('pdr_bot.game.stats.leaders.loser',
                     user_name: params[:loser_leader_stat].user.name,
                     count: params[:loser_leader_stat].loser_count)
         end
 
         def chat_stats_text
           params[:chat_stats].map do |stat|
-            Translation.for('pdr_bot.game.stats.chat_user_stat',
+            t('pdr_bot.game.stats.chat_user_stat',
                             user_name: stat.user.name,
                             winner_count: stat.winner_count,
                             loser_count: stat.loser_count)

@@ -27,15 +27,15 @@ module PdrBot
         end
 
         def title
-          Translation.for('pdr_bot.game.results.title')
+          t('pdr_bot.game.results.title')
         end
 
         def winner_leader
-          Translation.for('pdr_bot.game.results.winner', user_name: params[:winner_name])
+          t('pdr_bot.game.results.winner', user_name: params[:winner_name])
         end
 
         def loser_leader
-          Translation.for('pdr_bot.game.results.loser', user_name: params[:loser_name])
+          t('pdr_bot.game.results.loser', user_name: params[:loser_name])
         end
       end
     end

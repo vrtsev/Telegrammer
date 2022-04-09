@@ -21,9 +21,9 @@ module Telegram
           <<~MSG
             ⚠️ EXCEPTION REPORT
 
-            Chat: #{params[:payload]['chat']}
-            User: #{params[:payload]['from']}
-            Text: (##{params[:payload]['message_id']}) '#{params[:payload]['text']}'
+            Chat: #{params[:payload][:chat]}
+            User: #{params[:payload][:from]}
+            Text: (##{params[:payload][:message_id]}) '#{params[:payload][:text]}'
 
             #{params[:exception].class}: #{params[:exception].message}
             #{params[:exception].backtrace.first}

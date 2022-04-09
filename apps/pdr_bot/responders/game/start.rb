@@ -12,11 +12,11 @@ module PdrBot
         private
 
         def title_text
-          Translation.for('pdr_bot.game.start.title')
+          t('pdr_bot.game.start.title')
         end
 
         def searching_users_text
-          Translation.for('pdr_bot.game.start.searching_users')
+          t('pdr_bot.game.start.searching_users')
         end
       end
     end

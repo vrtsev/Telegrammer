@@ -14,7 +14,7 @@ module JeniaBot
       def response_text
         return params[:response] if params[:response].present?
 
-        Translation.for('jenia_bot.default_call_answer')
+        t('jenia_bot.default_call_answer')
       end
 
       def reply_markup

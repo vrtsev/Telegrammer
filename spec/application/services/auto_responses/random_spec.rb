@@ -20,6 +20,13 @@ RSpec.describe AutoResponses::Random do
       before { create(:auto_response, chat: chat, trigger: trigger, response: response) }
 
       it { expect(subject.response).to eq(response) }
+
+      context 'when message contains forbidden characters' do
+        let(:params) { Hash[chat_id: chat.id, message_text: trigger_with_forbidden_symbols, bot: :example_bot] }
+        let(:trigger_with_forbidden_symbols) { 'Some message text' + described_class::FORBIDDEN_SYMBOLS }
+
+        it { expect(subject.response).to eq(response) }
+      end
     end
   end
 end

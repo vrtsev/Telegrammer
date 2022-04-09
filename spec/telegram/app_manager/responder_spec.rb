@@ -108,5 +108,24 @@ RSpec.describe Telegram::AppManager::Responder do
         end
       end
     end
+
+    describe '#t' do
+      subject { instance.send(:t, key, **params) }
+
+      let(:key) { 'translation.key' }
+      let(:params) { Hash[key: :value] }
+      let!(:current_chat) { create(:chat) }
+
+      before do
+        allow_any_instance_of(described_class).to receive(:call).and_return(nil)
+        allow_any_instance_of(described_class).to receive(:current_chat).and_return(current_chat)
+      end
+
+      it 'calls "Translation.for" method' do
+        expect(Translation).to receive(:for).with(key, { key: :value, chat_id: current_chat.id })
+
+        subject
+      end
+    end
   end
 end
