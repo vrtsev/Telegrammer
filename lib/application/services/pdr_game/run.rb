@@ -44,12 +44,14 @@ module PdrGame
     end
 
     def save_game_round
-      @game_round = PdrGame::Round.create!(
-        chat_id: params[:chat_id],
+      @game_round = current_chat.pdr_game_round
+      @game_round.update!(
         initiator_id: params[:initiator_id],
         winner_id: winner.user_id,
         loser_id: loser.user_id
       )
+
+      @game_round
     end
 
     def last_game_round
@@ -70,6 +72,10 @@ module PdrGame
 
     def loser
       @loser ||= finalists.last
+    end
+
+    def current_chat
+      @current_chat ||= Chat.find(params[:chat_id])
     end
   end
 end

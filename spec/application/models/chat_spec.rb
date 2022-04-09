@@ -57,4 +57,20 @@ RSpec.describe Chat, type: :model do
       end
     end
   end
+
+  describe '#pdr_game_round' do
+    subject { chat.pdr_game_round }
+
+    let(:chat) { create(:chat) }
+
+    context 'when round exists' do
+      let!(:pdr_game_round) { create(:pdr_game_round, chat: chat) }
+
+      it { is_expected.to eq(pdr_game_round) }
+    end
+
+    context 'when round does not exist' do
+      it { is_expected.to be_kind_of(PdrGame::Round) }
+    end
+  end
 end

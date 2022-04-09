@@ -6,6 +6,7 @@ class Chat < ActiveRecord::Base
   include Synchronizable
 
   has_many :chat_users
+  has_one :pdr_game_round, class_name: 'PdrGame::Round'
 
   validates :external_id, :chat_type, presence: true
   validates :external_id, uniqueness: true
@@ -19,5 +20,9 @@ class Chat < ActiveRecord::Base
 
   def name
     title || username || "#{first_name} #{last_name}".strip
+  end
+
+  def pdr_game_round
+    super || build_pdr_game_round
   end
 end
