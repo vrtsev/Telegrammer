@@ -26,7 +26,7 @@ module PdrGame
 
     def check_latest_round_expired
       return true if last_game_round.nil?
-      return true if Date.today.day != last_game_round.created_at.day
+      return true if Date.today.day != last_game_round.updated_at.day
 
       raise ServiceError.new(error_code: 'PDR_GAME_LATEST_ROUND_NOT_EXPIRED')
     end

@@ -11,16 +11,16 @@ RSpec.describe PdrGame::Run do
     let(:initiator) { create(:user) }
 
     context 'and when latest game round exists' do
-      let!(:last_game_round) { create(:pdr_game_round, chat: chat, created_at: round_created_at) }
+      let!(:last_game_round) { create(:pdr_game_round, chat: chat, updated_at: round_updated_at) }
 
       context 'and when latest game round is not expired' do
-        let(:round_created_at) { Time.now }
+        let(:round_updated_at) { Time.now }
 
         it { expect(subject.exception.error_code).to eq('PDR_GAME_LATEST_ROUND_NOT_EXPIRED') }
       end
 
       context 'and when latest game round is expired' do
-        let(:round_created_at) { Time.now - 2.days }
+        let(:round_updated_at) { Time.now - 2.days }
 
         context 'and when chat does not have minimum users count' do
           let!(:chat_users) { create_list(:chat_user, chat_users_count, chat: chat) }
