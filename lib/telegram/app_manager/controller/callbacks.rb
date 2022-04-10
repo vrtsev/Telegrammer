@@ -77,10 +77,11 @@ module Telegram
         end
 
         def authorize_admin!
-          return if current_user.external_id == Integer(ENV['TELEGRAM_APP_OWNER_ID'])
+          return true if current_user.external_id == Integer(ENV['TELEGRAM_APP_OWNER_ID'])
 
+          reply_with(:message, text: 'You do not have enough rights to perform this action')
           logger.warn("> User is not authorized".bold.red)
-          throw :abort
+          false
         end
 
         # Another callbacks available:

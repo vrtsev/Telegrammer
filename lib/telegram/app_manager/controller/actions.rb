@@ -5,11 +5,15 @@ module Telegram
     class Controller < Telegram::Bot::UpdatesController
       module Actions
         def enable!
+          return unless authorize_admin!
+
           bot_setting.update!(enabled: true)
           reply_with(:message, text: 'Bot has been enabled', chat_id: ENV['TELEGRAM_APP_OWNER_ID'])
         end
 
         def disable!
+          return unless authorize_admin!
+
           bot_setting.update!(enabled: false)
           reply_with(:message, text: 'Bot has been disabled', chat_id: ENV['TELEGRAM_APP_OWNER_ID'])
         end

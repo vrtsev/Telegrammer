@@ -31,7 +31,6 @@ module Telegram
                     :on_user_left_chat,
                     :sync_message,
                     :authenticate_chat!
-      before_action :authorize_admin!, only: [:enable!, :disable!]
 
       attr_reader :current_chat,
                   :current_user,
