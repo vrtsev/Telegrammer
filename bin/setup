@@ -5,7 +5,6 @@ require 'pathname'
 # path to your application root.
 APP_ROOT = Pathname.new File.expand_path('..', __dir__)
 ENV_FILE_NAMES = %w[
-  .env
   .env.production
   .env.development
   .env.test

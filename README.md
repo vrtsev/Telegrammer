@@ -42,7 +42,7 @@ First of all you need to create your own telegram bot and obtain an API key. Fol
 7. You should to set inline mode and turn off privacy mode for your bot. Inline mode will allow you to use inline keyboards and inline queries. Disabled privacy will allow you to sync user messages to DB. Find this settings in bot settings (@BotFather)
 
 ## Setup and first run (only using Docker compose)
-1. Create .env file for dev environment: `cp .env.example .env.development`
+1. Create env file for dev environment: `cp .env.example .env.development`
 2. Replace default ENV values, set bot token and username, set your own telegram user id
 3. Run `docker-compose build`
 4. Run `docker-compose run console bin/setup`

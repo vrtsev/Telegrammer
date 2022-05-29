@@ -53,6 +53,9 @@ module Telegram
           file_path = request.dig('result', 'file_path')
 
           "#{CONTENT_BASE_URL}/bot#{params[:bot].token}/#{file_path}"
+        rescue Telegram::Bot::Error => exception
+          logger.error(exception.message)
+          nil
         end
       end
     end

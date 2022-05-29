@@ -3,6 +3,8 @@
 module Telegram
   module AppManager
     class Builder
+      include Helpers::Logging
+
       def self.build(**params)
         new(params).to_h
       end

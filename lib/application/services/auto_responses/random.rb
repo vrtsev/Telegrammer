@@ -10,7 +10,7 @@ module AutoResponses
       end
     end
 
-    FORBIDDEN_SYMBOLS = '+*?()[]{}'.freeze
+    FORBIDDEN_SYMBOLS = '+*?()[]{}/\\'.freeze
 
     attr_reader :response
 
