@@ -1,0 +1,3 @@
+#!/bin/bash
+
+bundle exec rackup apps/sidekiqui/config.ru -p 9393 --server=webrick --host 0.0.0.0

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+bundle exec sidekiq -r ./config/boot.rb -C ./config/sidekiq.yml
