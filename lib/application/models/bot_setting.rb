@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-class BotSetting < ActiveRecord::Base
+class BotSetting < ApplicationRecord
   validates :bot, presence: true
 end

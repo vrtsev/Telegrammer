@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module PdrGame
-  class Stat < ActiveRecord::Base
+  class Stat < ApplicationRecord
     self.table_name = 'pdr_game_stats'
 
     belongs_to :chat_user

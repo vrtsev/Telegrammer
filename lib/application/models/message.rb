@@ -2,7 +2,7 @@
 
 require_relative 'concerns/synchronizable'
 
-class Message < ActiveRecord::Base
+class Message < ApplicationRecord
   include Synchronizable
 
   belongs_to :chat_user

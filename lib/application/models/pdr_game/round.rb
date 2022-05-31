@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module PdrGame
-  class Round < ActiveRecord::Base
+  class Round < ApplicationRecord
     self.table_name = 'pdr_game_rounds'
 
     belongs_to :chat

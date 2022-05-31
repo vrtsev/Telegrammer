@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Translation < ActiveRecord::Base
+class Translation < ApplicationRecord
   TRANSLATION_KEYS = %w[
     example_bot.command_exception
     example_bot.auto_response

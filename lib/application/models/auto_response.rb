@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AutoResponse < ActiveRecord::Base
+class AutoResponse < ApplicationRecord
   belongs_to :author, class_name: 'User'
   belongs_to :chat
 
