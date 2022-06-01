@@ -35,7 +35,7 @@ services:
   pdr_bot:
     container_name: telegrammer_pdr_bot
     build: .
-    command: ruby ./bin/bots/pdr_bot
+    command: bin/bots/pdr_bot
     env_file: .env.production
     working_dir: /application
     volumes:
@@ -51,7 +51,7 @@ services:
   jenia_bot:
     container_name: telegrammer_jenia_bot
     build: .
-    command: ruby ./bin/bots/jenia_bot
+    command: bin/bots/jenia_bot
     env_file: .env.production
     working_dir: /application
     volumes:
@@ -67,7 +67,7 @@ services:
   example_bot:
     container_name: telegrammer_example_bot
     build: .
-    command: ruby ./bin/bots/example_bot
+    command: bin/bots/example_bot
     env_file: .env.production
     working_dir: /application
     volumes:
@@ -83,7 +83,7 @@ services:
   sidekiq:
     container_name: telegrammer_sidekiq
     build: .
-    command: bash -c "bundle exec sidekiq -e development -r ./config/boot.rb -C ./config/sidekiq.yml"
+    command: bin/sidekiq
     env_file: .env.production
     working_dir: /application
     stdin_open: true
@@ -101,7 +101,7 @@ services:
   sidekiqui:
     container_name: telegrammer_sidekiqui
     build: .
-    command: bundle exec rackup apps/sidekiqui/config.ru -p 9393 --server=webrick --host 0.0.0.0
+    command: bin/sidekiqui
     env_file: .env.production
     working_dir: /application
     volumes:
