@@ -11,6 +11,6 @@ RSpec.describe Message, type: :model do
     it { is_expected.to validate_presence_of(:chat_user_id) }
     it { is_expected.to validate_presence_of(:payload_type) }
     it { is_expected.to validate_presence_of(:external_id) }
-    it { is_expected.to validate_uniqueness_of(:external_id) }
+    it { is_expected.to validate_uniqueness_of(:external_id).scoped_to(:chat_user_id) }
   end
 end

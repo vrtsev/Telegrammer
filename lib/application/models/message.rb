@@ -8,7 +8,7 @@ class Message < ApplicationRecord
   belongs_to :chat_user
 
   validates :chat_user_id, :payload_type, :external_id, presence: true
-  validates :external_id, uniqueness: true
+  validates :external_id, uniqueness: { scope: :chat_user_id }
 
   enum payload_type: {
     text: 'text',
