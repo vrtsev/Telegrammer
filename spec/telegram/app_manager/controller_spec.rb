@@ -70,33 +70,6 @@ RSpec.describe Telegram::AppManager::Controller, type: :controller, telegram_bot
     end
   end
 
-  describe '#log_action' do
-    subject { described_class.new(bot, payload).log_action(&block) }
-
-    let(:payload_text) { 'Payload text' }
-    let(:block) { -> { block_result } }
-    let(:block_result) { 'Action block result' }
-
-    context 'when controller logging is not allowed' do
-      it { is_expected.to eq(block_result) }
-    end
-
-    context 'when controller logging is allowed' do
-      let(:controller_logging) { true }
-
-      it 'logs action' do
-        expect_any_instance_of(described_class)
-          .to receive_message_chain(:logger, :log_action)
-          .with({
-            app_name: 'ExampleApp',
-            action_name: nil,
-            block: block
-          })
-        subject
-      end
-    end
-  end
-
   describe '#bot_enabled?' do
     subject { described_class.new(bot, payload).bot_enabled? }
 
@@ -268,13 +241,13 @@ RSpec.describe Telegram::AppManager::Controller, type: :controller, telegram_bot
     subject { described_class.new(bot, payload).authorize_admin! }
 
     context 'when current user is not admin' do
-      it { expect { subject }.to raise_error(UncaughtThrowError) }
+      it { expect { subject }.to send_telegram_message(bot, 'You do not have enough rights to perform this action') }
     end
 
     context 'when current user is admin' do
       before { stub_env('TELEGRAM_APP_OWNER_ID', current_user.external_id) }
 
-      it { is_expected.to be_nil }
+      it { is_expected.to be_truthy }
     end
   end
 
