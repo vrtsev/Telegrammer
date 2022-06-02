@@ -17,7 +17,7 @@ module Telegram
         def bot_enabled?
           return if bot_setting.enabled?
 
-          logger.log_callback("Bot is disabled".bold.red)
+          logger.log_callback(Rainbow("> Bot is disabled").bold.red)
           throw :abort unless action_name == 'enable!'
         end
 
@@ -80,7 +80,7 @@ module Telegram
           return true if current_user.external_id == Integer(ENV['TELEGRAM_APP_OWNER_ID'])
 
           reply_with(:message, text: 'You do not have enough rights to perform this action')
-          logger.warn("> User is not authorized".bold.red)
+          logger.warn(Rainbow("> User is not authorized").bold.red)
           false
         end
 

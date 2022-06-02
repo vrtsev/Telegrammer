@@ -7,4 +7,4 @@ EXAMPLE_ENV_FILE_NAME = '.env.example'
 env_keys = Dotenv.parse(File.open(EXAMPLE_ENV_FILE_NAME)).keys
 Dotenv.require_keys(env_keys)
 
-puts 'Loaded all env vars from ' + ENV_FILE_NAME.to_s.bold.cyan
+puts 'Loaded all env vars from ' + Rainbow(ENV_FILE_NAME.to_s).bold.cyan

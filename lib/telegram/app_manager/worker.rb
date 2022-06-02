@@ -14,7 +14,7 @@ module Telegram
       private
 
       def handle_service_error(exception)
-        raise("'#{self.class.to_s.bold.red}' has service error: #{exception.error_code}")
+        raise("'#{Rainbow(self.class.to_s).bold.red}' has service error: #{exception.error_code}")
       end
     end
   end

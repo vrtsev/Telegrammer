@@ -1,7 +1,6 @@
 # frozen_string_literal: false
 
 require 'telegram/bot'
-require 'colorize'
 require 'dry-validation'
 require 'logger'
 

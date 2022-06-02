@@ -29,7 +29,7 @@ gem 'pg', '1.3.4' # postgres DB
 gem 'redis', '4.6.0' # redis DB
 
 ## Third-party dependencies
-gem 'colorize', '0.8.1' # String colorizer
+gem 'rainbow', '3.1.1' # String colorizer
 
 ## API
 gem 'telegram-bot', '0.15.4' # Telegram API

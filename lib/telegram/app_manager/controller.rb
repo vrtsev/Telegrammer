@@ -15,7 +15,7 @@ module Telegram
 
       rescue_from StandardError do |exception|
         if ENV['APP_ENV'] != 'test'
-          logger.error 'Application raised exception'.bold.red
+          logger.error Rainbow('Application raised exception').bold.red
           logger.error exception.full_message
         end
 
@@ -43,7 +43,7 @@ module Telegram
         return if ENV['APP_ENV'] == 'test'
 
         message = "Hint: You can handle exception in your controller by implementing '#{__method__}' private method"
-        logger.error "\n [TelegramAppManager] #{message} \n".bold
+        logger.error Rainbow("\n [TelegramAppManager] #{message} \n").bold
       end
 
       def current_application

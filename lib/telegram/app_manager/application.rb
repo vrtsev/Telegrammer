@@ -19,10 +19,11 @@ module Telegram
         end
 
         def run
-          logger.info "[#{config.app_name}] Application is listening messages...".bold.green
+          app_start_message
+          logger.info Rainbow("[#{config.app_name}] Application is listening messages...\n").bold.green
           Telegram::Bot::UpdatesPoller.start(config.telegram_bot, config.controller)
         rescue HTTPClient::ReceiveTimeoutError, OpenSSL => e
-          logger.info "[#{config.app_name}] Poller timeout error. Reconnecting".bold.red
+          logger.info Rainbow("[#{config.app_name}] Poller timeout error. Reconnecting\n").bold.red
           run
         end
 
@@ -33,7 +34,7 @@ module Telegram
             \n=========================================================
             Application is starting
 
-            App name: #{config.app_name.to_s.bold.cyan}
+            App name: #{Rainbow(config.app_name.to_s).bold.cyan}
             Telegram bot username: #{config.telegram_bot.username}
             Main controller: #{config.controller}
             Controller logging enabled: #{config.controller_logging}
