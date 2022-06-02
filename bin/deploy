@@ -13,7 +13,7 @@ echo '== Installing dependencies =='
 eval "docker-compose -f docker-compose.production.yml run --rm console bundle install"
 
 echo '== Preparing databases =='
-eval 'docker-compose -f docker-compose.production.yml run --rm console rake db:migrate'
+eval 'docker-compose -f docker-compose.production.yml run --rm console rake db:migrate RACK_ENV=production'
 
 echo '== Checking translations =='
 eval 'docker-compose -f docker-compose.production.yml run --rm console rake translations:check'
