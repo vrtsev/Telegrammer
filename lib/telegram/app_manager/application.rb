@@ -41,7 +41,7 @@ module Telegram
 
             Make sure your bot has group privacy setting disabled in telegram
             to allow application to sync incoming data
-            =========================================================\n
+            =========================================================
           INFO
         end
       end

@@ -15,11 +15,11 @@ require_relative 'app_manager/contract.rb'
 require_relative 'app_manager/service.rb'
 require_relative 'app_manager/worker.rb'
 
-require_relative 'app_manager/logger/helpers.rb'
 require_relative 'app_manager/logger/multi_io.rb'
 require_relative 'app_manager/logger/default_formatter.rb'
 require_relative 'app_manager/logger/active_record_formatter.rb'
 require_relative 'app_manager/logger.rb'
+require_relative 'app_manager/log_subscriber.rb'
 
 require_relative 'app_manager/builder.rb'
 require_relative 'app_manager/builders/chat_user.rb'

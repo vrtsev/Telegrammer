@@ -3,8 +3,6 @@
 module Telegram
   module AppManager
     class Logger < ::Logger
-      include Logger::Helpers
-
       attr_reader :file_path
 
       def initialize(file_path = nil, **args)

@@ -23,7 +23,6 @@ module Telegram
         handle_exception(exception)
       end
 
-      around_action :log_action
       before_action :bot_enabled?,
                     :sync_chat,
                     :sync_user,
