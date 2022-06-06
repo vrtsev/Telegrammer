@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_23_204737) do
+ActiveRecord::Schema.define(version: 2022_05_31_151135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 2022_03_23_204737) do
     t.jsonb "content_data", default: "{}"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "reply_to_id"
     t.index ["chat_user_id"], name: "index_messages_on_chat_user_id"
     t.index ["external_id"], name: "index_messages_on_external_id", unique: true
   end

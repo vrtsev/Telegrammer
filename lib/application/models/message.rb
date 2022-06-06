@@ -6,6 +6,8 @@ class Message < ApplicationRecord
   include Synchronizable
 
   belongs_to :chat_user
+  belongs_to :reply_to, class_name: 'Message'
+  has_many :replies, class_name: 'Message', foreign_key: :reply_to_id
 
   validates :chat_user_id, :payload_type, :external_id, presence: true
   validates :external_id, uniqueness: { scope: :chat_user_id }
