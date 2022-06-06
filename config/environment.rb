@@ -3,6 +3,7 @@
 # validate environment
 case ENV['APP_ENV']
 when 'development', 'test', 'production' then true
+when nil then ENV['APP_ENV'] = 'development'
 else raise "Wrong environment. Can be 'development', 'test', 'production'"
 end
 puts "Loading application core in #{ENV['APP_ENV']} environment"
