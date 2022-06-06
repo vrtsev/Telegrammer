@@ -7,4 +7,5 @@ end
 
 ActiveRecord::Base.logger = Telegram::AppManager::Logger.new('log/database.log')
 ActiveRecord::Base.logger.formatter = Telegram::AppManager::Logger::ActiveRecordFormatter.new
+ActiveRecord::Base.default_timezone = ENV['TZ']
 ActiveRecord::Base.establish_connection(db_configuration[ENV['APP_ENV']])
