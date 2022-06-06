@@ -15,7 +15,7 @@ class Chat < ApplicationRecord
     private_chat: 'private',
     group_chat: 'group',
     supergroup: 'supergroup',
-    channgel: 'channel'
+    channel: 'channel'
   }
 
   def name
