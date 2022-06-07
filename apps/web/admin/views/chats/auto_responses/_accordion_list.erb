@@ -1,0 +1,31 @@
+<div class="accordion chat-body-accordion" id="<%= bot %>Accordion">
+  <% @chat.auto_responses.where(bot: bot).group_by { |auto_response| auto_response.trigger }.each_with_index do |(trigger, trigger_auto_responses), index| %>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="heading-<%= index %>">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#auto-response-<%= index %>" aria-expanded="false" aria-controls="auto-response-<%= index %>">
+          <%= trigger %>
+        </button>
+      </h2>
+
+      <div id="auto-response-<%= index %>" class="accordion-collapse collapse" aria-labelledby="heading-<%= index %>" data-bs-parent="#<%= bot %>Accordion">
+        <div class="accordion-body p-0">
+          <table class="table mb-0">
+            <tbody>
+              <% trigger_auto_responses.each do |auto_response| %>
+                <tr>
+                  <th><%= auto_response.id %></th>
+                  <td><%= simple_format(auto_response.response) %></td>
+                  <th>
+                    <a href="<%= url(:auto_responses, :destroy, chat_id: @chat.id, id: auto_response.id) %>" data-method="delete">
+                      <i class="text-danger fa fa-xmark"></i>
+                    </a>
+                  </th>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

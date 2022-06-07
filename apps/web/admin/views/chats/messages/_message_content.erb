@@ -1,0 +1,56 @@
+<% if message.text? %>
+  <%= simple_format(message.text.chomp) %>
+<% else %>
+  <div class="attachment">
+    <% case message.payload_type %>
+    <% when 'photo' %>
+      <img src="<%= message.content_url %>" width="300px"/>
+    <% when 'video' %><video height="auto" controls="controls" onclick="this.play()" width="300px" src="<%= message.content_url %>"/>
+    <% when 'video_note' %><video height="auto" controls="controls" onclick="this.play()" width="300px" src="<%= message.content_url %>"/>
+    <% when 'document' %>📄 <a href="<%= message.content_url %>">Document: file_name</a>
+    <% when 'sticker' %><img src="<%= message.content_url %>" width="200px"/>
+    <% when 'voice' %><audio controls src="<%= message.content_url %>"/>
+    <% when 'location' %>
+      <div class="location">
+        <a target="_blank" href="https://maps.google.com/?ll=<%= message.content_data['latitude'] %>,<%= message.content_data['longitude'] %>">
+          📍 Location: <%= message.content_data['latitude'] %> | <%= message.content_data['longitude'] %>
+        </a>
+      </div>
+    <% when 'contact' %>
+      <div class="contact">
+        <div class="contact-header">Contact: <strong><%= "#{message.content_data['first_name']} #{message.content_data['last_name']}" %></strong></div>
+        <a href="tel:<%= message.content_data['phone_number'] %>"><%= message.content_data['phone_number'] %></a>
+      </div>
+    <% when 'poll' %>
+      <div class="poll">
+        <div class="poll-header">
+          📊 Poll (<%= message.content_data['type'] %>): <strong><%= message.content_data['question'] %></strong>
+        </div>
+
+        <div class="poll-attrs">
+          <small class="text-muted">
+            <%= 'Anonymous Poll' if message.content_data['is_anonymous'] %>
+            <%= '(with multiple answers)' if message.content_data['allows_multiple_answers'] %>
+          </small>
+        </div>
+        <hr>
+        <div class="poll-options">
+          <% message.content_data['options'].each_with_index do |option, index| %>
+            <% if message.content_data['correct_option_id'] == index %>
+              <input type="checkbox" checked disabled> <%= option['text'] %>
+              <small>(<%= message.content_data['explanation'] %>)</small><br>
+            <% else %>
+              <input type="checkbox" disabled> <%= option['text'] %><br>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% else %>❌ Unknown type
+    <% end %>
+  </div>
+<% end %>
+
+
+
+
+

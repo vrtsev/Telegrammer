@@ -1,0 +1,53 @@
+<%= render('chats/index', layout: false) %>
+
+<div class="chat">
+  <%= partial('chats/header') %>
+
+  <div class="chat-body">
+    <table class="table">
+      <tbody>
+        <% @chat.auto_responses.order(:trigger).group_by { |auto_response| auto_response.bot }.each do |bot, bot_auto_responses| %>
+          <tr class="table-secondary"><th colspan="4"><%= bot %></th></tr>
+
+          <% bot_auto_responses.group_by { |auto_response| auto_response.trigger }.each do |trigger, trigger_auto_responses| %>
+            <tr><th colspan="4"><%= trigger %></th></tr>
+
+            <% trigger_auto_responses.each do |auto_response| %>
+              <tr>
+                <td colspan="2"><%= auto_response.response %></td>
+                <td>
+                  <a href="<%= url(:auto_responses, :destroy, chat_id: @chat.id, id: auto_response.id) %>" data-method="delete">
+                    <i class="text-danger fa fa-xmark"></i>
+                  </a>
+                </td>
+              </tr>
+            <% end %>
+
+            <tr><td colspan="4" class="pb-4">&nbsp;</td></tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="chat-footer">
+    <form method="POST" action="<%= url(:auto_responses, :create, chat_id: @chat.id) %>">
+      <input type="hidden" name="authenticity_token" value="<%= csrf_token %>">
+      <input type="text" class="form-control mr-1" placeholder="Trigger" name="trigger"/>
+      <textarea type="text" class="form-control" placeholder="Response" name="response" rows="1"></textarea>
+
+      <div class="form-buttons">
+        <select id="bot-selector" class="form-control" name="bot">
+          <% Telegram.bots.keys.each do |name| %>
+            <option value="<%= name %>" <%= 'selected' if params[:bot] == name.to_s %>><%= name %></option>
+          <% end %>
+        </select>
+
+        <button class="btn btn-primary" type="submit"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%= partial('chats/sidebar') %>
+

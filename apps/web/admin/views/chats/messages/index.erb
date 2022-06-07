@@ -1,0 +1,81 @@
+<%= render('chats/index', layout: false) %>
+
+<div class="chat">
+  <%= partial('chats/header') %>
+
+  <div class="chat-body">
+    <div class="messages">
+      <% @messages.group_by { |message| message.created_at.to_date }.each do |date, messages| %>
+        <div class="message-item messages-divider sticky-top" data-label=" <%= format_date(date) %> "></div>
+
+        <% messages.each_with_index do |message, index| %>
+          <div class="message-item <%= present(message).outgoing_class %>" data-id="<%= message.id %>">
+            <div class="message-avatar">
+              <figure class="avatar">
+                <% unless message.chat_user_id == next_item_of(messages, index)&.chat_user_id %>
+                  <span class="avatar-title <%= present(message.user).avatar_background_class %> rounded-circle">
+                    <%= present(message.user).avatar_letter %>
+                  </span>
+                <% end %>
+              </figure>
+            </div>
+
+            <div>
+              <div class="message-content">
+                <strong><%= message.user.name %></strong>
+                <small class="time"><%= format_time(message.created_at) %></small>
+
+                <div class="action-toggle item-options">
+                  <div class="dropup">
+                    <span data-toggle="dropdown"><i class="fa fa-sm fa-angle-down"></i></span>
+
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <a href="<%= url(:'messages', :reply, chat_id: @chat.id, id: message.id, bot: params[:bot]) %>"
+                          class="dropdown-item"><i class="fa fa-reply"></i> Reply</a>
+
+                      <% if message.user.is_bot? %>
+                        <a href="<%= url(:'messages', :edit, chat_id: @chat.id, id: message.id, bot: params[:bot]) %>"
+                            class="dropdown-item"><i class="fa fa-pencil"></i> Edit</a>
+
+                        <div class="dropdown-divider"></div>
+
+                        <a href="<%= url(:'messages', :destroy, chat_id: @chat.id, id: message.id, bot: params[:bot]) %>"
+                            class="dropdown-item text-danger"
+                            data-method="delete"
+                            data-confirm="Are you sure?"><i class="fa fa-xmark"></i> Delete</a>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+                <br>
+
+                <%= partial('chats/messages/reply_message', locals: { message: message.reply_to }) if message.reply_to_id.present? %>
+                <%= partial('chats/messages/message_content', locals: { message: message }) %>
+              </div>
+            </div>
+          </div>
+
+          <% if present(message).last_viewed?(@last_viewed_message_id) && next_item_of(messages, index).present? %>
+            <div class="message-item messages-divider sticky-top unread-divider" data-label="Unread"></div>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="chat-footer">
+    <% if flash[:message_error].present? %>
+      <div class="alert alert-danger" role="alert">Error: <%= flash[:message_error] %></div>
+    <% end %>
+
+    <%= yield_content :selected_message %>
+
+    <% if content_for?(:form) %>
+      <%= yield_content(:form) %>
+    <% else %>
+      <%= partial('chats/messages/form', locals: { url: url(:messages, :create, chat_id: @chat.id) }) %>
+    <% end %>
+  </div>
+</div>
+
+<%= partial('chats/sidebar') %>

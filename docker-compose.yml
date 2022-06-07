@@ -18,6 +18,26 @@ services:
       - default
       - web
 
+  web:
+    container_name: telegrammer_web
+    build: .
+    command: bin/web
+    env_file: .env.development
+    working_dir: /application
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/application:cached
+      - bundle-cache:/usr/local/bundle:cached
+    ports:
+      - 3000:3000
+    depends_on:
+      - database
+      - redis
+    networks:
+      - default
+      - web
+
   pdr_bot:
     container_name: telegrammer_pdr_bot
     build: .

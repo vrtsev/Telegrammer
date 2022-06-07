@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Error | Telegrammer Admin</title>
+
+    <script src="https://kit.fontawesome.com/e111120dd2.js" crossorigin="anonymous"></script>
+    <%= favicon_tag "favicon.png" %>
+    <%= stylesheet_link_tag 'vendor/bundle', 'vendor/main' %>
+</head>
+
+<body class="form-membership">
+  <div class="form-wrapper">
+    <div class="logo"><%= image_tag('logo.png', class: 'rounded-circle', width: '80px') %></div>
+
+    <h1><%= @title %></h1>
+    <p>If you are the application owner check the logs for more information</p>
+
+    <a onclick="history.go(-1);return false;" class="btn btn-outline-secondary">
+      <i class="fa fa-arrow-left"></i> Go back
+    </a>
+  </div>
+
+  <%= javascript_include_tag 'vendor/bundle', 'vendor/main' %>
+</body>
+</html>

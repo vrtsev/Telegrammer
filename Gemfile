@@ -13,13 +13,18 @@ gem 'pry-byebug', '3.9.0' # debugger tool
 gem 'rake', '13.0.6' # ruby tasks
 gem 'require_all', '3.0.0' # auto require all files in directory
 
+## Web app
+gem 'puma'
+gem 'erubi', '~> 1.6'
+gem 'padrino', '0.15.1'
+
 ## Background processing
 gem 'hiredis', '0.6.3' # Redis adapter for sidekiq
 gem 'redis-namespace', '1.8.2' # To split sidekiq data in redis
 gem 'sidekiq', '6.4.1' # background processing
 gem 'sidekiq-scheduler', '3.1.1' # scheduled background workers
 gem 'sidekiq-statistic', git: 'https://github.com/davydovanton/sidekiq-statistic.git', ref: 'f7476c9'
-gem 'sinatra', '~> 2.0', require: false # UI for sidekiq and web app
+gem 'sinatra', '~> 2.0' # UI for sidekiq and web app
 gem 'webrick', '1.7.0'
 
 ## Databases

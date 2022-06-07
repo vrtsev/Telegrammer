@@ -1,0 +1,27 @@
+<div class="chat-header">
+  <div class="chat-header-user">
+    <div data-navigation-target="chats" class="btn nav-btn btn-link d-xl-none"><i class="fa fa-angle-left"></i></div>
+
+    <%= partial('chats/avatar', locals: { chat: present(@chat) }) %>
+
+    <div data-navigation-target="chat-sidebar">
+      <h5><%= truncate(@chat.name, length: 23) %></h5>
+      <small class="text-muted">
+        <i><%= @chat.users.real.count %> users</i> | <%= @chat.messages.count %> messages
+      </small>
+    </div>
+  </div>
+
+  <div class="chat-header-action">
+    <ul class="list-inline">
+      <li class="list-inline-item">
+        <a class="btn btn-outline-light" data-toggle="dropdown"><i data-feather="more-horizontal"></i></a>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a href="<%= url(:messages, :index, chat_id: @chat.id) %>" class="dropdown-item">Messages</a>
+          <a href="<%= url(:translations, :index, chat_id: @chat.id) %>" class="dropdown-item">Translations</a>
+          <a href="<%= url(:auto_responses, :index, chat_id: @chat.id) %>" class="dropdown-item">AutoResponses</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
