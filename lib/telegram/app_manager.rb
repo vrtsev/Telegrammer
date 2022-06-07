@@ -11,7 +11,6 @@ require_relative 'app_manager/helpers/validation.rb'
 
 require_relative 'app_manager/configuration.rb'
 require_relative 'app_manager/application.rb'
-require_relative 'app_manager/contract.rb'
 require_relative 'app_manager/service.rb'
 require_relative 'app_manager/worker.rb'
 

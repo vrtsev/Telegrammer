@@ -4,7 +4,7 @@ module Telegram
   module AppManager
     class Responder
       class ExceptionReport < Responder
-        class Contract < Telegram::AppManager::Contract
+        class Contract < Dry::Validation::Contract
           params do
             required(:exception).filled
             required(:payload).filled(:hash)

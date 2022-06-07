@@ -3,7 +3,7 @@
 module JeniaBot
   module Responders
     class ServiceError < Telegram::AppManager::Responder
-      class Contract < Telegram::AppManager::Contract
+      class Contract < Dry::Validation::Contract
         params do
           required(:error_code).filled(:string)
         end
