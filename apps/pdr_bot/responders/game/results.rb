@@ -3,7 +3,7 @@
 module PdrBot
   module Responders
     module Game
-      class Results < Telegram::AppManager::Responder
+      class Results < ApplicationResponder
         class Contract < Dry::Validation::Contract
           params do
             required(:winner_name).filled(:string)

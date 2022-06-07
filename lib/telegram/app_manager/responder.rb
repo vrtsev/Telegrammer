@@ -25,26 +25,48 @@ module Telegram
         raise "Implement method `call` in #{self.class}"
       end
 
-      private
+      def respond_with(type, delay: nil, **options)
+        sleep(delay) if delay.present?
+        options[:chat_id] ||= current_chat.external_id
 
-      def respond_with(type, options)
-        chat_id = options[:chat_id] || current_chat.external_id
-
-        sleep(options[:delay]) if options[:delay]
-        bot.public_send("send_#{type}", options.merge(chat_id: chat_id))
+        request("send_#{type}", options)
       end
 
-      def reply_with(type, options)
-        message_id = options[:reply_to_message_id] || current_message.external_id
-        respond_with(type, options.merge(reply_to_message_id: message_id))
+      def reply_with(type, delay: nil, **options)
+        options[:reply_to_message_id] ||= current_message.external_id
+
+        respond_with(type, delay: delay, options)
+      end
+
+      def edit_message(type, delay: nil, **options)
+        sleep(delay) if delay.present?
+
+        request("edit_message_#{type}", options)
+      end
+
+      def delete_message(type, delay: nil, **options)
+        sleep(delay) if delay.present?
+
+        request("delete_message_#{type}", options)
       end
 
       # Currently not used:
       # def answer_inline_query(results, params = {}); end
       # def answer_callback_query(text, params = {}); end
-      # def edit_message(type, params = {}); end
       # def answer_pre_checkout_query(ok, params = {}); end
       # def answer_shipping_query(ok, params = {}); end
+
+      private
+
+      def request(action, options)
+        response = bot.public_send(action, options)
+
+        handle_response(response)
+      end
+
+      def handle_response(response)
+        logger.debug('[Telegram] performed message action')
+      end
 
       def t(key, **params)
         Translation.for(key, **params.merge!(chat_id: current_chat.id))

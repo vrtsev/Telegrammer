@@ -2,7 +2,7 @@
 
 module JeniaBot
   module Responders
-    class CallJenia < Telegram::AppManager::Responder
+    class CallJenia < ApplicationResponder
       KEYBOARD_SLICE_COUNT = 1
 
       def call

@@ -2,7 +2,7 @@
 
 module JeniaBot
   module Responders
-    class AutoResponse < Telegram::AppManager::Responder
+    class AutoResponse < ApplicationResponder
       def call
         return if params[:response].blank?
 

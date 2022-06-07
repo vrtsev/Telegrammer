@@ -2,7 +2,7 @@
 
 module ExampleBot
   module Responders
-    class AutoResponse < Telegram::AppManager::Responder
+    class AutoResponse < ApplicationResponder
       def call
         reply_with(:message, text: response_text)
       end

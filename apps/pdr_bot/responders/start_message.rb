@@ -2,7 +2,7 @@
 
 module PdrBot
   module Responders
-    class StartMessage < Telegram::AppManager::Responder
+    class StartMessage < ApplicationResponder
       def call
         respond_with(:message, text: start_message_text)
       end

@@ -3,7 +3,7 @@
 module PdrBot
   module Responders
     module Game
-      class Reminder < Telegram::AppManager::Responder
+      class Reminder < ApplicationResponder
         def call
           respond_with(:message, text: text, chat_id: params[:chat_id])
         end

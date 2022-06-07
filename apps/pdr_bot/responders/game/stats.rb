@@ -3,7 +3,7 @@
 module PdrBot
   module Responders
     module Game
-      class Stats < Telegram::AppManager::Responder
+      class Stats < ApplicationResponder
         class Contract < Dry::Validation::Contract
           params do
             required(:winner_leader_stat).filled

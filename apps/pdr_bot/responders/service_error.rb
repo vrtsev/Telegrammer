@@ -2,7 +2,7 @@
 
 module PdrBot
   module Responders
-    class ServiceError < Telegram::AppManager::Responder
+    class ServiceError < ApplicationResponder
       class Contract < Dry::Validation::Contract
         params do
           required(:error_code).filled(:string)

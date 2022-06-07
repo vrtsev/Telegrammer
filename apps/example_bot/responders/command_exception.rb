@@ -2,7 +2,7 @@
 
 module ExampleBot
   module Responders
-    class CommandException < Telegram::AppManager::Responder
+    class CommandException < ApplicationResponder
       def call
         respond_with(:message, text: error_text)
       end
