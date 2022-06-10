@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_31_151135) do
+ActiveRecord::Schema.define(version: 2022_06_10_160805) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,8 @@ ActiveRecord::Schema.define(version: 2022_05_31_151135) do
     t.boolean "all_members_are_administrators"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "photo_url"
+    t.string "photo_thumb_url"
     t.index ["external_id"], name: "index_chats_on_external_id", unique: true
   end
 
