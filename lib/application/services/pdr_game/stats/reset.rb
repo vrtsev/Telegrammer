@@ -2,7 +2,7 @@
 
 module PdrGame
   module Stats
-    class Reset < Telegram::AppManager::Service
+    class Reset < BaseService
       class Contract < Dry::Validation::Contract
         params do
           required(:chat_id).filled(:integer)

@@ -2,7 +2,7 @@
 
 module PdrGame
   module Stats
-    class ByChat < Telegram::AppManager::Service
+    class ByChat < BaseService
       class Contract < Dry::Validation::Contract
         params do
           required(:chat_id).filled(:integer)

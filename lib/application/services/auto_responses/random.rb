@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module AutoResponses
-  class Random < Telegram::AppManager::Service
+  class Random < BaseService
     class Contract < Dry::Validation::Contract
       params do
         required(:chat_id).filled(:integer)

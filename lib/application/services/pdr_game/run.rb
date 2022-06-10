@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module PdrGame
-  class Run < Telegram::AppManager::Service
+  class Run < BaseService
     class Contract < Dry::Validation::Contract
       params do
         required(:chat_id).filled(:integer)
