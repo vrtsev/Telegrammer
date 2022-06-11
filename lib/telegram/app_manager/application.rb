@@ -3,44 +3,48 @@
 module Telegram
   module AppManager
     class Application
-      extend Helpers::Logging
-
       class << self
         def config
-          @config ||= Configuration.new
-        end
-
-        def config=(config)
-          @config = config
-        end
-
-        def configure
-          yield(config)
+          AppManager.config
         end
 
         def run
+          AppManager.logger.info 'Application is starting...'
+          config.validate!
           app_start_message
-          logger.info Rainbow("[#{config.app_name}] Application is listening messages...\n").bold.green
-          Telegram::Bot::UpdatesPoller.start(config.telegram_bot, config.controller)
-        rescue HTTPClient::ReceiveTimeoutError, OpenSSL => e
-          logger.info Rainbow("[#{config.app_name}] Poller timeout error. Reconnecting\n").bold.red
-          run
+          start_updates_poller
         end
 
         private
 
+        def start_updates_poller
+          AppManager.logger.info Rainbow("[#{AppManager.app_name}] Application is listening messages...").bold.green
+
+          Telegram::Bot::UpdatesPoller.new(
+            AppManager.telegram_bot,
+            AppManager.controller,
+            logger: AppManager.logger
+          ).start
+
+          AppManager.logger.info Rainbow("[#{AppManager.app_name}] Message listener stopped").bold.red
+        rescue HTTPClient::ReceiveTimeoutError, OpenSSL => e
+          AppManager.logger.info Rainbow("[#{AppManager.app_name}] Poller error. Reconnecting\n").bold.red
+          run
+        end
+
         def app_start_message
-          logger.info <<~INFO
+          AppManager.logger.info <<~INFO
             \n=========================================================
-            Application is starting
+            App name: #{Rainbow(AppManager.app_name.to_s).bold.cyan}
+            Environment: #{AppManager.environment}
+            Telegram bot username: #{AppManager.telegram_bot.username}
+            Main controller: #{AppManager.controller}
+            Controller logging enabled: #{AppManager.config.controller_action_logging}
 
-            App name: #{Rainbow(config.app_name.to_s).bold.cyan}
-            Telegram bot username: #{config.telegram_bot.username}
-            Main controller: #{config.controller}
-            Controller logging enabled: #{config.controller_logging}
+            Make sure your bot has group privacy setting disabled in
+            telegram to allow application to sync incoming data
 
-            Make sure your bot has group privacy setting disabled in telegram
-            to allow application to sync incoming data
+            Use Ctrl-C to stop
             =========================================================
           INFO
         end

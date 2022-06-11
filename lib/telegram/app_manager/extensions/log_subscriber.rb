@@ -5,6 +5,8 @@ module Telegram
     class UpdatesController
       class LogSubscriber < ActiveSupport::LogSubscriber
         def start_processing(event)
+          return unless AppManager.config.controller_action_logging
+
           info do
             payload = event.payload
             controller_action = Rainbow("#{payload[:controller]}##{payload[:action]}").bold.cyan
@@ -15,6 +17,8 @@ module Telegram
         end
 
         def process_action(event)
+          return unless AppManager.config.controller_action_logging
+
           info do
             payload = event.payload
             additions = UpdatesController.log_process_action(payload)
@@ -29,10 +33,12 @@ module Telegram
         end
 
         def halted_callback(event)
+          return unless AppManager.config.controller_action_logging
+
           info { "Filter chain halted at #{event.payload[:filter].inspect}" }
         end
 
-        delegate :logger, to: AppManager::Helpers::Logging
+        delegate :logger, to: AppManager
       end
     end
   end

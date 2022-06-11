@@ -25,15 +25,27 @@ require_relative 'app_manager/builders/chat_user.rb'
 require_relative 'app_manager/builders/chat.rb'
 require_relative 'app_manager/builders/message.rb'
 require_relative 'app_manager/builders/user.rb'
-
-require_relative 'app_manager/responder/exception_report.rb'
-require_relative 'app_manager/responder/new_chat_registered.rb'
-require_relative 'app_manager/responder.rb'
-
-require_relative 'app_manager/controller/actions.rb'
-require_relative 'app_manager/controller/callbacks.rb'
-require_relative 'app_manager/controller.rb'
-
 module Telegram
-  module AppManager; end
+  module AppManager
+    class << self
+      delegate :app_name,
+               :telegram_bot,
+               :controller,
+               :controller_action_logging,
+               :environment,
+               to: :config
+
+      def config
+        @config ||= Configuration.new
+      end
+
+      def config=(config)
+        @config = config
+      end
+
+      def logger
+        config.logger || AppManager::Logger.new("log/#{config.app_name.underscore}.log")
+      end
+    end
+  end
 end
