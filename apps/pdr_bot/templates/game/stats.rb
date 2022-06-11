@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module PdrBot
-  module Responders
+  module Templates
     module Game
-      class Stats < ApplicationResponder
+      class Stats < ApplicationTemplate
         class Contract < Dry::Validation::Contract
           params do
             required(:winner_leader_stat).filled
@@ -12,13 +12,7 @@ module PdrBot
           end
         end
 
-        def call
-          respond_with(:message, text: stats_text)
-        end
-
-        private
-
-        def stats_text
+        def text
           <<~MESSAGE
             #{title}
 
@@ -29,6 +23,8 @@ module PdrBot
             #{chat_stats_text}
           MESSAGE
         end
+
+        private
 
         def title
           t('pdr_bot.game.stats.leaders.title')

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_all 'apps/jenia_bot/responders'
+require_all 'apps/jenia_bot/templates'
 require_relative 'controller.rb'
 
 module JeniaBot

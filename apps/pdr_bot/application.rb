@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_all 'apps/pdr_bot/responders'
+require_all 'apps/pdr_bot/templates'
 require_relative 'controller.rb'
 
 module PdrBot

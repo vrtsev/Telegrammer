@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module PdrBot
-  module Responders
+  module Templates
     module Game
-      class Results < ApplicationResponder
+      class Results < ApplicationTemplate
         class Contract < Dry::Validation::Contract
           params do
             required(:winner_name).filled(:string)
@@ -11,13 +11,7 @@ module PdrBot
           end
         end
 
-        def call
-          respond_with(:message, text: results_text)
-        end
-
-        private
-
-        def results_text
+        def text
           <<~MESSAGE
             #{title}
 
@@ -25,6 +19,8 @@ module PdrBot
             #{loser_leader}
           MESSAGE
         end
+
+        private
 
         def title
           t('pdr_bot.game.results.title')

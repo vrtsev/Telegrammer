@@ -1,21 +1,15 @@
 # frozen_string_literal: true
 
 module PdrBot
-  module Responders
-    class ServiceError < ApplicationResponder
+  module Templates
+    class ServiceError < ApplicationTemplate
       class Contract < Dry::Validation::Contract
         params do
           required(:error_code).filled(:string)
         end
       end
 
-      def call
-        respond_with(:message, text: error_text)
-      end
-
-      private
-
-      def error_text
+      def text
         case params[:error_code]
         when 'PDR_GAME_LATEST_ROUND_NOT_EXPIRED' then latest_round_not_expired_error
         when 'PDR_GAME_NOT_ENOUGH_USERS' then not_enough_users_error
@@ -23,6 +17,8 @@ module PdrBot
         when 'PDR_GAME_NO_ROUNDS' then no_rounds_error
         end
       end
+
+      private
 
       def latest_round_not_expired_error
         t('pdr_bot.game.errors.latest_round_not_expired')

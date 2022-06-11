@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_all 'apps/example_bot/responders'
+require_all 'apps/example_bot/templates'
 require_relative 'controller.rb'
 
 module ExampleBot
