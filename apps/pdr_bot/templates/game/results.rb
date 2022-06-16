@@ -3,7 +3,7 @@
 module PdrBot
   module Templates
     module Game
-      class Results < ApplicationTemplate
+      class Results < ::BotBase::Templates::BaseTemplate
         class Contract < Dry::Validation::Contract
           params do
             required(:winner_name).filled(:string)

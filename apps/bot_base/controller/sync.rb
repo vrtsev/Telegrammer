@@ -3,12 +3,12 @@
 module BotBase
   module Controller
     module Sync
-      private
-
       attr_reader :current_chat,
                   :current_user,
                   :current_chat_user,
-                  :current_message
+                  :current_message,
+                  :bot_user,
+                  :bot_chat_user
 
       def sync_request
         @current_chat ||= sync_chat
@@ -17,18 +17,27 @@ module BotBase
         @current_message ||= sync_message
       end
 
+      def sync_bot
+        bot_payload = Telegram::AppManager::Client.new(bot.client).get_bot
+
+        @bot_user ||= sync_user(bot_payload, bot_id: bot.id)
+        @bot_chat_user ||= sync_chat_user(chat_id: current_chat.id, user_id: @bot_user.id)
+      end
+
+      private
+
       def sync_chat
         Chats::Sync.call(
           payload: payload['chat'],
-          autoapprove: bot_setting.autoapprove_chat,
-          bot: bot.id
+          autoapprove: bot.autoapprove_chat,
+          bot_id: bot.id
         ).chat
       end
 
-      def sync_user(user_payload = nil)
+      def sync_user(user_payload = nil, bot_id: nil)
         user_payload ||= payload['from']
 
-        Users::Sync.call(payload: user_payload).user
+        Users::Sync.call(bot_id: bot_id, payload: user_payload).user
       end
 
       def sync_chat_user(chat_user_payload = nil)
@@ -43,7 +52,7 @@ module BotBase
         Messages::Sync.call(
           payload: payload,
           chat_user_id: current_chat_user.id,
-          bot: bot.id
+          bot_id: bot.id
         ).message
       end
     end

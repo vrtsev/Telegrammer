@@ -2,7 +2,7 @@
 
 module JeniaBot
   module Templates
-    class CallJenia < ApplicationTemplate
+    class CallJenia < ::BotBase::Templates::BaseTemplate
       KEYBOARD_SLICE_COUNT = 1
 
       def text

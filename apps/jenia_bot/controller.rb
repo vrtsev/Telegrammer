@@ -3,29 +3,36 @@
 module JeniaBot
   class Controller < Telegram::AppManager::Controller
     include Helpers::Logging
+    include Helpers::Translation
     include BotBase::Controller::BotState
     include BotBase::Controller::Sync
     include BotBase::Controller::MessageHelpers
     include BotBase::Controller::Events
     include BotBase::Controller::Authorization
 
-    before_action :check_bot_state, :sync_request, :perform_events, :authorize_chat
+    before_action :check_bot_state, except: :enable!
+    before_action :sync_request, :sync_bot, :perform_events, :authorize_chat
     before_action :authorize_admin, only: [:enable!, :disable!]
 
     def message(payload)
       return if current_message.text.blank?
-      return if auto_response.response.blank?
 
-      reply_message Templates::AutoResponse.build(response: auto_response.response)
+      params = { chat_id: current_chat.id, message_text: current_message.text, bot_id: bot.id }
+      result = AutoResponses::Random.call(params)
+      return if result.response.blank?
+
+      reply_message(text: result.response, delay: rand(2..3))
     end
 
     def start!
-      send_message Templates::Start.build(chat_id: current_chat.id)
+      send_message(text: t('jenia_bot.start_message'))
     end
 
     def jenia!
-      params = { chat_id: current_chat.id }
-      result = JeniaQuestions::GetList.call(params)
+      result = JeniaQuestions::GetList.call(chat_id: current_chat.id)
+
+      params = { chat_id: current_chat.id, message_text: current_message.text, bot_id: bot.id }
+      auto_response = AutoResponses::Random.call(params)
 
       reply_message Templates::CallJenia.build(
         chat_id: current_chat.id,
@@ -36,17 +43,8 @@ module JeniaBot
 
     private
 
-    def auto_response
-      params = { chat_id: current_chat.id, message_text: current_message.text, bot: :jenia_bot }
-      AutoResponses::Random.call(params)
-    end
-
-    def respond_with_error(exception)
-      send_message Templates::ServiceError.build(chat_id: current_chat.id, error_code: exception.error_code)
-    end
-
     def handle_exception(exception)
-      send_message Templates::CommandException.build(chat_id: current_chat.id) if action_type == :command
+      send_message(BotBase::Templates::ExceptionReport.build(exception: exception, payload: payload.to_h))
     end
   end
 end

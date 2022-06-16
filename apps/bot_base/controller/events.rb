@@ -18,31 +18,38 @@ module BotBase
       # def poll_answer(payload); end # listens only stopped polls sent by the bot
       # def chat_member; end # needs admin rights && explicitly specify “chat_member” in the list of allowed_updates to receive these updates
 
-      private
+      attr_reader :new_chat_members,
+                  :left_chat_member
 
       def perform_events
-        on_new_chat_member
-        on_left_chat_member
+        @new_chat_members ||= on_new_chat_members
+        @left_chat_member ||= on_left_chat_member
       end
 
-      def on_new_chat_member
+      private
+
+      def on_new_chat_members
         return if payload['new_chat_members'].blank?
 
-        payload['new_chat_members'].each do |new_chat_member|
+        payload['new_chat_members'].map do |new_chat_member|
           new_user = sync_user(new_chat_member.to_h)
           chat_user = sync_chat_user(chat_id: current_chat.id, user_id: new_user.id, deleted: false)
 
           logger.info("> [New chat member] synced chat user ##{chat_user.id}")
+
+          new_user
         end
       end
 
       def on_left_chat_member
-        return if payload[:left_chat_member].blank?
+        return if payload['left_chat_member'].blank?
 
         left_user = sync_user(payload['left_chat_member'])
         chat_user = sync_chat_user(chat_id: current_chat.id, user_id: left_user.id, deleted: true)
 
         logger.info("> [Left chat member]: synced chat user ##{chat_user.id}")
+
+        left_user
       end
     end
   end

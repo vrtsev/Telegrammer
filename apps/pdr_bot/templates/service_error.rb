@@ -2,7 +2,7 @@
 
 module PdrBot
   module Templates
-    class ServiceError < ApplicationTemplate
+    class ServiceError < ::BotBase::Templates::BaseTemplate
       class Contract < Dry::Validation::Contract
         params do
           required(:error_code).filled(:string)

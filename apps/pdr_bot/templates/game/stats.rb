@@ -3,7 +3,7 @@
 module PdrBot
   module Templates
     module Game
-      class Stats < ApplicationTemplate
+      class Stats < ::BotBase::Templates::BaseTemplate
         class Contract < Dry::Validation::Contract
           params do
             required(:winner_leader_stat).filled

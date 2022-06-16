@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module PdrBot
+module BotBase
   module Templates
-    class ExceptionReport < ApplicationTemplate
+    class ExceptionReport < BaseTemplate
       class Contract < Dry::Validation::Contract
         params do
           required(:exception).filled

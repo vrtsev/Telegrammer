@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
-module Telegram
-  module AppManager
-    class Template
+module BotBase
+  module Templates
+    class BaseTemplate
+      include Helpers::Validation
+      include Helpers::Translation
+
       def self.build(**params)
         instance = new(params)
+        instance.validate!(params)
         instance.to_h
       end
 

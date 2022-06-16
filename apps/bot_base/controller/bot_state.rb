@@ -4,30 +4,30 @@ module BotBase
   module Controller
     module BotState
       def enable!
-        bot_setting.update!(enabled: true)
+        bot.update!(enabled: true)
         send_message(text: 'Bot has been enabled', chat_id: Chat.for_app_owner.id)
       end
 
       def disable!
-        bot_setting.update!(enabled: false)
+        bot.update!(enabled: false)
         send_message(text: 'Bot has been disabled', chat_id: Chat.for_app_owner.id)
+      end
+
+      def check_bot_state
+        return true if bot_enabled?
+
+        logger.info(Rainbow("> Bot is disabled").bold.red)
+        throw :abort
       end
 
       private
 
-      def check_bot_state
-        return if bot_enabled?
-
-        logger.info(Rainbow("> Bot is disabled").bold.red)
-        throw :abort unless action_name == 'enable!'
-      end
-
       def bot_enabled?
-        bot_setting.enabled?
+        bot.enabled?
       end
 
-      def bot_setting
-        @bot_setting ||= BotSetting.find_or_create_by(bot: bot.username)
+      def bot
+        @bot ||= Bot.find_or_create_by(name: super.id, username: super.username)
       end
     end
   end

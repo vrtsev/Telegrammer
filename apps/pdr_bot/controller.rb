@@ -3,13 +3,15 @@
 module PdrBot
   class Controller < Telegram::AppManager::Controller
     include Helpers::Logging
-    include BotBase::Controller::MessageHelpers
+    include Helpers::Translation
     include BotBase::Controller::BotState
     include BotBase::Controller::Sync
+    include BotBase::Controller::MessageHelpers
     include BotBase::Controller::Events
     include BotBase::Controller::Authorization
 
-    before_action :check_bot_state, :sync_request, :perform_events, :authorize_chat
+    before_action :check_bot_state, except: :enable!
+    before_action :sync_request, :sync_bot, :perform_events
     before_action :authorize_admin, only: [:enable!, :disable!, :reset_stats!]
 
     def message(payload)
@@ -19,11 +21,11 @@ module PdrBot
       result = AutoResponses::Random.call(params)
       return if result.response.blank?
 
-      reply_message Templates::AutoResponse.build(response: result.response)
+      reply_message(text: result.response, delay: rand(2..4))
     end
 
     def start!
-      send_message Templates::Start.build(chat_id: current_chat.id)
+      send_message(text: t('pdr_bot.start_message'))
     end
 
     def pdr!
@@ -31,8 +33,8 @@ module PdrBot
       result = PdrGame::Run.call(params)
       return respond_with_error(result.exception) unless result.success?
 
-      send_message Templates::Game::Start::Title.build(chat_id: current_chat.id)
-      send_message Templates::Game::Start::SearchingUsers.build(chat_id: current_chat.id)
+      send_message(text: t('pdr_bot.game.start.title'), delay_after: rand(2..5))
+      send_message(text: t('pdr_bot.game.start.searching_users'), delay_after: rand(1..3))
       results!
     end
 
@@ -70,12 +72,12 @@ module PdrBot
     private
 
     def respond_with_error(exception)
-      send_message Templates::ServiceError.build(chat_id: current_chat.id, error_code: exception.error_code)
+      send_message(Templates::ServiceError.build(chat_id: current_chat.id, error_code: exception.error_code))
     end
 
     def handle_exception(exception)
-      send_message Templates::ExceptionReport.build(exception: exception, payload: payload.to_h)
-      send_message Templates::CommandException.build(chat_id: current_chat.id) if action_type == :command
+      send_message(BotBase::Templates::ExceptionReport.build(exception: exception, payload: payload.to_h))
+      send_message(text: t('pdr_bot.command_exception')) if action_type == :command
     end
   end
 end
