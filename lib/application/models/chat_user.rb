@@ -8,7 +8,7 @@ class ChatUser < ApplicationRecord
   belongs_to :chat
   belongs_to :user
 
-  has_many :messages
+  has_many :messages, dependent: :destroy
   has_one :pdr_game_stat, class_name: 'PdrGame::Stat'
 
   validates :chat_id, :user_id, presence: true

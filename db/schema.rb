@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_10_160805) do
+ActiveRecord::Schema.define(version: 2022_06_16_145528) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,23 +18,23 @@ ActiveRecord::Schema.define(version: 2022_06_10_160805) do
   create_table "auto_responses", force: :cascade do |t|
     t.integer "author_id", null: false
     t.integer "chat_id", null: false
-    t.string "bot", null: false
     t.text "trigger", null: false
     t.text "response", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "bot_id"
     t.index ["author_id"], name: "index_auto_responses_on_author_id"
-    t.index ["bot"], name: "index_auto_responses_on_bot"
     t.index ["chat_id"], name: "index_auto_responses_on_chat_id"
   end
 
-  create_table "bot_settings", force: :cascade do |t|
-    t.string "bot", null: false
+  create_table "bots", force: :cascade do |t|
+    t.string "name", null: false
     t.boolean "enabled", default: false
     t.boolean "autoapprove_chat", default: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["bot"], name: "index_bot_settings_on_bot"
+    t.string "username"
+    t.index ["name"], name: "index_bots_on_name"
   end
 
   create_table "chat_users", force: :cascade do |t|
@@ -60,7 +60,6 @@ ActiveRecord::Schema.define(version: 2022_06_10_160805) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "photo_url"
-    t.string "photo_thumb_url"
     t.index ["external_id"], name: "index_chats_on_external_id", unique: true
   end
 
@@ -83,6 +82,8 @@ ActiveRecord::Schema.define(version: 2022_06_10_160805) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "reply_to_id"
+    t.datetime "deleted_at"
+    t.integer "bot_id"
     t.index ["chat_user_id"], name: "index_messages_on_chat_user_id"
     t.index ["external_id"], name: "index_messages_on_external_id", unique: true
   end
@@ -122,6 +123,7 @@ ActiveRecord::Schema.define(version: 2022_06_10_160805) do
     t.boolean "is_bot", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "bot_id"
     t.index ["external_id"], name: "index_users_on_external_id", unique: true
   end
 

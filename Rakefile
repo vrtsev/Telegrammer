@@ -30,7 +30,7 @@ end
 namespace :bots do
   desc 'Set disabled state for each bot'
   task :disable_all do
-    BotSetting.update_all(enabled: false)
+    Bot.update_all(enabled: false)
   end
 end
 

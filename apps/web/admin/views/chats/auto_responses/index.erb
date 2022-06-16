@@ -7,7 +7,7 @@
     <table class="table">
       <tbody>
         <% @chat.auto_responses.order(:trigger).group_by { |auto_response| auto_response.bot }.each do |bot, bot_auto_responses| %>
-          <tr class="table-secondary"><th colspan="4"><%= bot %></th></tr>
+          <tr class="table-secondary"><th colspan="4"><%= bot.name %></th></tr>
 
           <% bot_auto_responses.group_by { |auto_response| auto_response.trigger }.each do |trigger, trigger_auto_responses| %>
             <tr><th colspan="4"><%= trigger %></th></tr>

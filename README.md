@@ -53,7 +53,7 @@ First of all you need to create your own telegram bot and obtain an API key. Fol
 ## Available rake commands:
 - `rake` - will run all spec tests
 - `rake redis:flushall` - clear all Redis keys and values
-- `rake bots:disable_all` - disable all bots (sets `enabled: false` in `bot_settings` table)
+- `rake bots:disable_all` - disable all bots (sets `enabled: false` in `bots` table)
 - `rake translations:check` - Check if all translations is imported to DB. It compares registered keys in `Translation` model with existing translation records in DB
 - `rake db:new_migration name=create_some_table` - Generate migration file
 

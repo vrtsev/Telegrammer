@@ -15,7 +15,7 @@ module ExampleBot
     def message(payload)
       return unless current_message.text.present?
 
-      params = { chat_id: current_chat.id, message_text: current_message.text, bot: :example_bot }
+      params = { chat_id: current_chat.id, message_text: current_message.text, bot_id: bot.id }
       result = AutoResponses::Random.call(params)
       return if result.response.blank?
 

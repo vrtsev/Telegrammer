@@ -14,7 +14,7 @@ Web::Admin.controllers :auto_responses, parent: :chats do
   post '/', name: :create, params: [:bot, :trigger, :response] do
     author = User.find_by(external_id: ENV['TELEGRAM_APP_OWNER_ID'])
     @chat.auto_responses.create!(
-      bot: params[:bot],
+      bot_id: Bot.find_by(name: params[:bot]).id,
       trigger: params[:trigger],
       response: params[:response],
       author_id: author.id

@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe ChatUser, type: :model do
-  it_behaves_like 'synchronizable model' do
-    let(:init_attrs) { Hash[chat_id: create(:chat).id, user_id: create(:user).id] }
-  end
-
   context 'validations' do
     subject { create(:chat_user) }
 

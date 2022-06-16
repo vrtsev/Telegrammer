@@ -12,5 +12,6 @@ FactoryBot.define do
     description { Faker::Lorem.sentence }
     invite_link { Faker::Internet.url }
     all_members_are_administrators { true }
+    photo_url { Faker::Internet.url }
   end
 end

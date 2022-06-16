@@ -10,5 +10,8 @@ FactoryBot.define do
     bot { :example_bot }
     content_url { nil }
     content_data { nil }
+
+    association :bot
+    deleted_at { nil }
   end
 end

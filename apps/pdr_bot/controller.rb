@@ -15,7 +15,7 @@ module PdrBot
     def message(payload)
       return if current_message.text.blank?
 
-      params = { chat_id: current_chat.id, message_text: current_message.text, bot: :pdr_bot }
+      params = { chat_id: current_chat.id, message_text: current_message.text, bot_id: bot.id }
       result = AutoResponses::Random.call(params)
       return if result.response.blank?
 
