@@ -18,7 +18,7 @@ RSpec.describe Message, type: :model do
 
     it 'updates "deleted_at" attribute' do
       Timecop.freeze(Time.now) do
-        expect { subject }.to change { message.reload.deleted_at }.from(nil).to(Time.now)
+        expect { subject }.to change { message.reload.deleted_at.to_i }.from(0).to(Time.now.to_i)
       end
     end
   end

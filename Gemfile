@@ -53,4 +53,5 @@ group :test do
   gem 'mock_redis', '0.30.0'
   gem 'shoulda-matchers', '5.1.0'
   gem 'rspec', '3.11.0'
+  gem 'timecop', '~> 0.9.5'
 end

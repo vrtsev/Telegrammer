@@ -257,6 +257,7 @@ GEM
     thwait (0.2.0)
       e2mmap
     tilt (2.0.10)
+    timecop (0.9.5)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.1.0)
@@ -298,6 +299,7 @@ DEPENDENCIES
   standalone_migrations (= 7.1.0)
   telegram-bot (= 0.15.4)
   telegram-bot-types (= 0.7.0)
+  timecop (~> 0.9.5)
   webrick (= 1.7.0)
 
 RUBY VERSION
