@@ -1,6 +1,10 @@
 <figure class="avatar">
   <span class="avatar-title <%= chat.avatar_background_class %> rounded-circle">
-    <%= chat.avatar_letter if chat.private_chat? %>
-    <% unless chat.private_chat? %><i class="fa fa-users"></i><% end %>
+    <% if chat.photo_url.present? %>
+      <img src="<%= chat.photo_url %>" class="rounded-circle" width="50px"/>
+    <% else %>
+      <%= chat.avatar_letter if chat.private_chat? %>
+      <% unless chat.private_chat? %><i class="fa fa-users"></i><% end %>
+    <% end %>
   </span>
 </figure>

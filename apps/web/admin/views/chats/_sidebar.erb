@@ -96,7 +96,7 @@
                   </div>
                 </div>
 
-                By <strong><%= pdr_game_round.initiator.name %></strong> <span class="text-muted">(<%= format_datetime(pdr_game_round.created_at) %>)</span>
+                By <strong><%= pdr_game_round.initiator&.name %></strong> <span class="text-muted">(<%= format_datetime(pdr_game_round.created_at) %>)</span>
                 <br>
                 💩 <%= pdr_game_round.loser.name %> / 😎 <%= pdr_game_round.winner.name %>
               </div>

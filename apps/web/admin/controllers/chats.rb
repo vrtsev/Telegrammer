@@ -2,6 +2,8 @@
 
 Web::Admin.controllers :chats do
   get '/', name: :index do
+    return render :index if chats_scope.blank?
+
     redirect url(:chats, :show, id: chats_scope.first.id)
   end
 

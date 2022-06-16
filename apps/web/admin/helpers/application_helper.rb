@@ -9,8 +9,10 @@ Web::Admin.helpers do
     presenter
   end
 
-  def present_collection(colletion, presenter_class=nil)
-    colletion.map { |record| present(record, presenter_class) }
+  def present_collection(collection, presenter_class=nil)
+    return [] if collection.blank?
+
+    collection.map { |record| present(record, presenter_class) }
   end
 
   def format_datetime(datetime)

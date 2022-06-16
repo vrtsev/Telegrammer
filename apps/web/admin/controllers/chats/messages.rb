@@ -30,37 +30,41 @@ Web::Admin.controllers :messages, parent: :chats do
   end
 
   post '/', name: :create, params: [:bot, :text] do
-    service_params = {
-      chat_id: @chat.id,
+    message_params = {
       bot: params[:bot].to_sym,
+      chat_id: @chat.id,
       text: params[:text],
-      reply_to_message_id: @message&.id
+      message_id: @message&.id
     }
-
-    result = Messages::Send.call(service_params)
+    service = @message.present? ? Messages::Reply : Messages::Create
+    result = service.call(message_params)
     flash[:message_error] = result.exception.error_code unless result.success?
 
     redirect url(:messages, :index, chat_id: @chat.id)
   end
 
   patch '/:id', name: :update, params: [:bot, :text] do
-    service_params = {
-      chat_id: @chat.id,
+    message_params = {
       bot: params[:bot].to_sym,
+      chat_id: @chat.id,
       text: params[:text],
-      edit_message_id: @message.id
+      message_id: @message.id
     }
 
-    result = Messages::Edit.call(service_params)
+    result = Messages::Edit.call(message_params)
     flash[:message_error] = result.exception.error_code unless result.success?
 
     redirect url(:messages, :index, chat_id: @chat.id, bot: params[:bot])
   end
 
   delete '/:id', name: :destroy do
-    service_params = { chat_id: @chat.id, message_id: params[:id] }
+    message_params = {
+      bot: params[:bot].to_sym,
+      chat_id: @chat.id,
+      message_id: params[:id]
+    }
 
-    result = Messages::Delete.call(service_params)
+    result = Messages::Delete.call(message_params)
     flash[:message_error] = result.exception.error_code unless result.success?
 
     redirect url(:messages, :index, chat_id: @chat.id, bot: params[:bot])
