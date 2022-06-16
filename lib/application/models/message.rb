@@ -29,6 +29,7 @@ class Message < ApplicationRecord
     animation: 'animation',
     voice: 'voice',
     video_note: 'video_note',
+    pinned_message: 'pinned_message',
     unknown: 'unknown'
   }
 

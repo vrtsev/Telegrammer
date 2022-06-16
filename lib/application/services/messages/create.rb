@@ -53,7 +53,7 @@ module Messages
     end
 
     def message_timestamp
-      Time.at(@response['date'])
+      Time.at(@response[:date])
     end
   end
 end

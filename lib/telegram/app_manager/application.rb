@@ -4,12 +4,14 @@ module Telegram
   module AppManager
     class Application
       class << self
+        delegate :logger, to: AppManager
+
         def config
           AppManager.config
         end
 
         def run
-          AppManager.logger.info 'Application is starting...'
+          logger.info 'Application is starting...'
           config.validate!
           app_start_message
           start_updates_poller
@@ -18,22 +20,16 @@ module Telegram
         private
 
         def start_updates_poller
-          AppManager.logger.info Rainbow("[#{AppManager.app_name}] Application is listening messages...").bold.green
-
-          Telegram::Bot::UpdatesPoller.new(
-            AppManager.telegram_bot,
-            AppManager.controller,
-            logger: AppManager.logger
-          ).start
-
-          AppManager.logger.info Rainbow("[#{AppManager.app_name}] Message listener stopped").bold.red
+          logger.info Rainbow("[#{AppManager.app_name}] Application is listening messages...").bold.green
+          Telegram::Bot::UpdatesPoller.new(AppManager.telegram_bot, AppManager.controller, logger: logger).start
+          logger.info Rainbow("[#{AppManager.app_name}] Message listener stopped").bold.red
         rescue HTTPClient::ReceiveTimeoutError, OpenSSL => e
-          AppManager.logger.info Rainbow("[#{AppManager.app_name}] Poller error. Reconnecting\n").bold.red
+          logger.info Rainbow("[#{AppManager.app_name}] Poller error. Reconnecting\n").bold.red
           run
         end
 
         def app_start_message
-          AppManager.logger.info <<~INFO
+          logger.info <<~INFO
             \n=========================================================
             App name: #{Rainbow(AppManager.app_name.to_s).bold.cyan}
             Environment: #{AppManager.environment}

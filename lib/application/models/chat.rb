@@ -14,7 +14,7 @@ class Chat < ApplicationRecord
   has_many :auto_responses
   has_many :jenia_questions
 
-  validates :external_id, :chat_type, :approved, presence: true
+  validates :external_id, :chat_type, presence: true
   validates :external_id, uniqueness: true
 
   enum chat_type: {
@@ -24,11 +24,15 @@ class Chat < ApplicationRecord
     channel: 'channel'
   }
 
-  def name
-    title || username || "#{first_name} #{last_name}".strip
+  def self.for_app_owner
+    find_or_create_by!(
+      external_id: ENV['TELEGRAM_APP_OWNER_ID'],
+      chat_type: Chat.chat_types[:private_chat],
+      approved: true
+    )
   end
 
-  def pdr_game_round
-    super || build_pdr_game_round
+  def name
+    title || "#{first_name} #{last_name}".strip.presence || username
   end
 end

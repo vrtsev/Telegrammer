@@ -4,8 +4,8 @@ module Synchronizable
   extend ActiveSupport::Concern
 
   included do
-    def self.sync(params, **init_attrs)
-      record = find_or_initialize_by(init_attrs)
+    def self.sync_by!(init_attr, params)
+      record = find_or_initialize_by(init_attr => params[init_attr])
       record.update!(params)
 
       record

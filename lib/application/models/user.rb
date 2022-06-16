@@ -17,6 +17,6 @@ class User < ApplicationRecord
   scope :bots, -> { where(is_bot: true) }
 
   def name
-    username && "@#{username}" || "#{first_name} #{last_name}".strip
+    "#{first_name} #{last_name}".strip.presence || "@#{username}"
   end
 end

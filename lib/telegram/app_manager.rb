@@ -1,11 +1,9 @@
 # frozen_string_literal: false
 
 require 'telegram/bot'
-require 'dry-validation'
 require 'logger'
 
 # Require main dependencies
-
 require_relative 'app_manager/logger/multi_io.rb'
 require_relative 'app_manager/logger/default_formatter.rb'
 require_relative 'app_manager/logger/active_record_formatter.rb'
@@ -13,10 +11,9 @@ require_relative 'app_manager/logger.rb'
 
 require_relative 'app_manager/configuration.rb'
 require_relative 'app_manager/application.rb'
-require_relative 'app_manager/template.rb'
 require_relative 'app_manager/controller.rb'
-
 require_relative 'app_manager/extensions/log_subscriber.rb'
+require_relative 'app_manager/client.rb'
 
 module Telegram
   module AppManager
