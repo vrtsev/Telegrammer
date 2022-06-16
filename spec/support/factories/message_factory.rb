@@ -7,6 +7,7 @@ FactoryBot.define do
     payload_type { 'text' }
     external_id { Faker::Number.number(digits: 8) }
     text { Faker::Lorem.sentence }
+    bot { :example_bot }
     content_url { nil }
     content_data { nil }
   end
