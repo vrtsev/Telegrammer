@@ -1,0 +1,16 @@
+<form method="POST" action="<%= url %>">
+  <% if method == :patch %><input type="hidden" name="_method" value="patch"><% end %>
+
+  <input type="hidden" name="authenticity_token" value="<%= csrf_token %>">
+  <textarea type="text" class="form-control" placeholder="Type a message here" name="text" rows="1"></textarea>
+
+  <div class="form-buttons">
+    <select id="bot-selector" class="form-control" name="bot">
+      <% @available_bots.each do |bot| %>
+        <option value="<%= bot.name %>" <%= 'selected' if params[:bot] == bot.name.to_s %>><%= bot.name %></option>
+      <% end %>
+    </select>
+
+    <button class="btn btn-primary" type="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+  </div>
+</form>

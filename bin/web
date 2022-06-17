@@ -1,0 +1,3 @@
+#!/bin/bash
+
+bundle exec rackup apps/web/config.ru -p $WEB_APP_PORT --host $WEB_APP_HOST

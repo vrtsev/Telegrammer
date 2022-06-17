@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module PdrGame
-  class Run < Telegram::AppManager::Service
-    class Contract < Telegram::AppManager::Contract
+  class Run < BaseService
+    class Contract < Dry::Validation::Contract
       params do
         required(:chat_id).filled(:integer)
         required(:initiator_id).filled(:integer)
@@ -26,13 +26,13 @@ module PdrGame
 
     def check_latest_round_expired
       return true if last_game_round.nil?
-      return true if Date.today.day != last_game_round.updated_at.day
+      return true if Date.today.day != last_game_round.created_at.day
 
       raise ServiceError.new(error_code: 'PDR_GAME_LATEST_ROUND_NOT_EXPIRED')
     end
 
     def check_minimum_user_count
-      users_count = ChatUser.where(chat_id: params[:chat_id], deleted_at: nil).count
+      users_count = chat_users_scope.count
       return true if users_count >= MINIMUM_USER_COUNT
 
       raise ServiceError.new(error_code: 'PDR_GAME_NOT_ENOUGH_USERS')
@@ -44,14 +44,11 @@ module PdrGame
     end
 
     def save_game_round
-      @game_round = current_chat.pdr_game_round
-      @game_round.update!(
+      @game_round = current_chat.pdr_game_rounds.create!(
         initiator_id: params[:initiator_id],
         winner_id: winner.user_id,
         loser_id: loser.user_id
       )
-
-      @game_round
     end
 
     def last_game_round
@@ -59,11 +56,7 @@ module PdrGame
     end
 
     def finalists
-      @finalists ||= ChatUser
-        .where(chat_id: params[:chat_id], deleted_at: nil)
-        .order("RANDOM()")
-        .limit(2)
-        .to_a
+      @finalists ||= chat_users_scope.order("RANDOM()").limit(2).to_a
     end
 
     def winner
@@ -76,6 +69,14 @@ module PdrGame
 
     def current_chat
       @current_chat ||= Chat.find(params[:chat_id])
+    end
+
+    def chat_users_scope
+      @chat_users_scope ||= ChatUser.joins(:user).where(
+        chat_id: params[:chat_id],
+        deleted_at: nil,
+        user: { is_bot: false }
+      )
     end
   end
 end

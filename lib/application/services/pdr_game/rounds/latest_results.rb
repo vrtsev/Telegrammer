@@ -2,8 +2,8 @@
 
 module PdrGame
   module Rounds
-    class LatestResults < Telegram::AppManager::Service
-      class Contract < Telegram::AppManager::Contract
+    class LatestResults < BaseService
+      class Contract < Dry::Validation::Contract
         params do
           required(:chat_id).filled(:integer)
         end

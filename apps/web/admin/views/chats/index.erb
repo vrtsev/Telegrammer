@@ -1,0 +1,52 @@
+<div class="sidebar-group sidebar-left">
+  <div id="chats" class="sidebar active">
+    <header>
+      <span>Chats</span>
+
+      <ul class="list-inline">
+        <li class="list-inline-item d-xl-none d-inline">
+          <a class="btn btn-outline-light mobile-navigation-button"><i class="fa fa-bars"></i></a>
+        </li>
+
+        <li class="list-inline-item d-xl-none d-inline">
+          <a class="btn btn-outline-light text-danger sidebar-close"><i class="fa fa-xmark"></i></a>
+        </li>
+      </ul>
+    </header>
+
+    <div class="sidebar-body">
+      <ul class="list-group list-group-flush">
+
+        <% present_collection(@chats).each do |chat| %>
+          <a href="<%= url(:chats, :show, id: chat.id) %>" class="list-group-item chat-list-item <%= chat.opened_class(params[:chat_id]) %>">
+
+            <div class="chat-avatar"><%= partial('chats/avatar', locals: { chat: chat }) %></div>
+
+            <div class="chats-list-body">
+              <div>
+                <h5 class="chat-name <%= 'text-primary' if chat.unread_messages.present? %>"><%= chat.name %></h5>
+                <p class="chat-message-author"><%= chat.messages.last.user.name %></p>
+                <p class="chat-message-content">
+                  <%= partial('chats/message_content_short', locals: { message: chat.messages.last }) %>
+                </p>
+              </div>
+
+              <div class="chats-list-action">
+
+                <% if chat.unread_messages.present? %>
+                  <div class="new-message-count"><%= chat.unread_messages.count %></div>
+                <% end %>
+
+                <small class="<%= chat.unread_messages.present? ? 'text-primary' : 'text-muted' %>">
+                  <%= format_datetime(chat.messages.last.created_at) %>
+                </small>
+              </div>
+            </div>
+
+          </a>
+        <% end %>
+
+      </ul>
+    </div>
+  </div>
+</div>

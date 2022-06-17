@@ -1,0 +1,13 @@
+<% case message.payload_type %>
+<% when 'text' %><%= message.text %>
+<% when 'photo' %>🎆 Photo
+<% when 'video' %>📹 Video
+<% when 'video_note' %>🤳 Video message
+<% when 'document' %>📄 Document
+<% when 'sticker' %>🙂 Sticker
+<% when 'voice' %>🎤 Voice Message
+<% when 'poll' %>📊 Poll
+<% when 'location' %>📍 Location
+<% when 'contact' %>📞 Contact
+<% else %>❌ Unknown type
+<% end %>

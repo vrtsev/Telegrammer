@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module JeniaQuestions
-  class GetList < Telegram::AppManager::Service
-    class Contract < Telegram::AppManager::Contract
+  class GetList < BaseService
+    class Contract < Dry::Validation::Contract
       params do
         required(:chat_id).filled(:integer)
       end

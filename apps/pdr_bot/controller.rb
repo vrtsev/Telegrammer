@@ -2,21 +2,30 @@
 
 module PdrBot
   class Controller < Telegram::AppManager::Controller
-    before_action :authorize_admin!, only: [:say!, :clear_stats!]
+    include Helpers::Logging
+    include Helpers::Translation
+    include BotBase::Controller::BotState
+    include BotBase::Controller::Sync
+    include BotBase::Controller::MessageHelpers
+    include BotBase::Controller::Events
+    include BotBase::Controller::Authorization
+
+    before_action :check_bot_state, except: :enable!
+    before_action :sync_request, :sync_bot, :perform_events
+    before_action :authorize_admin, only: [:enable!, :disable!, :reset_stats!]
 
     def message(payload)
-      return unless current_message.text.present?
+      return if current_message.text.blank?
 
-      params = { chat_id: current_chat.id, message_text: current_message.text, bot: :pdr_bot }
+      params = { chat_id: current_chat.id, message_text: current_message.text, bot_id: bot.id }
       result = AutoResponses::Random.call(params)
+      return if result.response.blank?
 
-      response Responders::AutoResponse, response: result.response
+      reply_message(text: result.response, delay: rand(2..4))
     end
 
     def start!
-      app_owner_user = User.find_by(external_id: ENV['TELEGRAM_APP_OWNER_ID'])
-
-      response Responders::StartMessage, bot_author: app_owner_user.username
+      send_message(text: t('pdr_bot.start_message'))
     end
 
     def pdr!
@@ -24,7 +33,8 @@ module PdrBot
       result = PdrGame::Run.call(params)
       return respond_with_error(result.exception) unless result.success?
 
-      response Responders::Game::Start
+      send_message(text: t('pdr_bot.game.start.title'), delay_after: rand(2..5))
+      send_message(text: t('pdr_bot.game.start.searching_users'), delay_after: rand(1..3))
       results!
     end
 
@@ -33,7 +43,11 @@ module PdrBot
       result = PdrGame::Rounds::LatestResults.call(params)
       return respond_with_error(result.exception) unless result.success?
 
-      response Responders::Game::Results, winner_name: result.winner.name, loser_name: result.loser.name
+      send_message Templates::Game::Results.build(
+        chat_id: current_chat.id,
+        winner_name: result.winner.name,
+        loser_name: result.loser.name
+      )
     end
 
     def stats!
@@ -41,8 +55,8 @@ module PdrBot
       result = PdrGame::Stats::ByChat.call(params)
       return respond_with_error(result.exception) unless result.success?
 
-      response(
-        Responders::Game::Stats,
+      send_message Templates::Game::Stats.build(
+        chat_id: current_chat.id,
         winner_leader_stat: result.winner_leader_stat,
         loser_leader_stat: result.loser_leader_stat,
         chat_stats: result.chat_stats
@@ -58,11 +72,12 @@ module PdrBot
     private
 
     def respond_with_error(exception)
-      response Responders::ServiceError, error_code: exception.error_code
+      send_message(Templates::ServiceError.build(chat_id: current_chat.id, error_code: exception.error_code))
     end
 
     def handle_exception(exception)
-      response Responders::CommandException if action_type == :command
+      send_message(BotBase::Templates::ExceptionReport.build(exception: exception, payload: payload.to_h))
+      send_message(text: t('pdr_bot.command_exception')) if action_type == :command
     end
   end
 end

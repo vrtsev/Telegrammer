@@ -2,25 +2,38 @@
 
 module ExampleBot
   class Controller < Telegram::AppManager::Controller
-    def message(payload)
-      return unless current_message.text.present?
+    include Helpers::Logging
+    include Helpers::Translation
+    include BotBase::Controller::BotState
+    include BotBase::Controller::Sync
+    include BotBase::Controller::MessageHelpers
+    include BotBase::Controller::Events
+    include BotBase::Controller::Authorization
 
-      params = { chat_id: current_chat.id, message_text: current_message.text, bot: :example_bot }
+    before_action :check_bot_state, except: :enable!
+    before_action :sync_request, :sync_bot, :perform_events
+    before_action :authorize_admin, only: [:enable!, :disable!]
+
+    def message(payload)
+      return if current_message.text.blank?
+
+      params = { chat_id: current_chat.id, message_text: current_message.text, bot_id: bot.id }
       result = AutoResponses::Random.call(params)
 
-      response Responders::AutoResponse, response: result.response
+      reply_message(
+        text: (result.response || t('example_bot.auto_response', message: current_message.text)),
+        message_id: current_message.id
+      )
     end
 
     def start!
-      app_owner_user = User.find_by(external_id: ENV['TELEGRAM_APP_OWNER_ID'])
-
-      response Responders::StartMessage, bot_author: app_owner_user.username
+      send_message(text: t('example_bot.start_message'))
     end
 
     private
 
     def handle_exception(exception)
-      response Responders::CommandException if action_type == :command
+      send_message(BotBase::Templates::ExceptionReport.build(exception: exception, payload: payload))
     end
   end
 end

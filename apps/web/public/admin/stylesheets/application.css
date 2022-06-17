@@ -1,0 +1,107 @@
+div[data-navigation-target="chats"] {
+  margin-right: 10px;
+}
+
+.action-toggle.item-options {
+  cursor: pointer;
+  float: right;
+}
+
+.action-toggle.item-options .dropup {
+  margin-left: 5px;
+}
+
+
+/* SIDEBAR STYLES */
+.layout .content .sidebar-group .sidebar .list-group-item {
+  padding: 10px 20px;
+}
+
+.layout .content .sidebar-group .sidebar .list-group-item .chats-list-body h5 {
+  margin-bottom: 0;
+}
+
+.layout .content .sidebar-group .sidebar .list-group-item.chat-list-item .chat-avatar {
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-body .tab-pane#questions form {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+     -moz-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.sidebar-body .tab-pane#questions form .form-buttons {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.sidebar-body .tab-pane#questions form .form-buttons .btn {
+  margin-left: 1rem;
+}
+
+
+/* CHAT STYLES */
+.layout .content .chat .chat-body .messages .message-item .message-content p {
+  margin-bottom: 0;
+}
+
+.layout .content .chat .chat-body .messages .message-item .message-content .attachment {
+  margin-top: 10px;
+}
+
+.layout .content .chat .chat-body .messages .message-item .message-content .attachment a {
+  color: #0a80ff;
+}
+
+.layout .content .chat .chat-footer .alert .close-btn {
+  float: right;
+}
+
+.layout .content .chat .chat-footer form .form-buttons #bot-selector {
+  margin-left: 5px;
+  width: 110px;
+}
+
+.layout .content .chat .chat-footer form .form-buttons .btn {
+  margin-left: 5px;
+}
+
+
+/* DARK MODE STYLES */
+body.dark .table {
+  background-color: #1a2236;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+body.dark .table th, body.dark .table td {
+  border-color: #293145;
+}
+
+body.dark .table-striped>tbody>tr:nth-of-type(odd)>* {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+body.dark .layout .content .sidebar-group .sidebar header {
+  border-bottom-color: #293145;
+}
+
+body.dark .layout .content .sidebar-group .sidebar .list-group a {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+body.dark .tab-pane#rounds .game-round-item {
+  background-color: #293145;
+  color: rgba(255, 255, 255, 0.75);
+}

@@ -1,0 +1,19 @@
+<% content_for :selected_message do %>
+  <div class="alert alert-info selected-message" role="alert">
+    <a href="/admin/chats/<%= @chat.id %>" class="btn btn-sm text-danger close-btn">
+      <i class="fa fa-xmark"></i>
+    </a>
+
+    <header>
+      <i class="fa fa-reply"></i> Reply to <strong class="alert-heading"><%= @message.user.name %></strong>
+    </header>
+
+    <p class="mb-0"><%= partial('chats/message_content_short', locals: { message: @message }) %></p>
+  </div>
+<% end %>
+
+<% content_for :form do %>
+  <%= partial('chats/messages/form', locals: { url: url(:messages, :create, chat_id: @chat.id, id: @message.id), method: :post }) %>
+<% end %>
+
+<%= render('chats/messages/index', layout: false) %>

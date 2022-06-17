@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Telegrammer Admin</title>
+
+  <script src="https://kit.fontawesome.com/e111120dd2.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+  <%= csrf_meta_tags %>
+  <%= favicon_tag 'favicon.png' %>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  <%= stylesheet_link_tag 'vendor/bundle', 'vendor/main', 'application' %>
+</head>
+
+<body>
+  <div class="page-loading"></div>
+
+  <div class="layout">
+    <nav class="navigation">
+      <div class="nav-group">
+        <ul>
+          <li class="logo">
+            <a target="_blank" href="<%= url(:base, :index) %>">
+              <%= image_tag('logo.png', class: 'rounded-circle') %>
+            </a>
+          </li>
+
+          <li><a target="_blank" href="<%= ENV['PERSONAL_PAGE_LINK'] %>"><i class="fa fa-user"></i></a></li>
+          <li><a target="_blank" href="<%= ENV['LOGS_VIEWER_LINK'] %>"><i class="fa fa-d"></i></a></li>
+          <li><a target="_blank" href="<%= ENV['DATABASE_VIEWER_LINK'] %>"><i class="fa fa-database"></i></a></li>
+          <li class="brackets">
+            <a target="_blank" href="<%= ENV['WORKERS_VIEWER_LINK'] %>">
+              <svg><use xlink:href="/admin/images/sidekiq.svg#img"></use></svg>
+            </a>
+            <a target="_blank" href="<%= ENV['REDIS_VIEWER_LINK'] %>">
+              <svg><use xlink:href="/admin/images/redis.svg#img"></use></svg>
+            </a>
+            <a target="_blank" href="<%= ENV['ANALYTICS_LINK'] %>"><i class="fa fa-chart-line"></i></a>
+            <a target="_blank" href="<%= ENV['BUG_TRACKER_LINK'] %>"><i class="fa fa-bug"></i></a>
+          </li>
+
+          <li><a class="dark-light-switcher"><i data-feather="moon"></i></a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="content">
+      <%= yield %>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+  <%= javascript_include_tag 'jquery', 'jquery-ujs', 'vendor/bundle', 'vendor/main', :application %>
+</body>
+</html>

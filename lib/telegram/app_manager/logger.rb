@@ -24,7 +24,7 @@ module Telegram
 
       def logdev
         targets = Array.new
-        targets << STDOUT   if ENV['CONSOLE_LOGGING'] == 'true'
+        targets << STDOUT unless AppManager.config.log_to_file_only
         targets << log_file if file_path.present?
 
         MultiIO.new(targets)

@@ -1,0 +1,10 @@
+---
+:orm: activerecord
+:test: rspec
+:mock: none
+:script: jquery
+:renderer: erb
+:stylesheet: none
+:namespace: Web
+:migration_format: number
+:admin_renderer: erb

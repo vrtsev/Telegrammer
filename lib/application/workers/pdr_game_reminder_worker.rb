@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class PdrGameReminderWorker < Telegram::AppManager::Worker
+class PdrGameReminderWorker < BaseWorker
   def perform
     # Currently not used
-    # response(PdrBot::Responders::Game::Reminder, bot: bot, chat_id: chat_user.chat_id)
+    # Messages::Send.call(bot: bot, text: t('pdr_bot.game.reminder'), chat_id: chat_user.chat_id)
   end
 
   private

@@ -1,0 +1,150 @@
+<div class="sidebar-group">
+  <div id="chat-sidebar" class="sidebar active">
+    <header>
+      <span>Details</span>
+
+      <ul class="list-inline">
+        <li class="list-inline-item">
+          <a href="#" class="btn btn-outline-light text-danger sidebar-close"><i data-feather="x"></i></a>
+        </li>
+      </ul>
+    </header>
+
+    <div class="sidebar-body">
+      <div class="text-center">
+        <ul class="nav nav-tabs justify-content-center mt-4 mb-4" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link" id="users-tab" data-toggle="tab"
+               href="#users" role="tab" aria-controls="users" aria-selected="true">Users</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" id="stats-tab" data-toggle="tab"
+               href="#stats" role="tab" aria-controls="stats" aria-selected="false">Stats</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" id="rounds-tab" data-toggle="tab"
+               href="#rounds" role="tab" aria-controls="rounds" aria-selected="false">Rounds</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" id="questions-tab"
+               data-toggle="tab" href="#questions" role="tab" aria-controls="questions" aria-selected="false">Questions</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="users-tab">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th width="20px">ID</th>
+                <th>User</th>
+                <th>Registered</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @chat.chat_users.each do |chat_user| %>
+                <tr>
+                  <td><%= chat_user.user.id %></td>
+                  <td class="<%= 'text-danger' if chat_user.deleted_at? %>">
+                    <i class="fa fa-<%= present(chat_user.user).type_icon_name %>"></i>
+                    <%= truncate(chat_user.user.name, length: 20) %>
+                  </td>
+                  <td><%= format_date(chat_user.user.created_at) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tab-pane fade" id="stats" role="tabpanel" aria-labelledby="stats-tab">
+          <% if @chat.pdr_game_stats.present? %>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">User</th>
+                  <th scope="col">x💩</th>
+                  <th scope="col">x😎</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @chat.pdr_game_stats.order(loser_count: :desc).each do |pdr_game_stat| %>
+                  <tr>
+                    <td><%= pdr_game_stat.id %></td>
+                    <td><i class="fa fa-user"></i> <%= truncate(pdr_game_stat.user.name, length: 150) %></td>
+                    <td>💩x<%= pdr_game_stat.loser_count %></td>
+                    <td>😎x<%= pdr_game_stat.winner_count %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% end %>
+        </div>
+
+        <div class="tab-pane fade" id="rounds" role="tabpanel" aria-labelledby="rounds-tab">
+          <div class="pl-4 pr-4">
+            <% @chat.pdr_game_rounds.order(created_at: :desc).first(30).each do |pdr_game_round| %>
+              <div class="alert alert-secondary game-round-item" role="alert">
+                <div class="action-toggle item-options">
+                  <div class="dropup">
+                    <span data-toggle="dropdown"><i class="fa fa-sm fa-angle-down"></i></span>
+
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <%= link_to 'Rollback', url(:pdr_game_rounds, :destroy, chat_id: @chat.id, id: pdr_game_round.id), method: :delete, class: 'dropdown-item' %>
+                    </div>
+                  </div>
+                </div>
+
+                By <strong><%= pdr_game_round.initiator&.name %></strong> <span class="text-muted">(<%= format_datetime(pdr_game_round.created_at) %>)</span>
+                <br>
+                💩 <%= pdr_game_round.loser.name %> / 😎 <%= pdr_game_round.winner.name %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="questions" role="tabpanel" aria-labelledby="questions-tab">
+          <% if @chat.jenia_questions.present? %>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Question</th>
+                  <th>Created</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @chat.jenia_questions.order(created_at: :desc).each do |question|%>
+                  <tr>
+                    <td><%= question.text %></td>
+                    <td><%= format_date(question.created_at) %></td>
+                    <td>
+                      <a href="<%= url(:jenia_questions, :destroy, chat_id: @chat.id, id: question.id) %>" data-method="delete">
+                        <i class="text-danger fa fa-xmark"></i>
+                      </a>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% end %>
+
+          <div class="pl-2 pr-2">
+            <form method="POST" action="<%= url(:jenia_questions, :create, chat_id: @chat.id) %>">
+              <input type="hidden" name="authenticity_token" value="<%= csrf_token %>">
+              <input type="text" class="form-control" placeholder="New question text" name="text" minlength="2"/>
+
+              <div class="form-buttons">
+                <button class="btn btn-primary" type="submit"><i class="fa fa-circle-plus" aria-hidden="true"></i></button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

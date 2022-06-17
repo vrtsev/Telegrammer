@@ -4,9 +4,7 @@ require './config/boot'
 require 'sidekiq/testing'
 require 'telegram/bot/rspec/integration/poller'
 require './db/seeds/translations'
-require_all 'spec/support/shared'
-
-Sidekiq::Testing.inline!
+require_all 'spec/support'
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
@@ -19,10 +17,14 @@ end
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 
-  config.include_context 'responder_helpers', type: :responder
   config.include_context 'controller_helpers', type: :controller
 
   config.before(:suite) do
+    Sidekiq::Testing.inline!
+    Telegram::Bot::ClientStub.stub_all!
+    Telegram::AppManager.config.controller_action_logging = false
+    REDIS = MockRedis.new
+    ActiveRecord::Base.logger.level = :error
     DatabaseCleaner[:active_record].strategy = DatabaseCleaner::ActiveRecord::Deletion.new(except: ['translations'])
     FactoryBot.find_definitions
   end

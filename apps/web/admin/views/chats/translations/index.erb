@@ -1,0 +1,29 @@
+<%= render('chats/index', layout: false) %>
+
+<div class="chat">
+  <%= partial('chats/header') %>
+
+  <div class="chat-body">
+    <table class="table">
+      <tbody>
+        <% @chat.translations.order(:key).each do |translation| %>
+          <tr class="table-secondary">
+            <th scope="row"><%= translation.id %></th>
+            <td><%= translation.key %></td>
+            <td></td>
+          </tr>
+
+          <% translation.values.each do |value| %>
+            <tr>
+              <th scope="row"></th>
+              <td><%= simple_format(value) %></td>
+              <td></td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%= partial('chats/sidebar') %>

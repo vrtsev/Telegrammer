@@ -2,51 +2,33 @@
 
 require_relative 'seeds/translations.rb'
 
-# Bot Settings
-BotSetting.create(bot: Telegram.bots[:example_bot], enabled: true, autoapprove_chat: true)
-BotSetting.create(bot: Telegram.bots[:jenia_bot], enabled: true, autoapprove_chat: true)
-BotSetting.create(bot: Telegram.bots[:pdr_bot], enabled: true, autoapprove_chat: true)
+# Bots
+example_bot = Bot.create!(name: 'example_bot', username: ENV['EXAMPLE_BOT_USERNAME'], enabled: false, autoapprove_chat: true)
+jenia_bot = Bot.create!(name: 'jenia_bot', username: ENV['JENIA_BOT_USERNAME'], enabled: false, autoapprove_chat: true)
+pdr_bot = Bot.create!(name: 'pdr_bot', username: ENV['PDR_BOT_USERNAME'], enabled: false, autoapprove_chat: true)
 
 # Users
-user1 = User.create(external_id: ENV['TELEGRAM_APP_OWNER_ID'], username: "admin", first_name: "Admin", last_name: nil)
-user2 = User.create(external_id: 1234567, username: nil, first_name: "Chat user", last_name: nil)
+user1 = User.create!(external_id: ENV['TELEGRAM_APP_OWNER_ID'], username: "admin", first_name: "Admin", last_name: nil)
 
 # Chats
-chat1 = Chat.create(external_id: ENV['TELEGRAM_APP_OWNER_ID'], approved: true, chat_type: "private_chat", title: nil, username: "admin", first_name: "Admin")
-chat2 = Chat.create(external_id: 987654321, approved: true, chat_type: "group_chat", title: "Test group")
+chat1 = Chat.create!(external_id: ENV['TELEGRAM_APP_OWNER_ID'], approved: true, chat_type: "private_chat", title: nil, username: "admin", first_name: "Admin")
 
 # ChatUsers
-chat_user1 = ChatUser.create(chat: chat1, user: user1)
-chat_user2 = ChatUser.create(chat: chat2, user: user1)
-chat_user3 = ChatUser.create(chat: chat2, user: user2)
+chat_user1 = ChatUser.create!(chat: chat1, user: user1)
 
-# Stats
-PdrGame::Stat.create(chat_user: chat_user2, loser_count: 1, winner_count: 2)
-PdrGame::Stat.create(chat_user: chat_user3, loser_count: 2, winner_count: 1)
-
-# Rounds
-PdrGame::Round.create(chat: chat2, initiator_id: user1, winner_id: user1, loser_id: user2)
+# Messages
+Message.create!(chat_user_id: chat_user1.id, payload_type: 'text', external_id: 10001, text: 'Private chat message', bot_id: example_bot.id)
 
 # AutoResponses
-AutoResponse.create(bot: :example_bot, author: user1, chat: chat1, trigger: 'Are you here?', response: 'I am here')
-AutoResponse.create(bot: :example_bot, author: user1, chat: chat1, trigger: 'Hey bot', response: '??')
+AutoResponse.create!(bot_id: example_bot.id, author: user1, chat: chat1, trigger: 'Hey example bot', response: 'Example bot is here')
+AutoResponse.create!(bot_id: example_bot.id, author: user1, chat: chat1, trigger: 'Example bot how are you', response: 'Example bot is ok')
 
-AutoResponse.create(bot: :jenia_bot,   author: user1, chat: chat1, trigger: 'Jenia', response: 'Who is calling me?')
-AutoResponse.create(bot: :jenia_bot,   author: user1, chat: chat2, trigger: 'Jenia', response: 'Who is calling me?')
-AutoResponse.create(bot: :jenia_bot,   author: user1, chat: chat1, trigger: 'How are you?', response: 'I am ok')
-AutoResponse.create(bot: :jenia_bot,   author: user1, chat: chat2, trigger: 'How are you?', response: 'I am ok')
+AutoResponse.create!(bot_id: pdr_bot.id,     author: user1, chat: chat1, trigger: 'Hey pdr bot', response: 'Pdr bot is here')
+AutoResponse.create!(bot_id: pdr_bot.id,     author: user1, chat: chat1, trigger: 'Pdr bot how are you', response: 'Pdr bot is ok')
 
-AutoResponse.create(bot: :pdr_bot,     author: user1, chat: chat1, trigger: 'hey', response: 'Who are you?')
-AutoResponse.create(bot: :pdr_bot,     author: user1, chat: chat2, trigger: 'hey', response: 'Who are you?')
-
-# Auto responses to jenia questions
-AutoResponse.create(bot: :jenia_bot,   author: user1, chat: chat1, trigger: 'Jenia, how are you?', response: 'Nice')
-AutoResponse.create(bot: :jenia_bot,   author: user1, chat: chat2, trigger: 'Jenia, how are you?', response: 'Nice')
-AutoResponse.create(bot: :jenia_bot,   author: user1, chat: chat1, trigger: 'Jenia, wazzup?', response: 'I am great!')
-AutoResponse.create(bot: :jenia_bot,   author: user1, chat: chat2, trigger: 'Jenia, wazzup?', response: 'I am great!')
+jenia_bot_response1 = AutoResponse.create!(bot_id: jenia_bot.id,   author: user1, chat: chat1, trigger: 'Hey jenia bot', response: 'Jenia bot is here')
+jenia_bot_response2 = AutoResponse.create!(bot_id: jenia_bot.id,   author: user1, chat: chat1, trigger: 'Jenia bot how are you', response: 'Jenia bot is ok')
 
 # JeniaQuestions
-JeniaQuestion.create(chat: chat1, text: 'Jenia, how are you?')
-JeniaQuestion.create(chat: chat2, text: 'Jenia, how are you?')
-JeniaQuestion.create(chat: chat1, text: 'Jenia, wazzup?')
-JeniaQuestion.create(chat: chat2, text: 'Jenia, wazzup?')
+JeniaQuestion.create!(chat: chat1, text: jenia_bot_response1.trigger)
+JeniaQuestion.create!(chat: chat1, text: jenia_bot_response2.trigger)
