@@ -26,6 +26,7 @@ App includes:
 - Docker-compose file to quickly run the whole app in isolation
 - Console action logging (colorized for better readability)
 - Prepared test environment (using RSpec by default)
+- Web application powered by Ruby padrino framework
 
 ## Requirements
 Please keep in mind that you have to install `redis` and `postgres` on your local machine

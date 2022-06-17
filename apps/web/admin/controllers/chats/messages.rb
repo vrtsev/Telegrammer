@@ -65,7 +65,8 @@ Web::Admin.controllers :messages, parent: :chats do
   end
 
   delete '/:id', name: :destroy do
-    sync_bot_user(@message.bot)
+    bot = @message.bot
+    sync_bot_user(bot)
 
     message_params = {
       bot_id: bot.id,

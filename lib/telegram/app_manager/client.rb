@@ -63,12 +63,9 @@ module Telegram
 
       def request(action, params = nil)
         response = params.present? ? bot.request(action, params) : bot.request(action)
+        return true if response['result'].is_a?(TrueClass)
 
-        if response['result'].is_a?(Hash)
-          Hashie.symbolize_keys!(response['result'])
-        elsif response['result'].is_a?(TrueClass)
-          true
-        end
+        Hashie.symbolize_keys!(response['result']) if response['result'].is_a?(Hash)
       end
     end
   end

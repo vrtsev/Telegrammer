@@ -117,6 +117,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2022.0105)
     mini_mime (1.1.2)
+    mini_portile2 (2.8.0)
     minitest (5.15.0)
     mock_redis (0.30.0)
       ruby2_keywords
@@ -124,6 +125,9 @@ GEM
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
     nio4r (2.5.8)
+    nokogiri (1.13.3)
+      mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
     nokogiri (1.13.3-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.13.3-x86_64-linux)
@@ -265,6 +269,7 @@ GEM
     zeitwerk (2.5.4)
 
 PLATFORMS
+  ruby
   x86_64-darwin-21
   x86_64-linux
 

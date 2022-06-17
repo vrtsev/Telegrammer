@@ -39,7 +39,7 @@
       <div class="form-buttons">
         <select id="bot-selector" class="form-control" name="bot">
           <% Telegram.bots.keys.each do |name| %>
-            <option value="<%= name %>" <%= 'selected' if params[:bot] == name.to_s %>><%= name %></option>
+            <option value="<%= name %>"><%= name %></option>
           <% end %>
         </select>
 

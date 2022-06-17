@@ -14,7 +14,6 @@
 
 # Ignore all logfiles and tempfiles.
 /log/*
-!/log/.keep
 
 # Ignore web app files
 /apps/web/tmp/**/*

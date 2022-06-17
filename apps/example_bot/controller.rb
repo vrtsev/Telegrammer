@@ -15,7 +15,7 @@ module ExampleBot
     before_action :authorize_admin, only: [:enable!, :disable!]
 
     def message(payload)
-      return unless current_message.text.present?
+      return if current_message.text.blank?
 
       params = { chat_id: current_chat.id, message_text: current_message.text, bot_id: bot.id }
       result = AutoResponses::Random.call(params)

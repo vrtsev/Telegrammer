@@ -18,8 +18,7 @@ module BotBase
       # def poll_answer(payload); end # listens only stopped polls sent by the bot
       # def chat_member; end # needs admin rights && explicitly specify “chat_member” in the list of allowed_updates to receive these updates
 
-      attr_reader :new_chat_members,
-                  :left_chat_member
+      attr_reader :new_chat_members, :left_chat_member
 
       def perform_events
         @new_chat_members ||= on_new_chat_members
