@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 Web::Admin.helpers do
+  def sync_bot_user(bot)
+    bot_payload = Telegram::AppManager::Client.new(bot.client).get_bot
+    Users::Sync.call(bot_id: bot.id, payload: bot_payload).user
+  end
+
   def present(model, presenter_class=nil)
     klass = presenter_class || "#{model.class}Presenter".constantize
     presenter = klass.new(model, self)

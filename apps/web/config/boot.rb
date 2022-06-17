@@ -6,6 +6,8 @@ PADRINO_ROOT = 'apps/web'
 require 'bundler/setup'
 Bundler.require(:default, RACK_ENV)
 
+Telegram::AppManager.config.logger = Padrino.logger
+
 ##
 # ## Enable devel logging
 #

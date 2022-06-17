@@ -73,7 +73,7 @@
     <% if content_for?(:form) %>
       <%= yield_content(:form) %>
     <% else %>
-      <%= partial('chats/messages/form', locals: { url: url(:messages, :create, chat_id: @chat.id) }) %>
+      <%= partial('chats/messages/form', locals: { url: url(:messages, :create, chat_id: @chat.id), method: :post }) %>
     <% end %>
   </div>
 </div>

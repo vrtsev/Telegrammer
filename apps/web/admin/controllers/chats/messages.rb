@@ -7,7 +7,8 @@ Web::Admin.controllers :messages, parent: :chats do
 
   before :index, :reply, :edit do
     @chats = chats_scope
-    @messages = @chat.messages.order(id: :asc).last(300)
+    @available_bots = Bot.joins(user: :chat_users).where(chat_users: { chat_id: @chat.id, deleted_at: nil })
+    @messages = @chat.messages.not_deleted.order(id: :asc).last(300)
 
     @last_viewed_message_id = Web::App.cache["chats:#{@chat.id}:last_viewed_message_id"]
     Web::App.cache["chats:#{@chat.id}:last_viewed_message_id"] = @messages.last.id
@@ -30,8 +31,11 @@ Web::Admin.controllers :messages, parent: :chats do
   end
 
   post '/', name: :create, params: [:bot, :text] do
+    bot = Bot.find_or_create_by(name: params[:bot])
+    sync_bot_user(bot)
+
     message_params = {
-      bot: params[:bot].to_sym,
+      bot_id: bot.id,
       chat_id: @chat.id,
       text: params[:text],
       message_id: @message&.id
@@ -44,8 +48,11 @@ Web::Admin.controllers :messages, parent: :chats do
   end
 
   patch '/:id', name: :update, params: [:bot, :text] do
+    bot = Bot.find_or_create_by(name: params[:bot])
+    sync_bot_user(bot)
+
     message_params = {
-      bot: params[:bot].to_sym,
+      bot_id: bot.id,
       chat_id: @chat.id,
       text: params[:text],
       message_id: @message.id
@@ -58,10 +65,12 @@ Web::Admin.controllers :messages, parent: :chats do
   end
 
   delete '/:id', name: :destroy do
+    sync_bot_user(@message.bot)
+
     message_params = {
-      bot: params[:bot].to_sym,
+      bot_id: bot.id,
       chat_id: @chat.id,
-      message_id: params[:id]
+      message_id: @message.id
     }
 
     result = Messages::Delete.call(message_params)

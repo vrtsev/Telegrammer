@@ -46,11 +46,14 @@
               </tr>
             </thead>
             <tbody>
-              <% present_collection(@chat.users).each do |user| %>
+              <% @chat.chat_users.each do |chat_user| %>
                 <tr>
-                  <td><%= user.id %></td>
-                  <td><i class="fa fa-<%= user.type_icon_name %>"></i> <%= truncate(user.name, length: 20) %></td>
-                  <td><%= format_date(user.created_at) %></td>
+                  <td><%= chat_user.user.id %></td>
+                  <td class="<%= 'text-danger' if chat_user.deleted_at? %>">
+                    <i class="fa fa-<%= present(chat_user.user).type_icon_name %>"></i>
+                    <%= truncate(chat_user.user.name, length: 20) %>
+                  </td>
+                  <td><%= format_date(chat_user.user.created_at) %></td>
                 </tr>
               <% end %>
             </tbody>
