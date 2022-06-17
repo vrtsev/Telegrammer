@@ -24,7 +24,7 @@ module Users
     private
 
     def sync_user
-      @user ||= User.sync_by!(:external_id, user_params)
+      @user ||= User.sync_by!(:external_id, user_params.compact)
 
       logger.info "> Synced user '#{@user.name}' #{'(bot)' if @user.is_bot?}"
     end

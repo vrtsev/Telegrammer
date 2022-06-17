@@ -41,7 +41,7 @@ module PdrGame
       end
 
       def chat
-        @chat ||= Chat.find(params[:id])
+        @chat ||= Chat.find(params[:chat_id])
       end
     end
   end

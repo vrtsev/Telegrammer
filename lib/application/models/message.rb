@@ -33,6 +33,8 @@ class Message < ApplicationRecord
     unknown: 'unknown'
   }
 
+  scope :not_deleted, -> { where(deleted_at: nil) }
+
   def mark_as_deleted!
     update!(deleted_at: Time.now)
   end

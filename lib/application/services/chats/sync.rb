@@ -50,7 +50,9 @@ module Chats
 
     def photo_url
       @photo_url ||= Telegram::AppManager::Client.new(bot.client).chat_photo_url(params.dig(:payload, :id))
-      
+    rescue Telegram::Bot::Error => exception
+      logger.error "[Client] Error: #{exception.message}"
+      nil
     end
 
     def bot

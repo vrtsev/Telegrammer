@@ -65,6 +65,9 @@ module Messages
       end
 
       Telegram::AppManager::Client.new(bot.client).file_url(file_id)
+    rescue Telegram::Bot::Error => exception
+      logger.error "[Client] Error: #{exception.message}"
+      nil
     end
 
     def content_data
