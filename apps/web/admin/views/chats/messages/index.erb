@@ -24,6 +24,7 @@
               <div class="message-content">
                 <strong><%= message.user.name %></strong>
                 <small class="time"><%= format_time(message.created_at) %></small>
+                <% if message.deleted_at.present? %><small class="text-danger">(deleted)</small><% end %>
 
                 <div class="action-toggle item-options">
                   <div class="dropup">

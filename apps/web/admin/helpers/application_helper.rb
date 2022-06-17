@@ -21,6 +21,13 @@ Web::Admin.helpers do
   end
 
   def format_datetime(datetime)
+    return "Today at #{format_time(datetime)}" if datetime.to_date.today?
+    return "Yesterday at #{format_time(datetime)}" if datetime.to_date.yesterday?
+
+    datetime.strftime('%d.%m.%y %H:%M')
+  end
+
+  def format_date_or_time(datetime)
     return format_time(datetime) if datetime.to_date.today?
 
     format_date(datetime)

@@ -8,7 +8,7 @@ Web::Admin.controllers :messages, parent: :chats do
   before :index, :reply, :edit do
     @chats = chats_scope
     @available_bots = Bot.joins(user: :chat_users).where(chat_users: { chat_id: @chat.id, deleted_at: nil })
-    @messages = @chat.messages.not_deleted.order(id: :asc).last(300)
+    @messages = @chat.messages.order(id: :asc).last(300)
 
     @last_viewed_message_id = Web::App.cache["chats:#{@chat.id}:last_viewed_message_id"]
     Web::App.cache["chats:#{@chat.id}:last_viewed_message_id"] = @messages.last.id

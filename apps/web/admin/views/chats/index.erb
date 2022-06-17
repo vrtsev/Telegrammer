@@ -38,7 +38,7 @@
                 <% end %>
 
                 <small class="<%= chat.unread_messages.present? ? 'text-primary' : 'text-muted' %>">
-                  <%= format_datetime(chat.messages.last.created_at) %>
+                  <%= format_date_or_time(chat.messages.last.created_at) %>
                 </small>
               </div>
             </div>
