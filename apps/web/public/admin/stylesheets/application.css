@@ -79,6 +79,18 @@ div[data-navigation-target="chats"] {
 }
 
 
+/* MESSAGES STYLES */
+.layout .content .chat .chat-body .messages .message-item.deleted-message .message-content {
+  background-color: #e66e6e;
+  opacity: 0.3;
+}
+
+.layout .content .chat .chat-body .messages .messages-divider.unread-divider:before {
+  background-color: #0a80ff;
+  color: white;
+}
+
+
 /* DARK MODE STYLES */
 body.dark .table {
   background-color: #1a2236;
@@ -99,6 +111,10 @@ body.dark .layout .content .sidebar-group .sidebar header {
 
 body.dark .layout .content .sidebar-group .sidebar .list-group a {
   color: rgba(255, 255, 255, 0.75);
+}
+
+body.dark .layout .content .chat .chat-body .messages .message-item.messages-divider.unread-divider:before {
+  background-color: #0a80ff;
 }
 
 body.dark .tab-pane#rounds .game-round-item {
