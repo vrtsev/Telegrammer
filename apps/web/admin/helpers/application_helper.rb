@@ -40,7 +40,7 @@ Web::Admin.helpers do
   def format_date(datetime)
     return 'Today' if datetime.to_date.today?
     return 'Yesterday' if datetime.to_date.yesterday?
-    return datetime.strftime('%a') if datetime.to_date.cweek == Date.today.cweek
+    return datetime.strftime('%A') if datetime.to_date.cweek == Date.today.cweek
 
     datetime.strftime('%d.%m.%y')
   end

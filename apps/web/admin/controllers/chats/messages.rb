@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 Web::Admin.controllers :messages, parent: :chats do
+  DEFAULT_MESSAGES_COUNT_LIMIT = 300
+
   before do
     @chat = Chat.find(params[:chat_id])
   end
@@ -8,7 +10,7 @@ Web::Admin.controllers :messages, parent: :chats do
   before :index, :reply, :edit do
     @chats = chats_scope
     @available_bots = Bot.joins(user: :chat_users).where(chat_users: { chat_id: @chat.id, deleted_at: nil })
-    @messages = @chat.messages.order(id: :asc).last(300)
+    @messages = @chat.messages.order(id: :asc).last(params[:limit] || DEFAULT_MESSAGES_COUNT_LIMIT)
 
     @last_viewed_message_id = Web::App.cache["chats:#{@chat.id}:last_viewed_message_id"]
     Web::App.cache["chats:#{@chat.id}:last_viewed_message_id"] = @messages.last.id
