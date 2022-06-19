@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_16_145528) do
+ActiveRecord::Schema.define(version: 2022_06_18_153251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,7 +85,7 @@ ActiveRecord::Schema.define(version: 2022_06_16_145528) do
     t.datetime "deleted_at"
     t.integer "bot_id"
     t.index ["chat_user_id"], name: "index_messages_on_chat_user_id"
-    t.index ["external_id"], name: "index_messages_on_external_id", unique: true
+    t.index ["external_id", "bot_id"], name: "index_messages_on_external_id_and_bot_id", unique: true
   end
 
   create_table "pdr_game_rounds", force: :cascade do |t|

@@ -11,7 +11,7 @@ module ExampleBot
     include BotBase::Controller::Authorization
 
     before_action :check_bot_state, except: :enable!
-    before_action :sync_request, :sync_bot, :perform_events
+    before_action :sync_request, :sync_bot, :perform_events, :authorize_chat
     before_action :authorize_admin, only: [:enable!, :disable!]
 
     def message(payload)

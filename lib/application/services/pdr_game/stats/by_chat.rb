@@ -37,6 +37,7 @@ module PdrGame
         @chat_stats ||= PdrGame::Stat
           .joins(:chat_user)
           .where(chat_users: { chat_id: params[:chat_id], deleted_at: nil })
+          .order(loser_count: :desc)
       end
     end
   end

@@ -45,6 +45,13 @@
           <% end %>
         </div>
       </div>
+    <% when 'pinned_message' %><strong>📍 pinned a message: </strong><%= message.content_data['text'] %>
+    <% when 'new_chat_member' %>
+      👨🏻‍💻 added a new user:
+      <% message.content_data.each do |key, value| %><br><small><%= "#{key}: #{value}" %></small><% end %>
+    <% when 'left_chat_member' %>
+      👨🏻‍💻 removed a user:
+      <% message.content_data.each do |key, value| %><br><small><%= "#{key}: #{value}" %></small><% end %>
     <% else %>❌ Unknown type
     <% end %>
   </div>

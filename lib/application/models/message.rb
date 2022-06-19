@@ -30,6 +30,8 @@ class Message < ApplicationRecord
     voice: 'voice',
     video_note: 'video_note',
     pinned_message: 'pinned_message',
+    new_chat_member: 'new_chat_member',
+    left_chat_member: 'left_chat_member',
     unknown: 'unknown'
   }
 
