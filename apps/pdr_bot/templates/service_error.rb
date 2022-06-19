@@ -5,6 +5,7 @@ module PdrBot
     class ServiceError < ::BotBase::Templates::BaseTemplate
       class Contract < Dry::Validation::Contract
         params do
+          optional(:current_chat_id).filled(:integer)
           required(:error_code).filled(:string)
         end
       end

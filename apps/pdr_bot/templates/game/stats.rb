@@ -6,6 +6,7 @@ module PdrBot
       class Stats < ::BotBase::Templates::BaseTemplate
         class Contract < Dry::Validation::Contract
           params do
+            optional(:current_chat_id).filled(:integer)
             required(:winner_leader_stat).filled
             required(:loser_leader_stat).filled
             required(:chat_stats).filled

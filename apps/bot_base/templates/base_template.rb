@@ -42,6 +42,12 @@ module BotBase
       def delay
         nil
       end
+
+      def current_chat
+        return if params[:current_chat_id].blank?
+
+        @current_chat ||= Chat.find(params[:current_chat_id])
+      end
     end
   end
 end

@@ -35,7 +35,7 @@ module JeniaBot
       auto_response = AutoResponses::Random.call(params)
 
       reply_message Templates::CallJenia.build(
-        chat_id: current_chat.id,
+        current_chat_id: current_chat.id,
         response: auto_response.response,
         questions: result.questions
       )

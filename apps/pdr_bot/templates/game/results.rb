@@ -6,6 +6,7 @@ module PdrBot
       class Results < ::BotBase::Templates::BaseTemplate
         class Contract < Dry::Validation::Contract
           params do
+            optional(:current_chat_id).filled(:integer)
             required(:winner_name).filled(:string)
             required(:loser_name).filled(:string)
           end

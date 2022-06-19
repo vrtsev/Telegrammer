@@ -44,7 +44,7 @@ module PdrBot
       return respond_with_error(result.exception) unless result.success?
 
       send_message Templates::Game::Results.build(
-        chat_id: current_chat.id,
+        current_chat_id: current_chat.id,
         winner_name: result.winner.name,
         loser_name: result.loser.name
       )
@@ -56,7 +56,7 @@ module PdrBot
       return respond_with_error(result.exception) unless result.success?
 
       send_message Templates::Game::Stats.build(
-        chat_id: current_chat.id,
+        current_chat_id: current_chat.id,
         winner_leader_stat: result.winner_leader_stat,
         loser_leader_stat: result.loser_leader_stat,
         chat_stats: result.chat_stats
@@ -72,7 +72,7 @@ module PdrBot
     private
 
     def respond_with_error(exception)
-      send_message(Templates::ServiceError.build(chat_id: current_chat.id, error_code: exception.error_code))
+      send_message(Templates::ServiceError.build(current_chat_id: current_chat.id, error_code: exception.error_code))
     end
 
     def handle_exception(exception)
