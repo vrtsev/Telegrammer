@@ -18,18 +18,5 @@ RSpec.describe AutoResponses::Random do
     before { create(:auto_response, chat: chat, trigger: trigger, response: response, bot: bot) }
 
     it { expect(subject.response).to eq(response) }
-
-    context 'when message contains forbidden characters' do
-      let(:params) { Hash[chat_id: chat.id, message_text: trigger_with_forbidden_symbols, bot_id: bot.id] }
-      let(:trigger_with_forbidden_symbols) { 'Some message text' + described_class::FORBIDDEN_SYMBOLS }
-
-      context 'when sanitized_message_text is blank' do
-        let(:trigger_with_forbidden_symbols) { described_class::FORBIDDEN_SYMBOLS }
-
-        it { expect(subject.response).to be_nil }
-      end
-
-      it { expect(subject.response).to eq(response) }
-    end
   end
 end

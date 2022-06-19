@@ -10,8 +10,6 @@ module AutoResponses
       end
     end
 
-    FORBIDDEN_SYMBOLS = '+*?()[]{}/\\'.freeze
-
     attr_reader :response
 
     def call
@@ -21,16 +19,12 @@ module AutoResponses
     private
 
     def find_auto_response
-      return unless sanitized_message_text.present?
+      return if params[:message_text].blank?
 
       @response = AutoResponse
         .where(chat_id: params[:chat_id], bot_id: params[:bot_id])
-        .where('trigger ~ ?', sanitized_message_text)
+        .where("? ILIKE '%' || trigger || '%'", params[:message_text])
         .sample&.response
-    end
-
-    def sanitized_message_text
-      params[:message_text].delete(FORBIDDEN_SYMBOLS)
     end
   end
 end
