@@ -26,11 +26,11 @@ module PdrGame
       end
 
       def find_winner_leader_stat
-        @winner_leader_stat = stats.order(winner_count: :desc).first
+        @winner_leader_stat = stats.reorder(winner_count: :desc).first
       end
 
       def find_loser_leader_stat
-        @loser_leader_stat = stats.order(loser_count: :desc).first
+        @loser_leader_stat = stats.reorder(loser_count: :desc).first
       end
 
       def stats
