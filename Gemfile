@@ -28,7 +28,7 @@ gem 'sinatra', '~> 2.0' # UI for sidekiq and web app
 gem 'webrick', '1.7.0'
 
 ## Databases
-gem 'activerecord', '6.1.5' # DB ORM
+gem 'activerecord', '6.1.6.1' # DB ORM
 gem 'standalone_migrations', '7.1.0' # rails-like DB migrations
 gem 'pg', '1.3.4' # postgres DB
 gem 'redis', '4.6.0' # redis DB
