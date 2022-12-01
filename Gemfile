@@ -24,7 +24,7 @@ gem 'redis-namespace', '1.8.2' # To split sidekiq data in redis
 gem 'sidekiq', '6.4.1' # background processing
 gem 'sidekiq-scheduler', '3.1.1' # scheduled background workers
 gem 'sidekiq-statistic', git: 'https://github.com/davydovanton/sidekiq-statistic.git', ref: 'f7476c9'
-gem 'sinatra', '~> 2.0' # UI for sidekiq and web app
+gem 'sinatra', '~> 2.2' # UI for sidekiq and web app
 gem 'webrick', '1.7.0'
 
 ## Databases

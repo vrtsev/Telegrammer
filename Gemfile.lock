@@ -122,7 +122,7 @@ GEM
     mock_redis (0.30.0)
       ruby2_keywords
     moneta (1.1.1)
-    mustermann (1.1.1)
+    mustermann (2.0.2)
       ruby2_keywords (~> 0.0.1)
     nio4r (2.5.8)
     nokogiri (1.13.3)
@@ -177,8 +177,8 @@ GEM
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.6.0)
-    rack (2.2.3)
-    rack-protection (2.2.0)
+    rack (2.2.4)
+    rack-protection (2.2.3)
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -242,10 +242,10 @@ GEM
       sidekiq (>= 3)
       thwait
       tilt (>= 1.4.0)
-    sinatra (2.2.0)
-      mustermann (~> 1.0)
+    sinatra (2.2.3)
+      mustermann (~> 2.0)
       rack (~> 2.2)
-      rack-protection (= 2.2.0)
+      rack-protection (= 2.2.3)
       tilt (~> 2.0)
     standalone_migrations (7.1.0)
       activerecord (>= 4.2.7, < 7.1.0, != 5.2.3.rc1, != 5.2.3)
@@ -260,7 +260,7 @@ GEM
     thor (1.2.1)
     thwait (0.2.0)
       e2mmap
-    tilt (2.0.10)
+    tilt (2.0.11)
     timecop (0.9.5)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
@@ -300,7 +300,7 @@ DEPENDENCIES
   sidekiq (= 6.4.1)
   sidekiq-scheduler (= 3.1.1)
   sidekiq-statistic!
-  sinatra (~> 2.0)
+  sinatra (~> 2.2)
   standalone_migrations (= 7.1.0)
   telegram-bot (= 0.15.4)
   telegram-bot-types (= 0.7.0)
