@@ -81,7 +81,7 @@ RSpec.describe PdrBot::Controller, type: :controller, telegram_bot: :poller do
 
       before do
         allow(PdrBot::Templates::Game::Results).to receive(:build)
-          .with(chat_id: current_chat.id, winner_name: winner.name, loser_name: loser.name)
+          .with(current_chat_id: current_chat.id, winner_name: winner.name, loser_name: loser.name)
           .and_return(game_results_template_data)
       end
 
@@ -110,7 +110,7 @@ RSpec.describe PdrBot::Controller, type: :controller, telegram_bot: :poller do
       before do
         allow(PdrBot::Templates::Game::Stats).to receive(:build)
           .with(
-            chat_id: current_chat.id,
+            current_chat_id: current_chat.id,
             winner_leader_stat: service_result.winner_leader_stat,
             loser_leader_stat: service_result.loser_leader_stat,
             chat_stats: service_result.chat_stats
@@ -149,7 +149,7 @@ RSpec.describe PdrBot::Controller, type: :controller, telegram_bot: :poller do
       allow_any_instance_of(described_class).to receive(:payload).and_return(base_payload)
       allow_any_instance_of(described_class).to receive(:current_chat).and_return(current_chat)
       allow(PdrBot::Templates::ServiceError).to receive(:build)
-        .with(chat_id: current_chat.id, error_code: exception.error_code)
+        .with(current_chat_id: current_chat.id, error_code: exception.error_code)
         .and_return(template_data)
     end
 
