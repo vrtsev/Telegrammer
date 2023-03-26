@@ -5,22 +5,23 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+  build:
+    machine:
+      image: ubuntu-2004:202010-01
+    working_directory: ~/Telegrammer
     steps:
       - checkout
+      - run: docker-compose -f docker-compose.test.yml build
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
-
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
-workflows:
-  say-hello-workflow:
-    jobs:
-      - say-hello
+          name: Perform initial project setup
+          command: |
+            docker-compose -f docker-compose.test.yml run console bundle install
+            docker-compose -f docker-compose.test.yml run console rake db:create
+            docker-compose -f docker-compose.test.yml run console rake db:migrate
+      - run:
+          name: Run DB migration
+          command: docker-compose -f docker-compose.test.yml run console rake db:migrate RAILS_ENV=test
+      - run:
+          name: Run tests
+          command: |
+            docker-compose -f docker-compose.test.yml run console rspec
