@@ -2,6 +2,7 @@
 
 require 'telegram/bot'
 require 'logger'
+require 'singleton'
 
 # Require main dependencies
 require_relative 'app_manager/logger/multi_io.rb'

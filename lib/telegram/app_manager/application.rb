@@ -3,6 +3,8 @@
 module Telegram
   module AppManager
     class Application
+      include Singleton
+
       class << self
         delegate :logger, to: AppManager
 
