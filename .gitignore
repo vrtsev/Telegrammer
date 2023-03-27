@@ -7,7 +7,6 @@
 # Ignore env files.
 /.env.development
 /.env.production
-/.env.test
 
 # Ignore bundler config.
 /.bundle

@@ -18,6 +18,7 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 
   config.include_context 'controller_helpers', type: :controller
+  config.include_context 'bot_helpers'
 
   config.before(:suite) do
     Sidekiq::Testing.inline!
