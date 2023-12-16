@@ -22,4 +22,4 @@ echo '== Disabling all bots =='
 eval 'docker-compose -f docker-compose.production.yml run --rm console rake bots:disable_all'
 
 echo '== Starting application =='
-eval 'docker-compose -f docker-compose.production.yml up'
+eval 'docker-compose -f docker-compose.production.yml up -d'
