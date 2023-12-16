@@ -38,6 +38,10 @@ module Messages
 
     def create_message
       @message = chat_user.messages.create!(message_params)
+    rescue ActiveRecord::RecordInvalid
+      # TODO needs proper refactoring
+      logger.error "[EXTERNAL ID ERROR] Failed to create a message with params: #{message_params}"
+      true
     end
 
     def message_params
